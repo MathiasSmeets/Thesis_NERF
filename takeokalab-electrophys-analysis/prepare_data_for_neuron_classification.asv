@@ -1,0 +1,203 @@
+clear all
+
+Fs = 30000;
+nch = 385;
+recordings_database;
+exportdata = table();
+var1 = [];
+var2 = [];
+var3 = [];
+var4 = [];
+var5 = [];
+var6 = [];
+var7 = [];
+var8 = [];
+var9 = [];
+var10 = [];
+classif = [];
+%var10 = [];
+
+for i = 1:length(sort_masters)
+    
+    %% 1. period of firing (4 groups as other function) + depth
+    
+    %find horridge time and create time binning 
+    load(fullfile(raw_masters{i},'events.mat'),'events');
+    evnames = {events.type};
+    evtid = find(contains(evnames,'horridge'));
+    
+    % bin1 = first minute (adaptation) + bin2 = remaining part of stimulation (consolidation) + bin3 = remaining part of recording (retaining)
+    file = dir(fullfile(raw_masters{i},'*.ap.bin'));
+    maxtime = file.bytes/2/nch;
+    tbin = [0 60; 60 events(evtid).offsets(end); events(evtid).offsets(end) maxtime]; 
+    
+    %get id of SUs
+    spk = loadKSdir(sort_masters{i});
+    clusters = spk.cids(spk.cgs == 2);
+    
+    classif = [classif ones(1, length(clusters))];
+    
+    %compute spiking activity 
+    [~, depth, neu_resp_ratio, spiketimes] = neurons_spike_map(sort_masters{i},'add_events_range',1,'events_name','horridge','plot_results',0,'time_binning',tbin,'clusters', clusters);
+    
+%     group1M = [];
+%     group2M = [];
+%     group3M = [];
+%     group4M = [];
+%     for j = 1:size(neu_resp_ratio, 1)
+%         if neu_resp_ratio(j,1)>=.75
+%             group1M = [group1M j];
+%         elseif neu_resp_ratio(j,1)+neu_resp_ratio(j,2)>=.75
+%             group2M = [group2M j];
+%         elseif neu_resp_ratio(j,1)+neu_resp_ratio(j,2)>=.25 && neu_resp_ratio(j,3)>=.25
+%             group3M = [group3M j];
+%         elseif neu_resp_ratio(j,3)>=.75
+%             group4M = [group4M j];
+%         end
+%     end
+    var1 = [var1 neu_resp_ratio(:,1)'];
+    var2 = [var2 neu_resp_ratio(:,2)'];
+    var3 = [var3 neu_resp_ratio(:,3)'];
+%     var4 = [var4 neu_resp_ratio(:,4)'];
+    %adjust depths with real coordinates based on last channel inside
+    load(fullfile(sort_masters{i},'chanMap.mat'), 'ycoords');
+    var5 = [var5 abs(depth - ycoords(master_ch_limit(i)))];
+    
+    
+    %% 3. fraction of spontaneous firing / evoked firing
+    %find time parts of stimulations [-2 +250] ms
+    tstim = [];
+    for j = 1:length(events(evtid).onsets)
+        tstim = [tstim, ((events(evtid).onsets-0.002):1/Fs:(events(evtid).onsets+0.25))];
+    end
+    %stimspk = 0;
+    spontspk = 0;
+    for j = 1:length(spiketimes)
+        disp(sprintf('master %d', j))
+        spktimej = spiketimes{j};
+        nspkin = sum(ismembertol(spktimej,tstim, 1e-5));
+        %stimspk = stimspk + nspkin;
+        spontspk = (length(spktimej) - nspkin);
+        var6 = [var6 spontspk/length(spktimej)];
+    end   
+    
+                
+        
+    %% 4. latency of responses, length of response (offset - onset),inhibitory VS excitatory response (base on binarized resp), response firing rate vs baseline
+    [~, ~, ~, latency, offi, rsFR] = group_spike_clusters_by_response(sort_masters{i},fullfile(sort_masters{i},'events.mat'),'horridge','clusters',clusters);
+    var7 = [var7, latency];
+    var8 = [var8, offi-latency];
+    var9 = [var9, rsFR];
+    
+    
+    %% 5. cluster firing rate
+    [data, header, raw] = tsvread(fullfile(sort_masters{i},'cluster_info.tsv'));
+    for j = 1:length(clusters)
+        idx = find(data(:,1)==clusters(j));
+        spfr = data(idx, 8);
+        var10 = [var10, spfr'];
+    end
+end
+%% YOKES
+for i = 1:length(sort_yokes)
+    
+    %% 1. period of firing (4 groups as other function) + depth
+    
+    %find horridge time and create time binning 
+    load(fullfile(raw_yokes{i},'events.mat'),'events');
+    evnames = {events.type};
+    evtid = find(contains(evnames,'horridge'));
+    
+    % bin1 = first minute (adaptation) + bin2 = remaining part of stimulation (consolidation) + bin3 = remaining part of recording (retaining)
+    file = dir(fullfile(raw_yokes{i},'*.ap.bin'));
+    maxtime = file.bytes/2/nch;
+    tbin = [0 60; 60 events(evtid).offsets(end); events(evtid).offsets(end) maxtime]; 
+    
+    %get id of SUs
+     spk = loadKSdir(sort_yokes{i});
+    clusters = spk.cids(spk.cgs == 2);
+    
+    classif = [classif zeros(1, length(clusters))];
+    %compute spiking activity 
+    [~, depth, neu_resp_ratio, spiketimes] = neurons_spike_map(sort_yokes{i},'add_events_range',1,'events_name','horridge','plot_results',0,'time_binning',tbin,'clusters', clusters);
+%     group1Y = [];
+%     group2Y = [];
+%     group3Y = [];
+%     group4Y = [];
+%     for j = 1:size(neu_resp_ratio, 1)
+%         if neu_resp_ratio(j,1)>=.75
+%             group1Y = [group1Y j];
+%         elseif neu_resp_ratio(j,1)+neu_resp_ratio(j,2)>=.75
+%             group2Y = [group2Y j];
+%         elseif neu_resp_ratio(j,1)+neu_resp_ratio(j,2)>=.25 && neu_resp_ratio(j,3)>=.25
+%             group3Y = [group3Y j];
+%         elseif neu_resp_ratio(j,3)>=.75
+%             group4M = [group4Y j];
+%         end
+%     end
+    var1 = [var1 neu_resp_ratio(:,1)'];
+    var2 = [var2 neu_resp_ratio(:,2)'];
+    var3 = [var3 neu_resp_ratio(:,3)'];
+%     var4 = [var4 group4Y];
+    
+    %adjust depths with real coordinates based on last channel inside
+    load(fullfile(sort_yokes{i},'chanMap.mat'), 'ycoords');
+    var5 = [var5 abs(depth - ycoords(yokes_ch_limit(i)))];
+    
+    
+    %% 3. fraction of spontaneous firing / evoked firing
+    %find time parts of stimulations [-2 +250] ms
+    tstim = [];
+    for j = 1:length(events(evtid).onsets)
+        tstim = [tstim, ((events(evtid).onsets-0.002):1/Fs:(events(evtid).onsets+0.25))];
+    end
+    %stimspk = 0;
+    spontspk = 0;
+    for j = 1:length(spiketimes)
+        disp(sprintf('yokes %d', j))
+        spktimej = spiketimes{j};
+        nspkin = sum(ismembertol(spktimej,tstim, 1e-5));
+        %stimspk = stimspk + nspkin;
+        spontspk = spontspk + (length(spktimej) - nspkin);
+        var6 = [var6 spontspk/length(spktimej)];
+    end    
+    
+                
+        
+    %% 4. latency of responses, length of response (offset - onset),inhibitory VS excitatory response (base on binarized resp), response firing rate vs baseline
+    [~, ~, ~, latency, offi, rsFR] = group_spike_clusters_by_response(sort_yokes{i},fullfile(sort_yokes{i},'events.mat'),'horridge','clusters',clusters);
+    var7 = [var7, latency];
+    var8 = [var8, offi-latency];
+    var9 = [var9, rsFR];
+    
+    
+    %% 5. cluster firing rate
+    [data, header, raw] = tsvread(fullfile(sort_yokes{i},'cluster_info.tsv'));
+    for j = 1:length(clusters)
+        idx = find(data(:,1)==clusters(j));
+        spfr = data(idx, 8);
+        var10 = [var10, spfr'];
+    end
+end
+
+
+% export data to .csv
+exportdata.group1 = var1';
+exportdata.group2 = var2';
+exportdata.group3 = var3';
+% exportdata.group4 = var4';
+exportdata.depth = var5';
+exportdata.fraction_spont_spikes = var6';
+exportdata.psth_lat = var7';
+exportdata.psth_dur = var8';
+exportdata.psth_fr = var9';
+exportdata.FR = var10';
+exportdata.type = classif';
+
+writetable(exportdata,'neuron_class.csv','Delimiter',',');
+
+
+% python ML: linear classifier (logistic regression or Lasso) or PCA to
+% classify neurons as master/yoked
+
+

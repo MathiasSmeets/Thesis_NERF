@@ -1,0 +1,16 @@
+function [m_data, y_data] = assemble_data(total_frM, total_frY)
+% this function will concatenate the early, mid and late periods into a
+% matrix that is easier to work with
+
+m_data = zeros(size(total_frM.zscore_early_full,1),size(total_frM.zscore_early_full{1,1},2) + size(total_frM.zscore_mid_full{1,1},2) + size(total_frM.zscore_late_full{1,1},2));
+y_data = zeros(size(total_frY.zscore_early_full,1),size(total_frY.zscore_early_full{1,1},2) + size(total_frY.zscore_mid_full{1,1},2) + size(total_frY.zscore_late_full{1,1},2));
+
+for i = 1:size(total_frY.zscore_early_full,1)
+
+    temp_m_data = [total_frM.zscore_early_full{i,1}, total_frM.zscore_mid_full{i,1}, total_frM.zscore_late_full{i,1}]
+
+    m_data(i,:) = ;
+    y_data(i,:) = [total_frY.zscore_early_full{i,1}, total_frY.zscore_mid_full{i,1}, total_frY.zscore_late_full{i,1}];
+end
+
+end

@@ -1,0 +1,134 @@
+function [pdfs, cdfs, ampBins, depthBins] = spike_pdf_depth(varargin)
+
+%plot spike PDF and CDF by depth
+%
+% required input: 
+%   - Data = can be a char or a cell of chars
+% optional inputs:
+%   - plot_results = boolean (default 1). If 1 results are plotted
+%   - amp_binning = 1 value (in uV units); defines the binning step for the spike amplitude
+%                   (default 10)
+%   - depth_binning = 1 value (in um units); defines the binning step for the recording
+%                   depth (default 10)
+%   - depth_lims = array of 2 values [min max] in un units); defines the depth limits to be shown 
+%                   (default [0 1200])
+%   - condition_names = cellarray; defines the title of the different
+%                       plots. If empty, plots will benumbered sequentially
+%                       ('condition n.1', ... , 'condition n. n')
+%
+%   N.B. to work it needs in the path the spike-master code from cortex-lab: https://github.com/cortex-lab/spikes
+%
+% Mattia D'Andola, Feb 2021
+
+def_plt = 1;
+def_ampB = 10;
+def_depB = 10;
+% def_deplim = [0 1200];
+def_condnames = {};
+def_Doffset = 140;
+
+checkdata = @(x) iscell(x) || ischar(x);
+%inputs control
+parser = inputParser;
+addRequired(parser, 'data',checkdata)
+addParameter(parser, 'plot_results', def_plt);
+addParameter(parser, 'amp_binning', def_ampB);
+addParameter(parser, 'depth_binning', def_depB);
+% addParameter(parser, 'depth_lims', def_deplim);
+addParameter(parser, 'condition_names', def_condnames);
+addParameter(parser, 'depth_offset', def_Doffset);
+
+parse(parser,varargin{:})
+data = parser.Results.data;
+plt = parser.Results.plot_results;
+ampB = parser.Results.amp_binning;
+depB = parser.Results.depth_binning;
+% deplims = parser.Results.depth_lims;
+condnames = parser.Results.condition_names;
+Doffset = parser.Results.depth_offset;
+
+if ischar(data)
+    data = {data};
+end
+
+%iterate on data
+for i = 1:length(data)
+    spk = loadKSdir(data{i});
+    load(fullfile(data{i},'chanMap.mat'), 'ycoords');
+    deplims = [0 ycoords(Doffset(i))];
+    %create depth binning vector
+    depthBins{i} = deplims(1):depB:deplims(2); 
+    
+    [spikeAmps, spikeDepths] = templatePositionsAmplitudes(spk.temps, ...
+        spk.winv, spk.ycoords, spk.spikeTemplates, spk.tempScalingAmps);
+    recordingDur = spk.st(end);
+    ampBins{i} = 0:ampB:min(max(spikeAmps),800);
+    [pdfs{i}, cdfs{i}] = computeWFampsOverDepth(spikeAmps, spikeDepths, ampBins{i}, depthBins{i}, recordingDur);
+    if plt
+        [h1, h2, h3, h4] = plot_spk_cdf_pdf(pdfs{i}, cdfs{i}, ampBins{i}, depthBins{i});
+        g = get(h1, 'ytick');
+        set(h1, 'yticklabel', abs(g-ycoords(Doffset(i))))
+        g = get(h2, 'ytick');
+        set(h2, 'yticklabel', abs(g-ycoords(Doffset(i))));
+        g = get(h3, 'ytick');
+        set(h3, 'yticklabel', abs(g-ycoords(Doffset(i))));
+        hs = [h1 h2 h3 h4];
+        if ~isempty(condnames)
+            suptitle(condnames{i})
+        else
+            suptitle(sprintf('Condition n.%d', i))
+        end
+    end
+end
+end
+
+function [h1 h2 h3 h4] = plot_spk_cdf_pdf(pdfs, cdfs, ampBins, depthBins)
+    f = figure('Position', [200 100 660 890]); 
+    depthX = depthBins(1:end-1)+mean(diff(depthBins))/2;
+    ampX = ampBins(1:end-1)+mean(diff(ampBins))/2;
+
+    h1 = subplot(2,3,1); 
+    h1.Position(2) = 0.35;
+    h1.Position(4) = 0.6;
+    
+    daspect([1 .7 1])
+    imagesc(ampX, depthX, pdfs)
+    xlabel('spike amplitude (µV)');
+    ylabel('depth (µm)');
+    title('pdf');
+    set(gca, 'YDir', 'normal');
+    %makepretty
+
+    h2 = subplot(2,3,2); 
+    h2.Position(2) = 0.35;
+    h2.Position(4) = 0.6;
+    daspect([1 .7 1])
+    imagesc(ampX, depthX, cdfs)
+    xlabel('spike amplitude (µV)');
+    ylabel('depth (µm)');
+    title('inverse cdf');
+    set(gca, 'YDir', 'normal');
+    colorbar
+    colormap(colormap_greyZero_blackred)
+    caxis([0 20]);
+    %makepretty
+    ch = get(f, 'Children');
+    chTypes = get(ch, 'Type');
+    cbar = ch(strcmp(chTypes, 'colorbar'));
+    cbar.Label.String = 'firing rate (sp/s)';
+    
+    h3 = subplot(2,3,3);
+    h3.Position(4) = h2.Position(4);
+    h3.Position(2) = h2.Position(2);
+    ypl = smoothdata(sum(cdfs,2),'gaussian',10);
+    plot(ypl, depthX, '-k', 'linewidth',1)
+    set(gca, 'YDir', 'normal')
+    
+    pos = [h2.Position(1), 0.15, h2.Position(3), 0.15];
+    h4 = subplot('Position',pos);
+    xpl = smoothdata(sum(cdfs),'gaussian',10);
+    plot(ampX, xpl, '-k', 'linewidth', 1)
+    
+    
+    
+end

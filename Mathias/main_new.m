@@ -1,20 +1,13 @@
 clear; clc; close all; % make sure to reference paper lab if i end up using this code
 
-<<<<<<< HEAD
+
 %path_to_code = "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\";
 path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
 
 stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 stimulus_data_y = load(path_to_code + "data_after_stimulus_y.mat");
-=======
-stimulus_data_m = load("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\data_after_stimulus_m.mat");
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
-stimulus_data_y = load("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\data_after_stimulus_y.mat");
->>>>>>> 7d22af5e90d7726c2b6bf25efd660ecb2112c3bd
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
-
-
 
 interval_size = 70;
 %% filter operation for 0.1ms bins

@@ -69,11 +69,10 @@ for i = 1:size(stimulus_data_m,1)
     cur_neuron_nb_y = cur_neuron_nb_y + size(stimulus_data_y{i,1},1);
 end
 
-<<<<<<< HEAD
+
 %% make neuron spikes for 0.1ms
 
-=======
->>>>>>> 7d22af5e90d7726c2b6bf25efd660ecb2112c3bd
+
 %% make figure for total spikes
 figure
 plot(total_m)
@@ -298,7 +297,6 @@ for i = 1:size(stimulus_data_m,1)
                 disp("131")
             end
 
-<<<<<<< HEAD
 
             if i == 10
                 for jj = 1:size(peaks_to_keep_m,2)
@@ -373,8 +371,9 @@ for i = 1:size(stimulus_data_m,1)
                     else
                         others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                     end
+                end
+            end
 
-=======
             for jj = 1:size(peaks_to_keep_m,2)
                 peak_area_m = [];
                 max_peaks = [];
@@ -430,7 +429,7 @@ for i = 1:size(stimulus_data_m,1)
                     secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 else
                     others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
->>>>>>> 7d22af5e90d7726c2b6bf25efd660ecb2112c3bd
+
                 end
             end
         end

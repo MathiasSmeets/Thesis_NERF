@@ -2,7 +2,7 @@ clear; clc; close all; % make sure to reference paper lab if i end up using this
 
 
 %path_to_code = "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\";
-path_to_code = "/mnt/takokalab/takeokalabwip2023/Mathias/";
+path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
 
 stimulus_data_m = load(path_to_code + "data/data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;

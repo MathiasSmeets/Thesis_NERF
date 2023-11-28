@@ -8,8 +8,10 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 clear;clc;close all;
-path_1 = genpath("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias");
-path_2 = genpath("Y:\Jeremy\takeokalab");
+path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
+path_to_jeremy = "/mnt/takeokalab/takeokalabwip2023/Jeremy/";
+path_1 = genpath(path_to_code);
+path_2 = genpath(path_to_jeremy);
 addpath(path_1)
 addpath(path_2)
 % stimulation: Y:\past lab members\Mattia\Spinal_Cord\Sorted\20210511\horridge
@@ -249,7 +251,7 @@ for i = mathias_param
     % Create columm :
     % Recording number
     % Id horridge / Id spont / Id after (same on long recording)
-    L = 0.001;
+    L = 0.0001;
     step = 0.1;
     for j = 1:length(clusters)
         cont = cont+1;
@@ -508,7 +510,7 @@ for i = mathias_param % [7 8 9 10 11 12 13 14 15 16 17 18] %1:length(sort_yokes_
             events(evtid).onsets(end), events(evtid).onsets(1)+600];
     end
     
-    L = 0.001; % timebin in seconds
+    L = 0.0001; % timebin in seconds
     step = 0.1;
     for j = 1:length(clusters)
         disp(sprintf('master %d, yoke long %d',i,j))
@@ -1167,8 +1169,9 @@ end
 
 
 %% cleanup mathias
-save("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\frM_" + mathias_param + ".mat", "frM", "-v7.3")
-save("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\frY_" + mathias_param + ".mat", "frY", "-v7.3")
+path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
+save(path_to_code + "/code/Mathias/data/frM_" + mathias_param + ".mat", "frM", "-v7.3")
+save(path_to_code + "/code/Mathias/data/frY_" + mathias_param + ".mat", "frY", "-v7.3")
 clearvars; close all;
 clear
 end

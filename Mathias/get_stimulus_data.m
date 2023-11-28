@@ -1,7 +1,8 @@
 clear; clc; close all;
 
 %% load data
-path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
+%path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
+path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
 path = path_to_code+ "data";
 
 data_m = load(path + "\frM_peak_total.mat");
@@ -72,6 +73,10 @@ event_main_Y.event_31 = load(path + "\eventY_31.mat", "-mat", "events");
 
 %% loop over each event file to get data after every stimulation
 
+
+fs = 0.1; % ms
+multiplier = 1/fs;
+
 fields = fieldnames(event_main_M);
 numbers = setdiff(7:34, [20, 32, 33, 34]);
 %numbers = 10;
@@ -101,10 +106,10 @@ for i = 1:numel(fields)
     for j = 2:length(cur_onsets_m)
         if round(cur_onsets_m(j)*1000)+59 > 600000
             after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);
-            %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
+            after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
         else
             after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:round(cur_onsets_m(j)*1000)+59+2);
-            %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
+            after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
         end
     end
     for j = 2:length(cur_onsets_y)

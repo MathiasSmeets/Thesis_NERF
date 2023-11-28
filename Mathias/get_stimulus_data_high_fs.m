@@ -1,7 +1,8 @@
 clear; clc; close all;
 
 %% load data
-path = "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data";
+path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
+path = path_to_code+ "data";
 
 data_m = load(path + "\frM_HIGH_FS10.mat");
 data_m = struct2array(data_m);

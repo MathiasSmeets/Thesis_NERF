@@ -1,7 +1,8 @@
 clear; clc; close all;
 
 %% load data
-path = "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data";
+path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
+path = path_to_code+ "data";
 
 data_m = load(path + "\frM_peak_total.mat");
 data_m = struct2array(data_m);
@@ -100,15 +101,19 @@ for i = 1:numel(fields)
     for j = 2:length(cur_onsets_m)
         if round(cur_onsets_m(j)*1000)+59 > 600000
             after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);
+            %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
         else
             after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:round(cur_onsets_m(j)*1000)+59+2);
+            %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
         end
     end
     for j = 2:length(cur_onsets_y)
         if round(cur_onsets_y(j)*1000)+59 > 600000
             after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
+            after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         else
             after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
+            after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         end
     end
     start_neuron_m = start_neuron_m + cur_nb_neurons_m;

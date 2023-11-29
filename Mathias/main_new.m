@@ -4,6 +4,7 @@ clear; clc; close all; % make sure to reference paper lab if i end up using this
 %path_to_code = "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\";
 %path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
 path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
+write_path = "/scratch/mathiass-takeokalab/01/";
 
 stimulus_data_m = load(path_to_code + "data/data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
@@ -384,4 +385,4 @@ end
 
 
 %% save data
-save(path_to_code + "output/output_m.mat", "output_m", "-v7.3");
+save(write_path + "/output_m.mat", "output_m", "-v7.3");

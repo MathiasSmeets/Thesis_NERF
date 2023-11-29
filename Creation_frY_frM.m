@@ -85,8 +85,7 @@ for i = mathias_param
     load(fullfile(sort_masters_horridge{i},'events.mat'),'events');
     write_path = "/scratch/mathiass-takeokalab/01/";
     save(write_path + "eventM_" + mathias_param + ".mat", "events")
-    load(fullfile(sort_yokes_horridge{i},'events.mat'),'events');
-    save(write_path + "eventY_" + mathias_param + ".mat", "events")
+
 
     evnames = {events.type};
     evtid = find(contains(evnames,'horridge'));
@@ -347,6 +346,8 @@ for i = mathias_param % [7 8 9 10 11 12 13 14 15 16 17 18] %1:length(sort_yokes_
     
     %crete time binning
     load(fullfile(sort_yokes_horridge{i},'events.mat'),'events');
+    write_path = "/scratch/mathiass-takeokalab/01/";
+    save(write_path + "eventY_" + mathias_param + ".mat", "events")
     evnames = {events.type};
     evtid = find(contains(evnames,'horridge'));
     if isempty(evtid)==1

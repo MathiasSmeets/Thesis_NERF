@@ -1173,8 +1173,8 @@ end
 
 %% cleanup mathias
 write_path = "/scratch/mathiass-takeokalab/01/";
-save(write_path + "fr_tables/frM_" + mathias_param + ".mat", "frM", "-v7.3")
-save(write_path + "fr_tables/frY_" + mathias_param + ".mat", "frY", "-v7.3")
+save(write_path + "frM_" + mathias_param + ".mat", "frM", "-v7.3")
+save(write_path + "frY_" + mathias_param + ".mat", "frY", "-v7.3")
 clearvars; close all;
 clear
 end

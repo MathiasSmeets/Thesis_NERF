@@ -9,7 +9,7 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 clear;clc;close all;
 path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
-path_to_jeremy = "/mnt/takeokalab/takeokalabwip2023/Jeremy/";
+path_to_jeremy = "/mnt/takeokalab/takeokalabwip2020/Jeremy/";
 path_1 = genpath(path_to_code);
 path_2 = genpath(path_to_jeremy);
 addpath(path_1)

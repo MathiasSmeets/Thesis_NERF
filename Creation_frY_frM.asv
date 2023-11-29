@@ -13,9 +13,9 @@ path_to_jeremy = "/mnt/takeokalab/takeokalabwip2020/Jeremy/";
 path_1 = genpath(path_to_code);
 path_2 = genpath(path_to_jeremy);
 path_3 = genpath(pwd);
+
 addpath(path_1)
 addpath(path_2)
-addpath(path_3)
 % stimulation: Y:\past lab members\Mattia\Spinal_Cord\Sorted\20210511\horridge
 
 for mathias_param = setdiff(7:34, [20, 32, 33, 34])

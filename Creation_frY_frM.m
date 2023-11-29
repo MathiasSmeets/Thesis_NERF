@@ -1169,9 +1169,9 @@ end
 
 
 %% cleanup mathias
-path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
-save(path_to_code + "/code/Mathias/data/frM_" + mathias_param + ".mat", "frM", "-v7.3")
-save(path_to_code + "/code/Mathias/data/frY_" + mathias_param + ".mat", "frY", "-v7.3")
+write_path = "/scratch/mathiass-takeokalab/01/";
+save(write_path + "fr_tables/frM_" + mathias_param + ".mat", "frM", "-v7.3")
+save(write_path + "fr_tables/frY_" + mathias_param + ".mat", "frY", "-v7.3")
 clearvars; close all;
 clear
 end

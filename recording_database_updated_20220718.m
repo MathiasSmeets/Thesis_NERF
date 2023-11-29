@@ -4,10 +4,10 @@ if ispc
     volume_base2 = '\\nerffs17';
 elseif ismac
     volume_base = '/volumes/';
+else  % cluster
+    volume_base = '/mnt/takeokalab/';
+    volume_base2 = '/mnt/takeokalab/';
 end
-
-volume_base = '//nerffs13';
-volume_base2 = '//nerffs17';
 %%
 
 % Sorted data

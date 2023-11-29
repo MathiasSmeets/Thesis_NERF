@@ -83,9 +83,10 @@ for i = mathias_param
     
     %crete time binning
     load(fullfile(sort_masters_horridge{i},'events.mat'),'events');
-    save("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\eventM_" + mathias_param + ".mat", "events")
+    write_path = "/scratch/mathiass-takeokalab/01/";
+    save(write_path + "eventM_" + mathias_param + ".mat", "events")
     load(fullfile(sort_yokes_horridge{i},'events.mat'),'events');
-    save("C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\code\Mathias\data\eventY_" + mathias_param + ".mat", "events")
+    save(write_path + "eventY_" + mathias_param + ".mat", "events")
 
     evnames = {events.type};
     evtid = find(contains(evnames,'horridge'));

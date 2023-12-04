@@ -2,7 +2,7 @@ clear; clc; close all; % make sure to reference paper lab if i end up using this
 
 %path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
 path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
-other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data";
+other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
 stimulus_data_m = load(other_path + "data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;

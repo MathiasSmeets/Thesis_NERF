@@ -2,15 +2,16 @@ clear; clc; close all; % make sure to reference paper lab if i end up using this
 
 %path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
 path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
+other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data";
 
-stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
+stimulus_data_m = load(other_path + "data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
-stimulus_data_y = load(path_to_code + "data_after_stimulus_y.mat");
+stimulus_data_y = load(other_path + "data_after_stimulus_y.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
 stimulus_data_high_fs_m = load(path_to_code + "after_stimulus_data_m_high_fs.mat");
 stimulus_data_high_fs_m = stimulus_data_high_fs_m.after_stimulus_data_m;
-stimulus_data_high_fs_y = load(path_to_code + "after_stimulus_data_m_high_fs.mat");
+stimulus_data_high_fs_y = load(path_to_code + "after_stimulus_data_y_high_fs.mat");
 stimulus_data_high_fs_y = stimulus_data_high_fs_y.after_stimulus_data_y;
 
 interval_size = 70;

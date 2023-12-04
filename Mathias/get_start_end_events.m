@@ -1,5 +1,7 @@
 function [EventSizeM, EventSizeY] = get_start_end_events()
 
+max_m = 0;
+max_y = 0;
 
 for i = 7:34
     lim_start =0;
@@ -95,6 +97,10 @@ for i = 7:34
     end
     EventSizeM(i,1)=lim_start;
     EventSizeM(i,2)=lim_event;
+
+    if max_m < lim_event-lim_start
+        max_m = lim_event-lim_start;
+    end
 end
 
 
@@ -193,6 +199,12 @@ for i =7:34
     EventSizeY(i,1)=lim_start;
     EventSizeY(i,2)=lim_event;
 
+
+    if max_y < lim_event-lim_start
+        max_y = lim_event-lim_start;
+    end
+
 end
+
 
 end

@@ -1,9 +1,8 @@
 clear; clc; close all;
 
 %% load data
-%path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
-path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
-path = path_to_code+ "data";
+path = "\\nerffs13\takeokalabwip2020\Mathias\data";
+%path = "/mnt/takeokalab/takeokalabwip2023/Mathias/";
 
 data_m = load(path + "\frM_peak_total.mat");
 data_m = struct2array(data_m);

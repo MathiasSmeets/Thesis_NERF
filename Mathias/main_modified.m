@@ -252,7 +252,7 @@ for i = 1:size(stimulus_data_m,1)
             if 1
                 for jj = 1:size(peaks_to_keep_m,2)
                     [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
-                    cur_peak = peaks_to_keep_m(jj) + adjustment - 10 - 1;
+                    cur_peak = peaks_to_keep_m(jj)*10 + adjustment - 10 - 1;
                     peak_area_m = [];
                     max_peaks = [];
                     if jj ~= 0

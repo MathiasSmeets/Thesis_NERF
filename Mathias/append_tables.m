@@ -5,15 +5,15 @@ clear; clc; close all;
 datapath = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 savepath = "/scratch/mathiass-takeokalab/01/";
 
-frM_7 = load(datapath + "frM_7.mat");
+frM_7 = load(datapath + "frY_7.mat");
 cur_table = struct2array(frM_7);
 cur_table = cur_table(:,[1,7:9]);
-clearvars frM_7
+clearvars frY_7
 
 i = 8;
 while i <= 34 
     if i ~= 20 && i ~= 32 && i~=33 && i ~=34
-        new_table = load(datapath + "frM_" + i + ".mat");
+        new_table = load(datapath + "frY_" + i + ".mat");
         new_table = struct2array(new_table);
 
         % remove rows that contain zero in the recording column
@@ -38,4 +38,4 @@ for i = 1:size(data,1)
         data(i,:) = cur_data;
     end
 end
-save(savepath + "frM_peak_total.mat", "data", "-v7.3")
+save(savepath + "frY_peak_total.mat", "data", "-v7.3")

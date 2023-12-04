@@ -251,17 +251,16 @@ for i = 1:size(stimulus_data_m,1)
 
             if 1
                 for jj = 1:size(peaks_to_keep_m,2)
-                    [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
-                    cur_peak = peaks_to_keep_m(jj) + adjustment - 10 - 1;
+                    [~, cur_peak] = max(peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10);
                     peak_area_m = [];
                     max_peaks = [];
                     if jj ~= 0
                         if cur_peak + max_peak_distance*10 > interval_size*10 % edge case
-                            peak_area_m = neuron_spikes_m_hfs(neuron_counter_m+j,cur_peak - 9 - max_peak_distance*10:end);                               % "j" should be "neuron_counter + j" in general case
+                            peak_area_m = neuron_spikes_m_hfs(j,cur_peak - 9 - max_peak_distance*10:end);                               % "j" should be "neuron_counter + j" in general case
                         elseif  cur_peak - max_peak_distance*10 < 1 % edge case
-                            peak_area_m = neuron_spikes_m_hfs(neuron_counter_m+j,1:cur_peak + max_peak_distance*10);                                     % "j" should be "neuron_counter + j" in general case
+                            peak_area_m = neuron_spikes_m_hfs(j,1:cur_peak + max_peak_distance*10);                                     % "j" should be "neuron_counter + j" in general case
                         else % normal case
-                            peak_area_m = neuron_spikes_m_hfs(neuron_counter_m+j,cur_peak - 9 - max_peak_distance*10:cur_peak+max_peak_distance*10);     % "j" should be "neuron_counter + j" in general case
+                            peak_area_m = neuron_spikes_m_hfs(j,cur_peak - 9 - max_peak_distance*10:cur_peak+max_peak_distance*10);     % "j" should be "neuron_counter + j" in general case
                         end
                     end
 

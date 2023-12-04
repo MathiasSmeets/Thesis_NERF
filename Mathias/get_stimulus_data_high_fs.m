@@ -2,7 +2,7 @@ clear; clc; close all;
 
 %% load data
 %path = "\\nerffs13\takeokalabwip2020\Mathias\10kfs\";
-path = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs";
+path = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 write_path = "/scratch/mathiass-takeokalab/01/";
 
 data_m = load(path + "frM_peak_total.mat");

@@ -1,11 +1,13 @@
 clear; clc; close all;
 
 %% load data
-path = "\\nerffs13\takeokalabwip2020\Mathias\10kfs";
+%path = "\\nerffs13\takeokalabwip2020\Mathias\10kfs\";
+path = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs";
+write_path = "/scratch/mathiass-takeokalab/01/";
 
-data_m = load(path + "\frM_peak_total.mat");
+data_m = load(path + "frM_peak_total.mat");
 data_m = struct2array(data_m);
-data_y = load(path + "\frY_peak_total.mat");
+data_y = load(path + "frY_peak_total.mat");
 data_y = struct2array(data_y);
 
 new_data_m = zeros(size(data_m.zscore_early_full,1),1+size(data_m.zscore_early_full{1,1},2) + size(data_m.zscore_mid_full{1,1},2) + size(data_m.zscore_late_full{1,1},2));
@@ -131,7 +133,8 @@ for i = 1:numel(fields)
 end
 
 
-
+save(write_path + "after_stimulus_data_m.mat", "after_stimulus_data_m", "-v7.3")
+save(write_path + "after_stimulus_data_y.mat", "after_stimulus_data_y", "-v7.3")
 
 
 

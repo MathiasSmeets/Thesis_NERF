@@ -103,6 +103,11 @@ for i = 1:size(stimulus_data_high_fs_m,1)
                 neuron_spikes_m_hfs(cur_neuron_nb_m_hfs:cur_neuron_nb_m_hfs + size(stimulus_data_high_fs_m{i,j},1) - 1, :) = neuron_spikes_m_hfs(cur_neuron_nb_m_hfs:cur_neuron_nb_m_hfs + size(stimulus_data_high_fs_m{i,j}, 1) - 1, :) + stimulus_data_high_fs_m{i,j};
             end
         end
+    end
+    cur_neuron_nb_m_hfs = cur_neuron_nb_m_hfs + size(stimulus_data_high_fs_m{i,1},1);
+end
+for i = 1:size(stimulus_data_high_fs_y,1)
+    for j = 1:size(stimulus_data_high_fs_y,2)
         if ~isempty(stimulus_data_high_fs_y{i,j})
             if size(stimulus_data_high_fs_y{i,j},2) < size(total_y_hfs,2)
                 total_y_hfs(1:size(stimulus_data_high_fs_y{i,j},2)) = total_y_hfs(1:size(stimulus_data_high_fs_y{i,j},2)) + sum(stimulus_data_high_fs_y{i,j});
@@ -113,7 +118,6 @@ for i = 1:size(stimulus_data_high_fs_m,1)
             end
         end
     end
-    cur_neuron_nb_m_hfs = cur_neuron_nb_m_hfs + size(stimulus_data_high_fs_m{i,1},1);
     cur_neuron_nb_y_hfs = cur_neuron_nb_y_hfs + size(stimulus_data_high_fs_y{i,1},1);
 end
 

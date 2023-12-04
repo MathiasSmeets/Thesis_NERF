@@ -1,14 +1,16 @@
 clear; clc; close all; % make sure to reference paper lab if i end up using this code
 
-path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\";
-stimulus_data_m = load(path_to_code + "data\data_after_stimulus_m.mat");
+%path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
+path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
+
+stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
-stimulus_data_y = load(path_to_code + "data\data_after_stimulus_y.mat");
+stimulus_data_y = load(path_to_code + "data_after_stimulus_y.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-stimulus_data_high_fs_m = load(path_to_code + "data\data_after_stimulus_m_HIGHFS_NEW.mat");
+stimulus_data_high_fs_m = load(path_to_code + "after_stimulus_data_m_high_fs.mat");
 stimulus_data_high_fs_m = stimulus_data_high_fs_m.after_stimulus_data_m;
-stimulus_data_high_fs_y = load(path_to_code + "data\data_after_stimulus_y_HIGHFS_NEW.mat");
+stimulus_data_high_fs_y = load(path_to_code + "after_stimulus_data_m_high_fs.mat");
 stimulus_data_high_fs_y = stimulus_data_high_fs_y.after_stimulus_data_y;
 
 interval_size = 70;
@@ -242,7 +244,7 @@ for i = 1:size(stimulus_data_m,1)
             max_peak_distance = 5;
             
 
-            if i == 4
+            if 1
                 for jj = 1:size(peaks_to_keep_m,2)
                     cur_peak = peaks_to_keep_m(jj) * 10;
                     peak_area_m = [];

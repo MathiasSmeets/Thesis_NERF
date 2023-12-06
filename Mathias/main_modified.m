@@ -260,7 +260,7 @@ for i = 1:size(stimulus_data_m,1)
                 latencies = [];
                 for kk = 1:size(stimulus_data_high_fs_m,2)
                     if ~isempty(stimulus_data_high_fs_m{i,kk})
-                        peaks_this_interval = find(stimulus_data_high_fs_m(j,cur_peak-50:cur_peak+50));
+                        peaks_this_interval = find(stimulus_data_high_fs_m{i,kk}(j,cur_peak-50:cur_peak+50));
                         latencies = [latencies, peaks_this_interval];
                     end
                 end

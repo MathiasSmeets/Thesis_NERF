@@ -290,9 +290,9 @@ for i = 1:size(stimulus_data_m,1)
                     %     cur_index = cur_index + peak_area_m(kk);
                     % end
                     
-                    check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), closest_peaks_m];                          %%%%%%%%%%
-                    tmp = neuron_counter_m + j;
-                    save("/scratch/mathiass-takeokalab/01/check_parameter_" + tmp, "check_parameter", "-v7.3");
+                    %check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), closest_peaks_m];                          %%%%%%%%%%
+                    %tmp = neuron_counter_m + j;
+                    %save("/scratch/mathiass-takeokalab/01/check_parameter_" + tmp, "check_parameter", "-v7.3");
                     
                     if 10 > std(closest_peaks_m)
                         secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];

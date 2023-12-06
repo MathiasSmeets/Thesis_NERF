@@ -235,6 +235,10 @@ for i = 1:size(stimulus_data_m,1)
                         if ~isempty(stimulus_data_m{i,ii})
                             stimulus_counter_m = stimulus_counter_m + 1;
                             
+                            % remove activity at stimuli
+                            stimulus_data_m{i,ii}(j,9:11) = 0;
+                            stimulus_data_high_fs_m{i,ii}(j,90:110) = 0;
+
                             cur_peaks = find(stimulus_data_m{i,ii}(j,peak_interval_m));
                             % check if found peak location is within interval
                             if ismember(2, cur_peaks)

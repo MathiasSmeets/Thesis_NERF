@@ -279,7 +279,7 @@ for i = 1:size(stimulus_data_m,1)
                         closest_peaks_m(cur_index:cur_index+peak_area_m(kk)-1) = latency;
                         cur_index = cur_index + peak_area_m(kk);
                     end
-                    check_parameter = [check_parameter; neuron_counter_m+j, peaks_to_keep(jj), closest_peaks_m];
+                    check_parameter = [check_parameter; neuron_counter_m+j, peaks_to_keep_m(jj), closest_peaks_m];
                     if 10 > std(closest_peaks_m)
                         secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                     else

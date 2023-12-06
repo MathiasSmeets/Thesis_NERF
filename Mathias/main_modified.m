@@ -260,11 +260,15 @@ for i = 1:size(stimulus_data_m,1)
                 latencies = [];
                 for kk = 1:size(stimulus_data_high_fs_m,2)
                     if ~isempty(stimulus_data_high_fs_m{i,kk})
-                        peaks_this_interval = find(stimulus_data_high_fs_m{i,kk}(j,cur_peak-50:cur_peak+50));
-                        latencies = [latencies, peaks_this_interval];
+                        if cur_peak + 50 > 700
+                            peaks_this_interval = find(stimulus_data_high_fs_m{i,kk}(j,cur_peak-50:end));
+                        else
+                            peaks_this_interval = find(stimulus_data_high_fs_m{i,kk}(j,cur_peak-50:cur_peak+50));
+                            latencies = [latencies, peaks_this_interval];
+                        end
                     end
                 end
-                if std(latencies) > 10
+                if 10 > std(latencies)
                     secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 else
                     others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];

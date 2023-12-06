@@ -269,10 +269,11 @@ for i = 1:size(stimulus_data_m,1)
                 else
                     others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 end
+                check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), latencies];                          %%%%%%%%%%
+                tmp = neuron_counter_m + j;
+                save("/scratch/mathiass-takeokalab/01/latencies" + tmp, "check_parameter", "-v7.3");
             end
-            check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), latencies];                          %%%%%%%%%%
-            tmp = neuron_counter_m + j;
-            save("/scratch/mathiass-takeokalab/01/latencies" + tmp, "check_parameter", "-v7.3");
+
 
             if 0
                 for jj = 1:size(peaks_to_keep_m,2)

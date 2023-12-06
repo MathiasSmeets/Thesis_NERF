@@ -279,7 +279,10 @@ for i = 1:size(stimulus_data_m,1)
                         closest_peaks_m(cur_index:cur_index+peak_area_m(kk)-1) = latency;
                         cur_index = cur_index + peak_area_m(kk);
                     end
-                    check_parameter = [check_parameter; neuron_counter_m+j, peaks_to_keep_m(jj), closest_peaks_m];
+                    
+                    check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), closest_peaks_m];                          %%%%%%%%%%
+                    save("/scratch/mathiass-takeokalab/01/check_parameter_" + neuron_counter_m + j, "check_parameter", "-v7.3");
+                    
                     if 10 > std(closest_peaks_m)
                         secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                     else

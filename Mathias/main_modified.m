@@ -253,8 +253,28 @@ for i = 1:size(stimulus_data_m,1)
             % --> do this with highest peak in 5ms interval
             max_peak_distance = 5;
             
+            
+            for jj = 1:size(peaks_to_keep_m,2)
+                [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
+                cur_peak = peaks_to_keep_m(jj)*10 + adjustment - 10 - 1;
+                latencies = [];
+                for kk = 1:size(stimulus_data_high_fs_m,2)
+                    if ~isempty(stimulus_data_high_fs_m{i,kk})
+                        peaks_this_interval = find(stimulus_data_high_fs_m(j,cur_peak-50:cur_peak+50));
+                        latencies = [latencies, peaks_this_interval];
+                    end
+                end
+                if std(latencies) > 10
+                    secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
+                else
+                    others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
+                end
+            end
+            check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), latencies];                          %%%%%%%%%%
+            tmp = neuron_counter_m + j;
+            save("/scratch/mathiass-takeokalab/01/latencies" + tmp, "check_parameter", "-v7.3");
 
-            if 1
+            if 0
                 for jj = 1:size(peaks_to_keep_m,2)
                     [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
                     cur_peak = peaks_to_keep_m(jj)*10 + adjustment - 10 - 1;
@@ -301,7 +321,8 @@ for i = 1:size(stimulus_data_m,1)
                     end
 
                 end
-            else
+            end
+            if 0
                 for jj = 1:size(peaks_to_keep_m,2)
                     peak_area_m = [];
                     max_peaks = [];

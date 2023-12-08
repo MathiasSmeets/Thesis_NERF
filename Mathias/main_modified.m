@@ -251,7 +251,7 @@ for i = 1:size(stimulus_data_m,1)
                             end
                         end
                     end
-                    if peak_counter >= 0.05 * stimulus_counter_mx
+                    if peak_counter >= 0.05 * stimulus_counter_m
                         peaks_to_keep_m = [peaks_to_keep_m, peaks_locs_m{neuron_counter_m+j,2}(1,k)];
                     end
 

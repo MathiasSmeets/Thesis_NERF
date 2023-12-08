@@ -277,14 +277,15 @@ for i = 1:size(stimulus_data_m,1)
                         end
                     end
                 end
-                if 10 > std(latencies)
+
+                if 16 > std(latencies) && 10 >= abs(cur_peak - mean(latencies+50-cur_peak))
                     secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 else
                     others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 end
-                check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), cur_peak, 0, latencies];                          %%%%%%%%%%
-                tmp = neuron_counter_m + j;
-                save("/scratch/mathiass-takeokalab/01/latencies" + tmp, "check_parameter", "-v7.3");
+                %check_parameter = [neuron_counter_m+j, peaks_to_keep_m(jj), cur_peak, 0, latencies];                          %%%%%%%%%%
+                %tmp = neuron_counter_m + j;
+                %save("/scratch/mathiass-takeokalab/01/latencies" + tmp, "check_parameter", "-v7.3");
             end
 
 
@@ -408,3 +409,16 @@ end
 % latencies_29 = load("X:\Mathias\10kfs\01\latencies29");latencies_29 = latencies_29.check_parameter;
 % peak=569;figure;subplot(2,1,1); scatter(latencies_29(1,5:end)+peak-50,1:length(latencies_29(1,5:end)));xlim([0 700]);hold on;xline(peak-50);xline(peak+51)
 % subplot(2,1,2);plot(neuron_spikes_m(29,:));hold on;plot(neuron_spikes_m_hfs(29,:)
+
+
+% false positives:
+% 462
+% 532
+% 541
+% 561
+% 658
+% 831
+
+
+
+

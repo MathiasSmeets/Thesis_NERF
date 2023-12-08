@@ -95,9 +95,9 @@ end
 
 %% validation
 
-%close all;
-%for i = 1:40
+% close all;
+% for i = 1:40
 %    figure;subplot(2,1,1);plot(neuron_spikes_m(inhibited_m(1,i),:));subplot(2,1,2);cusum_(neuron_spikes_m_zscore(inhibited_m(1,i),:),5,1,mean(neuron_spikes_m_zscore(inhibited_m(1,i),1:10)),1,"all");
-%end
+% end
 
 

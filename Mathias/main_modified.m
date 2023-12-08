@@ -278,9 +278,7 @@ for i = 1:size(stimulus_data_m,1)
                     end
                 end
 
-                [s,m] = std(latencies);
-
-                if 16 > s && abs(cur_peak - m) >= 10
+                if 16 > std(latencies) && abs(cur_peak - mean(latencies)) >= 10
                     secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 else
                     others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];

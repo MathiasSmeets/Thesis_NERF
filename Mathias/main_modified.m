@@ -121,6 +121,11 @@ for i = 1:size(stimulus_data_high_fs_y,1)
     cur_neuron_nb_y_hfs = cur_neuron_nb_y_hfs + size(stimulus_data_high_fs_y{i,1},1);
 end
 
+neuron_spikes_m(:,9:11) = 0;
+neuron_spikes_y(:,9:11) = 0;
+neuron_spikes_m_hfs(:,91:110) = 0;
+neuron_spikes_y_hfs(:,91:110) = 0;
+
 save("/scratch/mathiass-takeokalab/01/neuron_spikes_m", "neuron_spikes_m", "-v7.3");
 save("/scratch/mathiass-takeokalab/01/neuron_spikes_y", "neuron_spikes_y", "-v7.3");
 save("/scratch/mathiass-takeokalab/01/neuron_spikes_m_hfs", "neuron_spikes_m_hfs", "-v7.3");

@@ -269,6 +269,9 @@ for i = 1:size(stimulus_data_m,1)
             for jj = 1:size(peaks_to_keep_m,2)
                 [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
                 cur_peak = peaks_to_keep_m(jj)*10 + adjustment - 10 - 1;
+                if j+neuron_counter_m == 831
+                    disp(cur_peak)
+                end
                 latencies = [];
                 for kk = 1:size(stimulus_data_high_fs_m,2)
                     if ~isempty(stimulus_data_high_fs_m{i,kk})

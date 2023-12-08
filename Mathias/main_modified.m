@@ -251,7 +251,7 @@ for i = 1:size(stimulus_data_m,1)
                             end
                         end
                     end
-                    if peak_counter >= 0.05 * stimulus_counter_m
+                    if peak_counter >= 0.05 * stimulus_counter_mx
                         peaks_to_keep_m = [peaks_to_keep_m, peaks_locs_m{neuron_counter_m+j,2}(1,k)];
                     end
 
@@ -282,6 +282,13 @@ for i = 1:size(stimulus_data_m,1)
                             latencies = [latencies, peaks_this_interval];
                         end
                     end
+                end
+                if j+neuron_counter_m == 831
+                    disp(0)
+                    disp(std(latencies))
+                    disp(0)
+                    disp(latencies)
+                    disp(0)
                 end
                 if 16 > std(latencies)
                     secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];

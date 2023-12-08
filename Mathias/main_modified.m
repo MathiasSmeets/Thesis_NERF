@@ -262,6 +262,9 @@ for i = 1:size(stimulus_data_m,1)
             % --> do this with highest peak in 5ms interval
             max_peak_distance = 5;
             
+            if j+neuron_counter_m == 831
+                disp(peaks_to_keep_m)
+            end
             
             for jj = 1:size(peaks_to_keep_m,2)
                 [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
@@ -408,3 +411,16 @@ end
 % latencies_29 = load("X:\Mathias\10kfs\01\latencies29");latencies_29 = latencies_29.check_parameter;
 % peak=569;figure;subplot(2,1,1); scatter(latencies_29(1,5:end)+peak-50,1:length(latencies_29(1,5:end)));xlim([0 700]);hold on;xline(peak-50);xline(peak+51)
 % subplot(2,1,2);plot(neuron_spikes_m(29,:));hold on;plot(neuron_spikes_m_hfs(29,:)
+
+
+% false positives:
+% 462
+% 532
+% 541
+% 561
+% 658
+% 831
+
+
+
+

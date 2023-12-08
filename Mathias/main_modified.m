@@ -262,16 +262,10 @@ for i = 1:size(stimulus_data_m,1)
             % --> do this with highest peak in 5ms interval
             max_peak_distance = 5;
             
-            if j+neuron_counter_m == 831
-                disp(peaks_to_keep_m)
-            end
             
             for jj = 1:size(peaks_to_keep_m,2)
                 [~, adjustment] = max(neuron_spikes_m_hfs(neuron_counter_m+j,peaks_to_keep_m(jj) * 10 - 10:peaks_to_keep_m(jj) * 10 + 10));
                 cur_peak = peaks_to_keep_m(jj)*10 + adjustment - 10 - 1;
-                if j+neuron_counter_m == 831
-                    disp(cur_peak)
-                end
                 latencies = [];
                 for kk = 1:size(stimulus_data_high_fs_m,2)
                     if ~isempty(stimulus_data_high_fs_m{i,kk})
@@ -283,14 +277,10 @@ for i = 1:size(stimulus_data_m,1)
                         end
                     end
                 end
-                if j+neuron_counter_m == 831
-                    disp(0)
-                    disp(std(latencies))
-                    disp(0)
-                    disp(latencies)
-                    disp(0)
-                end
-                if 16 > std(latencies)
+
+                [s,m] = std(latencies);
+
+                if 16 > s && abs(cur_peak - m) >= 10
                     secondary_neurons_m = [secondary_neurons_m; {neuron_counter_m+j, peaks_to_keep_m(jj)}];
                 else
                     others_std_larger = [others_std_larger; {neuron_counter_m+j, peaks_to_keep_m(jj)}];

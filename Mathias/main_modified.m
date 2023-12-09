@@ -149,15 +149,15 @@ legend("Learner", "Control")
 peak_interval_m = loc_peaks_m_max - 1 : loc_peaks_m_max + 1;
 peak_interval_y = loc_peaks_y_max - 1 : loc_peaks_y_max + 1;
 
-mean_before_m = mean(neuron_spikes_m(:,1:10), 2);
-mean_before_y = mean(neuron_spikes_y(:,1:10), 2);
-mean_after_m = mean(neuron_spikes_m(:,11:70), 2);
-mean_after_y = mean(neuron_spikes_y(:,11:70), 2);
+mean_before_m = mean(neuron_spikes_m(:,1:9), 2);
+mean_before_y = mean(neuron_spikes_y(:,1:9), 2);
+mean_after_m = mean(neuron_spikes_m(:,12:70), 2);
+mean_after_y = mean(neuron_spikes_y(:,12:70), 2);
 
-std_before_m = std(neuron_spikes_m(:,1:10), [], 2);
-std_before_y = std(neuron_spikes_y(:,1:10), [], 2);
-std_after_m = std(neuron_spikes_m(:,11:70), [] , 2);
-std_after_y = std(neuron_spikes_y(:,11:70), [] , 2);
+std_before_m = std(neuron_spikes_m(:,1:9), [], 2);
+std_before_y = std(neuron_spikes_y(:,1:9), [], 2);
+std_after_m = std(neuron_spikes_m(:,12:70), [] , 2);
+std_after_y = std(neuron_spikes_y(:,12:70), [] , 2);
 
 % compute zscores of psth
 std_before_m(std_before_m == 0) = 0.1;

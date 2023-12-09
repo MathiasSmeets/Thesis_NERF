@@ -88,7 +88,7 @@ for i = 1:size(neuron_spikes_m_zscore,1)
     [~, ilower_m{i,1}] = cusum_(neuron_spikes_m_zscore(i,11:end),5,1,mean(neuron_spikes_m_zscore(i,1:10)),1, "all");
     %end
 
-    if ~isempty(ilower_m{i,1})
+    if ~isempty(ilower_m{i,1}) && 40 <= sum(neuron_spikes_m(i,1:10))
         inhibited_m = [inhibited_m, i];
     end
 end

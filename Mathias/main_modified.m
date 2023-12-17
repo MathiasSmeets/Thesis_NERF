@@ -4,8 +4,8 @@ clear; clc; close all; % make sure to reference paper lab if i end up using this
 path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(other_path + "data_after_stimulus_m.mat");
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = load(other_path + "data_after_stimulus_y.mat");
+stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_y = load(other_path + "data_after_stimulus_y.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
@@ -408,7 +408,7 @@ end
 %% validation
 % latencies_29 = load("X:\Mathias\10kfs\01\latencies29");latencies_29 = latencies_29.check_parameter;
 % peak=569;figure;subplot(2,1,1); scatter(latencies_29(1,5:end)+peak-50,1:length(latencies_29(1,5:end)));xlim([0 700]);hold on;xline(peak-50);xline(peak+51)
-% subplot(2,1,2);plot(neuron_spikes_m(29,:));hold on;plot(neuron_spikes_m_hfs(29,:)
+% subplot(2,1,2);plot(neuron_spikes_m(29,:));hold on;plot(neuron_spikes_m_hfs(29,:))
 
 
 % false positives:

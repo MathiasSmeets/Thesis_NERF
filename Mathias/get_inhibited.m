@@ -68,11 +68,11 @@ end
 [peaks_y_max, loc_peaks_y_max] = max(neuron_spikes_y, [], 2);
 peak_interval_m = loc_peaks_m_max - 1 : loc_peaks_m_max + 1;
 
-mean_before_m = mean(neuron_spikes_m(:,1:10), 2);
-mean_after_m = mean(neuron_spikes_m(:,11:70), 2);
+mean_before_m = mean(neuron_spikes_m(:,1:9), 2);
+mean_after_m = mean(neuron_spikes_m(:,12:70), 2);
 
-std_before_m = std(neuron_spikes_m(:,1:10), [], 2);
-std_after_m = std(neuron_spikes_m(:,11:70), [] , 2);
+std_before_m = std(neuron_spikes_m(:,1:9), [], 2);
+std_after_m = std(neuron_spikes_m(:,12:70), [] , 2);
 
 % compute zscores of psth
 std_before_m(std_before_m == 0) = 0.1;
@@ -85,7 +85,7 @@ for i = 1:size(neuron_spikes_m_zscore,1)
     %if std(neuron_spikes_m_zscore(i,1:10)) == 0
     %    [~, ilower_m{i,1}] = cusum_(neuron_spikes_m_zscore(i,11:end),5,1,mean(neuron_spikes_m_zscore(i,1:10)),0.1, "all");
     %else
-    [~, ilower_m{i,1}] = cusum_(neuron_spikes_m_zscore(i,11:end),5,1,mean(neuron_spikes_m_zscore(i,1:10)),1, "all");
+    [~, ilower_m{i,1}] = cusum_(neuron_spikes_m_zscore(i,12:end),5,1,0,1, "all");
     %end
 
     if ~isempty(ilower_m{i,1}) && 40 <= sum(neuron_spikes_m(i,1:10))

@@ -9,8 +9,8 @@ stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_y = load(other_path + "data_after_stimulus_y.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-stimulus_data_high_fs_m = load(path_to_code + "after_stimulus_data_m_high_fs.mat");
-stimulus_data_high_fs_m = stimulus_data_high_fs_m.after_stimulus_data_m;
+stimulus_data_high_fs_m = load(path_to_code + "after_stimulus_data_y_high_fs.mat");
+stimulus_data_high_fs_m = stimulus_data_high_fs_m.after_stimulus_data_y;
 stimulus_data_high_fs_y = load(path_to_code + "after_stimulus_data_y_high_fs.mat");
 stimulus_data_high_fs_y = stimulus_data_high_fs_y.after_stimulus_data_y;
 

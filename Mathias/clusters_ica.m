@@ -2,9 +2,9 @@ clear; clc; close all;
 
 %% get data
 
-path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
+%path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
-%other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
+path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
 stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;

@@ -18,6 +18,6 @@ for i = 1:size(stimulus_data_m,2)
         mouse_1_m = [mouse_1_m, stimulus_data_m{1,i}];
     end
 end
-
+mouse_1_m = mouse_1_m([7,8,14,22,27,29,30,32,39],:);
 %% arnoud function
 [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(mouse_1_m,1);

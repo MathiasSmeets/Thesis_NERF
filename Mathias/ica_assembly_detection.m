@@ -114,13 +114,13 @@ if predicted_nbr_assemblies ~= 0
         assemblies{j} = neurons_idxs(assembly_vector(:,j)==1);
     end
 
+    icacomp = A*M_save;
     if plotter
         figure
         subplot(2,1,1)
         imagesc(A')
         caxis([0 5])
         subplot(2,1,2)
-        icacomp = A*M_save;
         plot(icacomp(:,:))
         xlim([0 size(A,1)])
     end

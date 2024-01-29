@@ -2,9 +2,9 @@ clear; clc; close all;
 
 %% get data
 
-%path_to_code = "\\nerffs17\takeokalabwip2023\Mathias\data\";
+path_to_code = "\\nerffs17\takeokalabwip2023\Mathias\data\";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
-path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
+%path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
 stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
@@ -61,9 +61,7 @@ for k = 1:size(stimulus_data_m,1)
             % calculate zscores
             cur_mean_mouse = mean(cur_mouse_fs_adjusted,2);
             cur_std_mouse = std(cur_mouse_fs_adjusted,[],2);
-            if cur_std_mouse == 0
-                cur_std_mouse = 0.1;
-            end
+            cur_std_mouse(cur_std_mouse == 0) = 0.1;
             cur_mouse_zscore = (cur_mouse_fs_adjusted - cur_mean_mouse) ./ cur_std_mouse;
 
             [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_mouse_zscore,create_plots);

@@ -44,7 +44,7 @@ for k = 1:size(stimulus_data_m, 1)
     end
 end
 
-%% 1ms bins, neurons of interest
+%% 1ms bins, neurons of interest --> still not really working
 
 % loop over each mouse
 for k = 1:size(stimulus_data_m, 1)
@@ -52,14 +52,31 @@ for k = 1:size(stimulus_data_m, 1)
     cur_tensor_1ms_neurons_oi = stimulus_data_m{k,1}(cur_neurons_of_interest,:);
     for i = 2:size(stimulus_data_m,2)
         if ~isempty(stimulus_data_m{k,i})
-            cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
-            cur_tensor_1ms_neurons_oi(:,:,i) = stimulus_data_m{};
+            cur_tensor_1ms_neurons_oi(:,:,i) = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
         end
     end
 end
 
+%% 10 ms bins, neurons of interst
 
+wanted_bin_size = 10;
 
+for k = 1:size(stimulus_data_m, 1)
+    cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+    cur_tensor_10ms_neurons_oi = stimulus_data_m{k,1}(cur_neurons_of_interest,:);
+    for i = 2:size(stimulus_data_m,2)
+        if ~isempty(stimulus_data_m{k,i})
+            
+            cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
+            cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
+            for j = 1:size(cur_mouse,1)
+                cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
+            end
+
+            cur_tensor_10ms_neurons_oi(:,:,i) = cur_mouse_fs_adjusted;
+        end
+    end
+end
 
 
 

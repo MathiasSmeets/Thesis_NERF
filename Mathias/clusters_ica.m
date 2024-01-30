@@ -33,9 +33,10 @@ addpath(genpath(folder))
 
 interval_size = size(stimulus_data_m{1,1},2);
 wanted_bin_size = 10;
+interval_step = 10;
 create_plots = false;
 neuron_counter = 1;
-indices = ceil((1:interval_size)/10);
+indices = ceil((1:interval_size)/wanted_bin_size);
 total_nb_assemblies = cell(size(stimulus_data_m));
 total_nb_neurons = cell(size(stimulus_data_m));
 total_assemblies = cell(size(stimulus_data_m));
@@ -47,24 +48,29 @@ total_activity = cell(size(stimulus_data_m));
 for k = 1:size(stimulus_data_m,1)
     % loop over each interval of this mouse
     cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
-    for i = 1:size(stimulus_data_m,2)
+    for i = 1:interval_step:size(stimulus_data_m,2)
         if ~isempty(stimulus_data_m{k,i})
-            
-            cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
+            cur_total_mouse = [];
+            for ii = i:i+interval_step-1
+                if ~isempty(stimulus_data_m{k,ii})
+                    cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
 
-            % transform to 10ms bins
-            cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
-            for j = 1:size(cur_mouse,1)
-                cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
+                    % transform to 10ms bins
+                    cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
+                    for j = 1:size(cur_mouse,1)
+                        cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
+                    end
+                    cur_total_mouse = [cur_total_mouse, cur_mouse_fs_adjusted];
+                end
             end
 
             % calculate zscores
-            cur_mean_mouse = mean(cur_mouse_fs_adjusted,2);
-            cur_std_mouse = std(cur_mouse_fs_adjusted,[],2);
+            cur_mean_mouse = mean(cur_total_mouse,2);
+            cur_std_mouse = std(cur_total_mouse,[],2);
             cur_std_mouse(cur_std_mouse == 0) = 0.1;
-            cur_mouse_zscore = (cur_mouse_fs_adjusted - cur_mean_mouse) ./ cur_std_mouse;
+            cur_total_mouse_zscore = (cur_total_mouse - cur_mean_mouse) ./ cur_std_mouse;
 
-            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_mouse_zscore,create_plots);
+            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_total_mouse_zscore', create_plots);
             if predicted_nbr_assemblies ~= 0
                 total_nb_assemblies{k,i} = predicted_nbr_assemblies;
                 total_nb_neurons{k,i} = predicted_nbr_neurons;
@@ -74,8 +80,12 @@ for k = 1:size(stimulus_data_m,1)
         end
     end
     neuron_counter = neuron_counter + size(stimulus_data_m{k,1},1);
+    disp(k)
 end
 
 
-
+% activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
+% nb_neurons = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\nb_neurons.mat"); nb_neurons = nb_neurons.total_nb_neurons;
+% assemblies = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\assemblies.mat"); assemblies = assemblies.total_assemblies;
+% nb_assemblies = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\nb_assemblies.mat"); nb_assemblies = nb_assemblies.total_nb_assemblies;
 

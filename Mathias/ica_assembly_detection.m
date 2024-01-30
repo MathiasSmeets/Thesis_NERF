@@ -10,7 +10,7 @@ function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] =
 %Pearson correlation coefficient from this matrix A
 A=M;
 [R, ~,~,~] = corrcoef(A);
-R(isnan(R)) = 0; % if both standard deviations are 0, assume no correlation (both no spikes)
+%R(isnan(R)) = 0; % if both standard deviations are 0, assume no correlation (both no spikes)
 
 
 %Eigenvalues and eigenvectors

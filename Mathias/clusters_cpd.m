@@ -31,16 +31,40 @@ interval_size = size(stimulus_data_m{1,1},2);
 
 %% create 3th order tensors
 
+%% 1ms bins, all neurons --> does not really work
+
 % loop over each mouse
-for k = 1:size(stimulus_data_m,1)
-    cur_tensor = stimulus_data_m{k,1};
+for k = 1:size(stimulus_data_m, 1)
+    cur_tensor_1ms_all_neurons = stimulus_data_m{k,1};
     % loop over each interval of this mouse
     for i = 2:size(stimulus_data_m,2)
         if ~isempty(stimulus_data_m{k,i})
-            cur_tensor(:,:,i) = stimulus_data_m{k,i};
+            cur_tensor_1ms_all_neurons(:,:,i) = stimulus_data_m{k,i};
         end
     end
 end
+
+%% 1ms bins, neurons of interest
+
+% loop over each mouse
+for k = 1:size(stimulus_data_m, 1)
+    cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+    cur_tensor_1ms_neurons_oi = stimulus_data_m{k,1}(cur_neurons_of_interest,:);
+    for i = 2:size(stimulus_data_m,2)
+        if ~isempty(stimulus_data_m{k,i})
+            cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
+            cur_tensor_1ms_neurons_oi(:,:,i) = stimulus_data_m{};
+        end
+    end
+end
+
+
+
+
+
+
+
+
 
 
 

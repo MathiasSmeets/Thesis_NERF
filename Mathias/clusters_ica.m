@@ -46,23 +46,10 @@ total_activity = cell(size(stimulus_data_m));
 % loop over each mouse
 for k = 1:size(stimulus_data_m,1)
     % loop over each interval of this mouse
+    cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
     for i = 1:size(stimulus_data_m,2)
         if ~isempty(stimulus_data_m{k,i})
             
-            % get neurons of interest
-            cur_neurons_of_interest = [];
-            for ii = 1:size(neurons_of_interest_m,2)-1 % do not use this for inhibited neurons
-                for jj = 1:size(neurons_of_interest_m{1,ii}{1,1},1)
-                    if neurons_of_interest_m{1,ii}{1,1}{jj,1} >= neuron_counter && neurons_of_interest_m{1,ii}{1,1}{jj,1} < neuron_counter + size(stimulus_data_m{k,1},1)
-                        cur_neurons_of_interest = [cur_neurons_of_interest, neurons_of_interest_m{1,ii}{1,1}{jj,1}];
-                    end
-                end
-            end
-            inhibited_neurons_of_interest = inhibited_neurons_m(inhibited_neurons_m >= neuron_counter & inhibited_neurons_m < neuron_counter + size(stimulus_data_m{k,1},1));
-            cur_neurons_of_interest = [cur_neurons_of_interest, inhibited_neurons_of_interest];
-            cur_neurons_of_interest = unique(cur_neurons_of_interest);
-            cur_neurons_of_interest = cur_neurons_of_interest - neuron_counter + 1;
-
             cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
 
             % transform to 10ms bins

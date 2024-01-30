@@ -12,7 +12,7 @@ else  % cluster
     volume_base2 = '/mnt/takeokalab/';
 end
 
-path_to_code = "takeokalabwip2023\Mathias\data\";
+path_to_code = "takeokalabwip2023\Mathias\data";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 

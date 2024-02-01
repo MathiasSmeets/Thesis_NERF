@@ -36,7 +36,7 @@ addpath(genpath(folder))
 
 interval_size = size(stimulus_data_m{1,1},2);
 wanted_bin_size = 10;
-interval_step = 20;
+interval_step = 10;
 create_plots = false;
 neuron_counter = 1;
 index_counter = 1;

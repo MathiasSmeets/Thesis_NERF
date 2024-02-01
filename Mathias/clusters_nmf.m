@@ -30,10 +30,10 @@ addpath(genpath(folder))
 %% variables initialization
 
 interval_size = size(stimulus_data_m{1,1},2);
-wanted_bin_size = 10;
+wanted_bin_size = 1;
 create_plots = false;
 neuron_counter = 1;
-interval_step = 10;
+interval_step = 20;
 indices = ceil((1:interval_size)/wanted_bin_size);
 total_nb_assemblies = cell(size(stimulus_data_m));
 total_nb_neurons = cell(size(stimulus_data_m));
@@ -74,6 +74,7 @@ for k = 1:size(stimulus_data_m,1)
 
             rank = min(size(cur_total_mouse));
             [W,H] = nnmf(cur_total_mouse, rank);
+            [W_seq, H_seq] = seqNMF(cur_total_mouse,'K',3, 'L', 10,'lambda', 0,'showplot',1);
         end
 
     end

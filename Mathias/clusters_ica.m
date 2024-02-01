@@ -26,6 +26,9 @@ neurons_of_interest_m = neurons_of_interest_m.output_m;
 inhibited_neurons_m = load(fullfile(volume_base2, path_to_code, "inhibited_m.mat"));
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
+sos_results_m = load(fullfile(volume_base2, path_to_code, "sos_results_m.mat"));
+sos_results_m = sos_results_m.sos_results_m;
+
 folder = fileparts(which("clusters_ica.m"));
 addpath(genpath(folder))
 
@@ -33,14 +36,17 @@ addpath(genpath(folder))
 
 interval_size = size(stimulus_data_m{1,1},2);
 wanted_bin_size = 10;
-interval_step = 10;
+interval_step = 20;
 create_plots = false;
 neuron_counter = 1;
+index_counter = 1;
 indices = ceil((1:interval_size)/wanted_bin_size);
 total_nb_assemblies = cell(size(stimulus_data_m));
 total_nb_neurons = cell(size(stimulus_data_m));
 total_assemblies = cell(size(stimulus_data_m));
 total_activity = cell(size(stimulus_data_m));
+total_neurons_of_interest = cell(size(stimulus_data_m));
+total_data = cell(size(stimulus_data_m));
 
 %% calculate assembly for each interval
 
@@ -48,12 +54,13 @@ total_activity = cell(size(stimulus_data_m));
 for k = 1:size(stimulus_data_m,1)
     % loop over each interval of this mouse
     cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+    index_counter = 1;
     for i = 1:interval_step:size(stimulus_data_m,2)
         if ~isempty(stimulus_data_m{k,i})
             cur_total_mouse = [];
             for ii = i:i+interval_step-1
                 if ~isempty(stimulus_data_m{k,ii})
-                    cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
+                    cur_mouse = stimulus_data_m{k,ii}(cur_neurons_of_interest,:);
 
                     % transform to 10ms bins
                     cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
@@ -65,18 +72,28 @@ for k = 1:size(stimulus_data_m,1)
             end
 
             % calculate zscores
-            cur_mean_mouse = mean(cur_total_mouse,2);
-            cur_std_mouse = std(cur_total_mouse,[],2);
-            cur_std_mouse(cur_std_mouse == 0) = 0.1;
-            cur_total_mouse_zscore = (cur_total_mouse - cur_mean_mouse) ./ cur_std_mouse;
+            cur_std = sos_results_m{k,2};
+            cur_std(cur_std==0) = 0.01;
+            cur_total_mouse_zscore = (cur_total_mouse - sos_results_m{k,1}(cur_neurons_of_interest,:)) ./ cur_std(cur_neurons_of_interest,:);
+            
+            % remove neurons that are not active
+            for jj = size(cur_total_mouse_zscore,1):-1:1
+                if all(cur_total_mouse_zscore(jj,:)==cur_total_mouse_zscore(jj,1))
+                    cur_total_mouse_zscore(jj,:) = [];
+                    cur_neurons_of_interest(jj) = [];
+                end
+            end
 
             [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_total_mouse_zscore', create_plots);
             if predicted_nbr_assemblies ~= 0
-                total_nb_assemblies{k,i} = predicted_nbr_assemblies;
-                total_nb_neurons{k,i} = predicted_nbr_neurons;
-                total_assemblies{k,i} = assemblies;
-                total_activity{k,i} = activity;
+                total_neurons_of_interest{k,index_counter} = cur_neurons_of_interest;
+                total_nb_assemblies{k,index_counter} = predicted_nbr_assemblies;
+                total_nb_neurons{k,index_counter} = predicted_nbr_neurons;
+                total_assemblies{k,index_counter} = assemblies;
+                total_activity{k,index_counter} = activity;
+                total_data{k,index_counter} = cur_total_mouse_zscore;
             end
+            index_counter = index_counter + 1;
         end
     end
     neuron_counter = neuron_counter + size(stimulus_data_m{k,1},1);

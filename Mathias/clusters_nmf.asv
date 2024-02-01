@@ -30,9 +30,10 @@ addpath(genpath(folder))
 %% variables initialization
 
 interval_size = size(stimulus_data_m{1,1},2);
-wanted_bin_size = 1;
+wanted_bin_size = 10;
 create_plots = false;
 neuron_counter = 1;
+interval_step = 10;
 indices = ceil((1:interval_size)/wanted_bin_size);
 total_nb_assemblies = cell(size(stimulus_data_m));
 total_nb_neurons = cell(size(stimulus_data_m));
@@ -41,26 +42,33 @@ total_activity = cell(size(stimulus_data_m));
 
 %% nmf (NOT on zscores, only positive data)
 
+% the rank r of the factorization is generally chosen so that (n+m)r < nm  (https://www.cs.columbia.edu/~blei/fogm/2020F/readings/LeeSeung1999.pdf) also nice source regarding constraints different methods
 
 % loop over each mouse
 for k = 1:size(stimulus_data_m,1)
     % loop over each interval of this mouse
     cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+    cur_total_mouse = [];
     for i = 1:size(stimulus_data_m,2)
         if ~isempty(stimulus_data_m{k,i})
-            
-            cur_mouse = stimulus_data_m{k,i}(cur_neurons_of_interest,:);
+            for ii = i:i+interval_step-1
 
-            % transform to wanted_bin_size ms bins
-            cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
-            for j = 1:size(cur_mouse,1)
-                cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
+                cur_mouse = stimulus_data_m{k,ii}(cur_neurons_of_interest,:);
+
+                % transform to wanted_bin_size ms bins
+                cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
+                for j = 1:size(cur_mouse,1)
+                    cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
+                end
+
+                cur_total_mouse = [cur_total_mouse, cur_mouse_fs_adjusted];
             end
-            
-            for i = 1:10
-                [W,H] = nnmf(cur_mouse_fs_adjusted, 5);
-
+            rank = min(size(cur_total_mouse));
+            [W,H] = nnmf(cur_total_mouse, rank);
         end
+
     end
     neuron_counter = neuron_counter + size(stimulus_data_m{k,1},1);
 end
+
+

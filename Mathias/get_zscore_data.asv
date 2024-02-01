@@ -1,0 +1,37 @@
+clear;clc;close all;
+
+%% get data
+
+if ispc
+    volume_base = '\\nerffs13';
+    volume_base2 = '\\nerffs17';
+elseif ismac
+    volume_base = '/volumes/';
+else  % cluster
+    volume_base = '/mnt/takeokalab/';
+    volume_base2 = '/mnt/takeokalab/';
+end
+
+path_to_code = "takeokalabwip2023/Mathias/data";
+write_path = fullfile(volume_base2, "takeokalabwip2023/Mathias/data");
+
+
+%%
+zscore_result = cell(size(setdiff(7:34, [20, 32, 33, 34])'));
+counter = 1;
+for i = setdiff(7:34, [20, 32, 33, 34])
+    cur_frY = load(fullfile(volume_base2, path_to_code, "frY_" + i));
+    cur_frY = cur_frY.frY;
+
+    % remove rows that contain zero in the recording column
+    cur_frY(~cur_frY.Recording,:) = [];
+
+    baseline_data = cur_frY.Fr_spont;
+    cur_average = mean(baseline_data,2);
+    cur_std = std(baseline_data, [], 2);
+
+    clearvars cur_frY
+    counter = counter + 1;
+end
+
+save(fullfile(write_path, "zscore_result_Y"), "zscore_result")

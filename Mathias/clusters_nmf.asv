@@ -27,6 +27,9 @@ inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 folder = fileparts(which("clusters_nmf.m"));
 addpath(genpath(folder))
 
+sos_results_m = load(fullfile(volume_base2, path_to_code, "sos_results_m.mat"));
+sos_results_m = sos_results_m.sos_results_m;
+
 %% variables initialization
 
 interval_size = size(stimulus_data_m{1,1},2);
@@ -63,12 +66,29 @@ for k = 1:size(stimulus_data_m,1)
 
                 cur_total_mouse = [cur_total_mouse, cur_mouse_fs_adjusted];
             end
-            rank = min(size(cur_total_mouse));
+
+            % remove neurons that are not active
+            for jj = size(cur_total_mouse, 1):-1:1
+                if all(cur_total_mouse(jj,:) == 0)
+                    cur_total_mouse(jj,:) = [];
+                    cur_neurons_of_interest(jj) = [];
+                end
+            end
+
+            % calculate zscores
+            cur_std = sos_results_m{k,2};
+            cur_std(cur_std==0) = 0.01;
+            cur_total_mouse_zscore = (cur_total_mouse - sos_results_m{k,1}(cur_neurons_of_interest,:)) ./ cur_std(cur_neurons_of_interest,:);
+            cur_total_mouse_zscore(cur_total_mouse_zscore<0) = 0;
+            
+            rank = determine_rank(cur_total_mouse);
             [W,H] = nnmf(cur_total_mouse, rank);
+            %[W_seq, H_seq] = seqNMF(cur_total_mouse,'K',3, 'L', 10,'lambda', 0,'showplot',1);
         end
 
     end
     neuron_counter = neuron_counter + size(stimulus_data_m{k,1},1);
+    disp(k)
 end
 
 

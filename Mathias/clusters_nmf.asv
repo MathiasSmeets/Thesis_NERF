@@ -30,6 +30,15 @@ addpath(genpath(folder))
 sos_results_m = load(fullfile(volume_base2, path_to_code, "sos_results_m.mat"));
 sos_results_m = sos_results_m.sos_results_m;
 
+%% load in ica data
+
+ica_activity = load("X:\Mathias\cluster_output\ica_10ms_bins_10_intervals\activity.mat"); ica_activity = ica_activity.total_activity;
+ica_nb_neurons = load("X:\Mathias\cluster_output\ica_10ms_bins_10_intervals\nb_neurons.mat"); ica_nb_neurons = ica_nb_neurons.total_nb_neurons;
+ica_assemblies = load("X:\Mathias\cluster_output\ica_10ms_bins_10_intervals\assemblies.mat"); ica_assemblies = ica_assemblies.total_assemblies;
+ica_nb_assemblies = load("X:\Mathias\cluster_output\ica_10ms_bins_10_intervals\nb_assemblies.mat"); ica_nb_assemblies = ica_nb_assemblies.total_nb_assemblies;
+ica_data = load("X:\Mathias\cluster_output\ica_10ms_bins_10_intervals\data.mat"); ica_data = ica_data.total_data;
+ica_neurons_of_interest = load("X:\Mathias\cluster_output\ica_10ms_bins_10_intervals\neurons_of_interest.mat"); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+
 %% variables initialization
 
 interval_size = size(stimulus_data_m{1,1},2);
@@ -80,10 +89,12 @@ for k = 1:size(stimulus_data_m,1)
             cur_std(cur_std==0) = 0.01;
             cur_total_mouse_zscore = (cur_total_mouse - sos_results_m{k,1}(cur_neurons_of_interest,:)) ./ cur_std(cur_neurons_of_interest,:);
             cur_total_mouse_zscore(cur_total_mouse_zscore<0) = 0;
-            
+            cur_total_mouse = cur_total_mouse_zscore;
+
             rank = determine_rank(cur_total_mouse);
             [W,H] = nnmf(cur_total_mouse, rank);
             %[W_seq, H_seq] = seqNMF(cur_total_mouse,'K',3, 'L', 10,'lambda', 0,'showplot',1);
+            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = nmf_assembly_detection(cur_total_mouse, ica_assemblies{k,i});
         end
 
     end

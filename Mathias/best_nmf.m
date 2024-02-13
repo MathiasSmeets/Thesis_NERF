@@ -1,9 +1,9 @@
-function [W, H, rank] = best_nmf(cur_total_mouse)
+function [W, H, rank] = best_nmf(cur_total_mouse, iterations)
 
 max_rank = min(size(cur_total_mouse))-1;
-smalles_D = Inf;
+smallest_D = Inf;
 for i = 1:max_rank
-    for j = 1:100
+    for j = 1:iterations
         [W,H,D(j,i)] = nnmf(cur_total_mouse, i);
         if D(j,i) < smallest_D
             smallest_D = D(j,i);

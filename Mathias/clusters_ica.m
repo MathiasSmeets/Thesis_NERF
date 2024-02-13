@@ -40,7 +40,7 @@ interval_step = 10;
 create_plots = false;
 neuron_counter = 1;
 index_counter = 1;
-indices = ceil((1:interval_size)/wanted_bin_size);
+    
 total_nb_assemblies = cell(size(stimulus_data_m));
 total_nb_neurons = cell(size(stimulus_data_m));
 total_assemblies = cell(size(stimulus_data_m));

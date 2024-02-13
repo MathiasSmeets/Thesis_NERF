@@ -41,22 +41,49 @@ interval_step = 10; % depends on how data was created
 
 %% get cluster shape for each assembly
 
-templates = cell(size(ica_activity));
+orders = cell(size(ica_activity));
 % loop over each mouse
-for k = size(templates,1)
+for k = 1:size(orders,1)
     % loop over each interval
-    for i = size(templates,2)
+    for i = 1:size(orders,2)
         cur_assembly = ica_assemblies{k,i};
         if isempty(cur_assembly)
-            templates{k,i} = [];
+            orders{k,i} = [];
         elseif size(cur_assembly,1) == 1
-            ...
+            cur_assembly = cur_assembly{1,1};
+            cur_assembly = ica_neurons_of_interest{k,i}(cur_assembly);
+            cur_data = ica_data{k,i};
+            [pks, locs] = findpeaks(ica_activity{k,i},"NPeaks",10,"MinPeakHeight",2*mean(ica_activity{k,i}));
+            candidate_templates = cell(1,length(locs));
+            TOTAL = [];
+            for j = 1:length(locs)
+                raw_data_index = (i-1)*interval_step + ceil((locs(j))/7);
+                position_in_data = mod(locs(j)-1,7)*10+1;
+                cur_raw_data = stimulus_data_m{k,raw_data_index};
+                cur_assembly_data = cur_raw_data(cur_assembly, position_in_data:position_in_data+9);
+
+                % find the indices of the first and last non-zero elements in each row
+                first_nonzero = find(any(cur_assembly_data, 1), 1, 'first');
+                last_nonzero = find(any(cur_assembly_data, 1), 1, 'last');
+                candidate_templates{1,j} = cur_assembly_data(:, first_nonzero:last_nonzero);
+
+            end
+            % find the order of the neurons firing
+            orders{k,i} = find_order_neurons(candidate_templates);
+            disp("k")
+            % go to each peak and get template there (use median to get total template?)
+            % maybe first calculate median length
+            % stack time in data in 3D on top of each other
+            % template = median(stacked_templates,3);
         else
-            ...
+            % do the same but first need a step where you detect which
+            % assembly is which peak based on ica_assemblies abs size
         end
     end
 end
 
-
-
+[1;
+ 3;
+ 2;
+ 4];
 

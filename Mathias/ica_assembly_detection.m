@@ -106,6 +106,14 @@ if predicted_nbr_assemblies ~= 0
             new_idx(idx==2,i) = 0;
         end
     end
+
+    % fix bugs if only 2 neurons
+    if length(new_idx) == 2
+        if (isequal(new_idx,[0; 1]) || isequal(new_idx, [1; 0])) && predicted_nbr_neurons == 2
+            new_idx = [1;1];
+        end
+    end
+
     %create the assemblies
     assembly_vector = new_idx;%reshape(new_idx,[],predicted_nbr_assemblies);
     assemblies = cell(predicted_nbr_assemblies,1);

@@ -2,7 +2,7 @@
 %Largely based on :
 % Lopes-dos-Santos, V., Ribeiro, S., &#38; Tort, A. B. L. (2013). Detecting cell assemblies in large neuronal populations. Journal of Neuroscience Methods, 220 (2), 149–166. https://doi.org/10.1016/J.JNEUMETH.2013.04.010
 
-function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(M,plotter)
+function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = pca_assembly_detection(M,plotter)
 %given a matrix A containing the zscores of N neurons throughout M time bins,
 % this function will detect neuronal assemblies, and the neurons that are
 %part of the different assemblies.
@@ -38,7 +38,9 @@ if predicted_nbr_assemblies ~= 0
 
 
     reduced_data = neuron_vectors*neuron_vectors'*A';
-    [~, M, ~] = fastica(reduced_data,'pcaE',neuron_vectors,'pcaD',evs,'verbose','off');%A contains the importance of each neuron in the independent component (kind of new neuron vector) % "each row is one observed signal"
+    M = pca(reduced_data');%A contains the importance of each neuron in the independent component (kind of new neuron vector) % "each row is one observed signal"
+    %M = M';
+    M = M(:, 1:predicted_nbr_assemblies);
     M_save = M;
 
 
@@ -107,7 +109,12 @@ if predicted_nbr_assemblies ~= 0
         end
     end
 
-    % bugs if only 2 neurons
+    % fix bugs if only 2 neurons
+    if length(new_idx) == 2
+        if (isequal(new_idx,[0; 1]) || isequal(new_idx, [1; 0])) && predicted_nbr_neurons == 2
+            new_idx = [1;1];
+        end
+    end
 
     %create the assemblies
     assembly_vector = new_idx;%reshape(new_idx,[],predicted_nbr_assemblies);

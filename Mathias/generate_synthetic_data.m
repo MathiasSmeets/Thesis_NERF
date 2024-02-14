@@ -1,8 +1,7 @@
-function [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(reference_data, sos_results_m, nb_assemblies, nb_neurons_assembly, missing_neurons, nb_intervals, bins_together, total_neurons)
+function [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(reference_data, sos_results_m, nb_assemblies, nb_neurons_assembly, missing_neurons, nb_intervals, bins_together, total_neurons, random_wanted)
 % create synthetic data based on statistics of reference data
 % add assemblies with specified amount of neurons
 % add additional noise by removing neurons from assemblies
-
 interval_size = size(reference_data{1,1},2);
 %avg total neurons of interest: 9.3514
 
@@ -32,10 +31,18 @@ end
 activations = zeros(1,nb_assemblies);
 for i = 1:nb_assemblies
     neurons_in_assembly = sort(randperm(total_neurons, nb_neurons_assembly));
-    index = randperm(60-12,1) + 11;
+    index = randperm(55-12,1) + 11;
     activations(i) = index;
+    random_factor = randperm(11,length(neurons_in_assembly))-6;
     for j = 1:nb_intervals
-        synthetic_data(neurons_in_assembly, index + (j-1)*interval_size) = 1;
+        if random_wanted
+            for k = 1:length(neurons_in_assembly)
+                synthetic_data(neurons_in_assembly(k), index + (j-1)*interval_size + random_factor(k)) = 1;
+            end
+        else
+            random_factor = 0;
+            synthetic_data(neurons_in_assembly, index + (j-1)*interval_size + random_factor) = 1;
+        end
     end
 end
 

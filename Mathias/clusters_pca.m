@@ -35,7 +35,7 @@ addpath(genpath(folder))
 %% variables initialization
 
 interval_size = size(stimulus_data_m{1,1},2);
-wanted_bin_size = 10;
+wanted_bin_size = 1;
 interval_step = 10;
 create_plots = false;
 neuron_counter = 1;
@@ -48,6 +48,8 @@ total_assemblies = cell(size(stimulus_data_m));
 total_activity = cell(size(stimulus_data_m));
 total_neurons_of_interest = cell(size(stimulus_data_m));
 total_data = cell(size(stimulus_data_m));
+
+largest_delay = 5;
 
 %% calculate assembly for each interval
 
@@ -88,7 +90,11 @@ for k = 1:size(stimulus_data_m,1)
             if k == 7 && index_counter == 9
                 disp("break")
             end
-            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_total_mouse_zscore', create_plots);
+
+            cur_total_mouse_zscore_delayed = create_convolutive_data(cur_total_mouse_zscore, largest_delay);
+            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = pca_assembly_detection(cur_total_mouse_zscore', create_plots);
+            assemblies = assemblies_delays(assemblies, largest_delay);
+
             if predicted_nbr_assemblies ~= 0
                 total_neurons_of_interest{k,index_counter} = cur_neurons_of_interest;
                 total_nb_assemblies{k,index_counter} = predicted_nbr_assemblies;

@@ -1,0 +1,26 @@
+function assemblies = assemblies_delays(assemblies, nb_neurons)
+
+new_assembly = cell(1,1);
+
+if iscell(assemblies)
+    for i = 1:length(assemblies)
+        cur_assembly = mod(assemblies{i},nb_neurons);
+        cur_assembly(cur_assembly == 0) = nb_neurons;
+        cur_assembly = unique(cur_assembly);
+
+        % check if assembly already in new_assembly
+        equal = false;
+        for j = 1:length(new_assembly)
+            if isequal(new_assembly{j}, cur_assembly)
+                equal = true;
+            end
+        end
+        if ~equal
+            new_assembly = [new_assembly; {cur_assembly}];
+        end
+
+    end
+    assemblies = new_assembly;
+end
+
+end

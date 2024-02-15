@@ -60,13 +60,13 @@ TP_cpd = [];
 FP_cpd = [];
 FN_cpd = [];
 TP_assemblies_nmf = [];
-wrong_assemblies_nmf = [];
+FP_assemblies_nmf = [];
 FN_assemblies_nmf = [];
 TP_nmf = [];
 FP_nmf = [];
 FN_nmf = [];
 TP_assemblies_pca = [];
-wrong_assemblies_pca = [];
+FP_assemblies_pca = [];
 FN_assemblies_pca = [];
 TP_pca = [];
 FP_pca = [];
@@ -74,7 +74,6 @@ FN_pca = [];
 
 for nb_assemblies = 1:1
     for nb_neurons = 2:iterations_nb_neurons
-        disp(nb_neurons)
         for missing_neurons = 0:iterations_missing_neurons
             for i = 1:nb_iterations
                 [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, nb_intervals, bins_together, nb_neurons_of_interest, 0);
@@ -106,27 +105,27 @@ for nb_assemblies = 1:1
                 nb_neurons_array = [nb_neurons_array, nb_neurons];
                 nb_missing_neurons_array = [nb_missing_neurons_array, missing_neurons];
                 nb_iterations_array = [nb_iterations_array, i];
-                TP_assemblies_ica = [TP_assemblies_ica, ica_nb_assembly_correct];
-                FP_assemblies_ica = [FP_assemblies_ica, ica_nb_assembly_wrong];
-                FN_assemblies_ica = [FN_assemblies_ica, ica_nb_assembly_wrong];
+                TP_assemblies_ica = [TP_assemblies_ica, ica_nb_assembly_TP];
+                FP_assemblies_ica = [FP_assemblies_ica, ica_nb_assembly_FP];
+                FN_assemblies_ica = [FN_assemblies_ica, ica_nb_assembly_FN];
                 TP_ica = [TP_ica, ica_nb_neurons_TP];
                 FP_ica = [FP_ica, ica_nb_neurons_FP];
                 FN_ica = [FN_ica, ica_nb_neurons_FN];
-                TP_assemblies_cpd = [TP_assemblies_cpd, cpd_nb_assembly_correct];
-                FP_assemblies_cpd = [FP_assemblies_cpd, cpd_nb_assembly_wrong];
-                FN_assemblies_cpd = [FN_assemblies_cpd, cpd_nb_assembly_wrong];
+                TP_assemblies_cpd = [TP_assemblies_cpd, cpd_nb_assembly_TP];
+                FP_assemblies_cpd = [FP_assemblies_cpd, cpd_nb_assembly_FP];
+                FN_assemblies_cpd = [FN_assemblies_cpd, cpd_nb_assembly_FN];
                 TP_cpd = [TP_cpd, cpd_nb_neurons_TP];
                 FP_cpd = [FP_cpd, cpd_nb_neurons_FP];
                 FN_cpd = [FN_cpd, cpd_nb_neurons_FN];
-                TP_assemblies_nmf = [TP_assemblies_nmf, nmf_nb_assembly_correct];
-                FP_assemblies_nmf = [FP_assemblies_nmf, nmf_nb_assembly_wrong];
-                FN_assemblies_nmf = [FN_assemblies_nmf, nmf_nb_assembly_wrong];
+                TP_assemblies_nmf = [TP_assemblies_nmf, nmf_nb_assembly_TP];
+                FP_assemblies_nmf = [FP_assemblies_nmf, nmf_nb_assembly_FP];
+                FN_assemblies_nmf = [FN_assemblies_nmf, nmf_nb_assembly_FN];
                 TP_nmf = [TP_nmf, nmf_nb_neurons_TP];
                 FP_nmf = [FP_nmf, nmf_nb_neurons_FP];
                 FN_nmf = [FN_nmf, nmf_nb_neurons_FN];
-                TP_assemblies_pca = [TP_assemblies_pca, pca_nb_assembly_correct];
-                FP_assemblies_pca = [FP_assemblies_pca, pca_nb_assembly_wrong];
-                FN_assemblies_pca = [FN_assemblies_pca, pca_nb_assembly_wrong];
+                TP_assemblies_pca = [TP_assemblies_pca, pca_nb_assembly_TP];
+                FP_assemblies_pca = [FP_assemblies_pca, pca_nb_assembly_FP];
+                FN_assemblies_pca = [FN_assemblies_pca, pca_nb_assembly_FN];
                 TP_pca = [TP_pca, pca_nb_neurons_TP];
                 FP_pca = [FP_pca, pca_nb_neurons_FP];
                 FN_pca = [FN_pca, pca_nb_neurons_FN];
@@ -134,15 +133,16 @@ for nb_assemblies = 1:1
         end
     end
 end
+
 results_table = table(nb_assembly_array', nb_neurons_array', nb_missing_neurons_array', nb_iterations_array', ...
     TP_assemblies_ica', FP_assemblies_ica', FN_assemblies_ica', TP_ica', FP_ica', FN_ica', ...
     TP_assemblies_cpd', FP_assemblies_cpd', FN_assemblies_cpd', TP_cpd', FP_cpd', FN_cpd', ...
     TP_assemblies_nmf', FP_assemblies_nmf', FN_assemblies_nmf', TP_nmf', FP_nmf', FN_nmf', ...
     TP_assemblies_pca', FP_assemblies_pca', FN_assemblies_pca', TP_pca', FP_pca', FN_pca', ...
     'VariableNames',{'NB_Assemblies','NB_Neurons','NB_Missing_Neurons','NB_Iterations', ...
-    'Correct_Assembly_ICA','Wrong_Assembly_ICA', 'TP_ICA', 'FP_ICA', 'FN_ICA', ...
-    'Correct_Assembly_CPD','Wrong_Assembly_CPD', 'TP_CPD', 'FP_CPD', 'FN_CPD', ...
-    'Correct_Assembly_NMF','Wrong_Assembly_NMF', 'TP_NMF', 'FP_NMF', 'FN_NMF', ...
-    'Correct_Assembly_PCA','Wrong_Assembly_PCA', 'TP_PCA', 'FP_PCA', 'FN_PCA'});
-
+    'TP_assemblies_ICA','FP_assemblies_ICA', 'FN_assemblies_ICA', 'TP_ICA', 'FP_ICA', 'FN_ICA', ...
+    'TP_assemblies_CPD','FP_assemblies_CPD', 'FN_assemblies_CPD', 'TP_CPD', 'FP_CPD', 'FN_CPD', ...
+    'TP_assemblies_NMF','FP_assemblies_NMF', 'FN_assemblies_NMF', 'TP_NMF', 'FP_NMF', 'FN_NMF', ...
+    'TP_assemblies_PCA','FP_assemblies_PCA', 'FN_assemblies_PCA', 'TP_PCA', 'FP_PCA', 'FN_PCA'});
+save("/scratch/mathiass-takeokalab/01/results_table", "results_table", "-v7.3");
 create_results_figure(results_table)

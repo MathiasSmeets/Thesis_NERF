@@ -1,26 +1,25 @@
 function connections = detect_connections(candidate_templates)
 
-connections = 0;
 nb_neurons = size(candidate_templates{1},1);
-p_values = zeros(1,factorial(nb_neurons));
+options = 0;
+for i = 1:nb_neurons
+    options = options + i;
+end
+p_values = zeros(1,options);
 counter = 1;
-most_spikes = 0;
+connections = cell(1, options);
 for i = 1:nb_neurons
     for j = i:nb_neurons 
         if i ~= j
             cc = create_cross_correlogram(candidate_templates, i, j);
-            p_values(1,counter) = get_p_value(cc);
-            counter = counter + 1;
-            if max(sum(cc)) > most_spikes
-                most_spikes = max(sum(cc));
+            p_values(1,counter) = get_p_value(cc, 'fisher');
+            if p_values(1,counter) < 0.05
+                connections{counter} = [i,j];
             end
+            counter = counter + 1;
         end
 
     end
 end
-
-[~,nb_columns] = cellfun(@size,candidate_templates);
-max_nb_columns = max(nb_columns);
-array_p_values = get_array_p_values(max_nb_columns, most_spikes);
-
+connections = connections(~cellfun('isempty',connections));
 end

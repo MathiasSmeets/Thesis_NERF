@@ -34,18 +34,18 @@ for i = 1:4
         correct_ica_nb_neurons_4 correct_cpd_nb_neurons_4 correct_nmf_nb_neurons_4 correct_pca_nb_neurons_4; ...
         correct_ica_nb_neurons_5 correct_cpd_nb_neurons_5 correct_nmf_nb_neurons_5 correct_pca_nb_neurons_5] / nb_iterations;
     
-    input = [correct_ica_nb_neurons_2 correct_cpd_nb_neurons_2 correct_nmf_nb_neurons_2; ...
-        correct_ica_nb_neurons_3 correct_cpd_nb_neurons_3 correct_nmf_nb_neurons_3; ...
-        correct_ica_nb_neurons_4 correct_cpd_nb_neurons_4 correct_nmf_nb_neurons_4; ...
-        correct_ica_nb_neurons_5 correct_cpd_nb_neurons_5 correct_nmf_nb_neurons_5] / nb_iterations;
+    % input = [correct_ica_nb_neurons_2 correct_cpd_nb_neurons_2 correct_nmf_nb_neurons_2; ...
+    %     correct_ica_nb_neurons_3 correct_cpd_nb_neurons_3 correct_nmf_nb_neurons_3; ...
+    %     correct_ica_nb_neurons_4 correct_cpd_nb_neurons_4 correct_nmf_nb_neurons_4; ...
+    %     correct_ica_nb_neurons_5 correct_cpd_nb_neurons_5 correct_nmf_nb_neurons_5] / nb_iterations;
 
 
     subplot(2,2,i)
     bar(2:5,input)
     hold on
     ylim([0 1])
-    %legend('ICA', 'CPD', 'NMF', 'PCA')
-    legend('ICA', 'CPD', 'NMF')
+    legend('ICA', 'CPD', 'NMF', 'PCA')
+    %legend('ICA', 'CPD', 'NMF')
     if i == 1
         title('True Positive Rate Clustering No Missing Spikes')
     else
@@ -90,16 +90,16 @@ for i = 1:4
         correct_ica_nb_neurons_4 correct_cpd_nb_neurons_4 correct_nmf_nb_neurons_4 correct_pca_nb_neurons_4; ...
         correct_ica_nb_neurons_5 correct_cpd_nb_neurons_5 correct_nmf_nb_neurons_5 correct_pca_nb_neurons_5] / nb_iterations;
 
-    input = [correct_ica_nb_neurons_2 correct_cpd_nb_neurons_2 correct_nmf_nb_neurons_2; ...
-        correct_ica_nb_neurons_3 correct_cpd_nb_neurons_3 correct_nmf_nb_neurons_3; ...
-        correct_ica_nb_neurons_4 correct_cpd_nb_neurons_4 correct_nmf_nb_neurons_4; ...
-        correct_ica_nb_neurons_5 correct_cpd_nb_neurons_5 correct_nmf_nb_neurons_5] / nb_iterations;
+    % input = [correct_ica_nb_neurons_2 correct_cpd_nb_neurons_2 correct_nmf_nb_neurons_2; ...
+    %     correct_ica_nb_neurons_3 correct_cpd_nb_neurons_3 correct_nmf_nb_neurons_3; ...
+    %     correct_ica_nb_neurons_4 correct_cpd_nb_neurons_4 correct_nmf_nb_neurons_4; ...
+    %     correct_ica_nb_neurons_5 correct_cpd_nb_neurons_5 correct_nmf_nb_neurons_5] / nb_iterations;
 
     subplot(2,2,i)
     bar(2:5,input)
     hold on
-    %legend('ICA', 'CPD', 'NMF', 'PCA')
-    legend('ICA', 'CPD', 'NMF')
+    legend('ICA', 'CPD', 'NMF', 'PCA')
+    % legend('ICA', 'CPD', 'NMF')
     if i == 1
         title('False Positive Clustering No Missing Spikes')
     else

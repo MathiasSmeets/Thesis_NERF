@@ -1,4 +1,4 @@
-function [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(reference_data, sos_results_m, nb_assemblies, nb_neurons_assembly, missing_neurons, nb_intervals, bins_together, total_neurons, random_wanted)
+function [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(reference_data, sos_results_m, nb_assemblies, nb_neurons_assembly, missing_neurons, nb_intervals, bins_together, total_neurons, random_wanted, percentage_background)
 % create synthetic data based on statistics of reference data
 % add assemblies with specified amount of neurons
 % add additional noise by removing neurons from assemblies
@@ -18,7 +18,7 @@ for i = 1%:size(reference_data,1)
         end
     end
 end
-lambda = cur_counter / interval_counter;
+lambda = percentage_background * cur_counter / interval_counter;
 
 %% create background noise
 synthetic_data = zeros(total_neurons,nb_intervals*interval_size);
@@ -34,6 +34,33 @@ for i = 1:nb_assemblies
     index = randperm(55-12,1) + 11;
     activations(i) = index;
     random_factor = randperm(11,length(neurons_in_assembly))-6;
+    % remove spikes in neurons_in_assembly according to how much we add
+    removed_spikes = 0;
+    [cur_spikes_row, cur_spikes_col] = find(synthetic_data(neurons_in_assembly,:));
+    if ~isempty(cur_spikes_row)
+        for j = length(cur_spikes_row)
+            synthetic_data(neurons_in_assembly(cur_spikes_row(j)), cur_spikes_col(j)) = 0;
+            removed_spikes = removed_spikes + 1;
+        end
+    end
+    % counter = 0;
+    % while removed_spikes < nb_neurons_assembly * nb_intervals
+    %     % remove some random extra spikes elsewhere
+    %     random_row = randperm(total_neurons,1);
+    %     random_column = randperm(nb_intervals*interval_size,1);
+    %     [cur_spikes_row, cur_spikes_col] = find(synthetic_data(random_row:end,random_column:end));
+    %     if ~isemtpy(cur_spikes_row)
+    %         for j = length(cur_spikes_row)
+    %             synthetic_data(cur_spikes_row(j), cur_spikes_col(j)) = 0;
+    %             removed_spikes = removed_spikes + 1;
+    %         end
+    %     end
+    %     counter = counter + 1;
+    %     if counter > 30
+    %         removed_spikes = nb_neurons_assembly * nb_intervals;
+    %     end
+    % end
+
     for j = 1:nb_intervals
         if random_wanted
             for k = 1:length(neurons_in_assembly)
@@ -59,18 +86,18 @@ end
 %% put bins together
 
 indices = ceil((1:interval_size*nb_intervals)/bins_together);
-new_synthetic_data = zeros(total_neurons, nb_intervals*interval_size / bins_together);
+new_synthetic_data = zeros(total_neurons, ceil(nb_intervals*interval_size / bins_together));
 for i = 1:size(synthetic_data,1)
     new_synthetic_data(i,:) = accumarray(indices',synthetic_data(i,:)',[],@sum)';
 end
 synthetic_data = new_synthetic_data;
 
 %% remove zero rows
-for jj = 1:total_neurons
-    if all(synthetic_data(jj,:)==synthetic_data(jj,1))
-        synthetic_data(jj,randperm((nb_intervals*interval_size)/bins_together,1)) = 1;
-    end
-end
+% for jj = 1:total_neurons
+%     if all(synthetic_data(jj,:)==synthetic_data(jj,1))
+%         synthetic_data(jj,randperm((nb_intervals*interval_size)/bins_together,1)) = 1;
+%     end
+% end
 
 
 %% calculate zscores

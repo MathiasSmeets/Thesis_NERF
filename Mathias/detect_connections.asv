@@ -1,0 +1,34 @@
+function connections = detect_connections(candidate_templates)
+
+[~,nb_columns] = cellfun(@size,candidate_templates);
+max_nb_columns = max(nb_columns);
+array_p_values = get_array_p_values(max_nb_columns);
+
+connections = 0;
+nb_neurons = size(candidate_templates{1},1);
+p_values = zeros(1,factorial(nb_neurons));
+counter = 1;
+largest_spikes = 0;
+for i = 1:nb_neurons
+    for j = i:nb_neurons 
+        if i ~= j
+            cc = create_cross_correlogram(candidate_templates, i, j);
+            small_n = cc(1,1) + cc(2,1); % total values of each column
+            large_N = small_n * size(cc,2); % large_N = sum small_n for each column
+            % y_1j = spikes in column j
+            % r1 = sum y_1j over all columns
+            % symsum(f,k,a,b)
+            cur_prob = 1;
+            for k = 1:size(cc,2)
+                cur_prob = cur_prob * nchoosek(small_n,cc(1,j));
+            end
+            p_values(1,counter) = cur_prob / nchoosek(large_N,sum(cc(1,:)));
+            counter = counter + 1;
+        end
+        if 
+            largest_spikes = 
+        end
+    end
+end
+
+end

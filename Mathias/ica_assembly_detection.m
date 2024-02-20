@@ -7,6 +7,11 @@ function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] =
 % this function will detect neuronal assemblies, and the neurons that are
 %part of the different assemblies.
 
+% remove neurons with no activity
+neurons_to_remove = all(diff(M) == 0);
+neurons_to_keep = find(~neurons_to_remove);
+M = M(:,neurons_to_keep);
+
 %Pearson correlation coefficient from this matrix A
 A=M;
 [R, ~,~,~] = corrcoef(A);
@@ -29,7 +34,12 @@ lambda_min = (1 - sqrt(1/q))^2;
 predicted_nbr_assemblies = size(find(E > lambda_max),1);
 predicted_nbr_neurons_evs = size(find(E > lambda_max | E < lambda_min),1);
 
-if predicted_nbr_assemblies ~= 0
+if predicted_nbr_neurons_evs == size(M,2) && predicted_nbr_assemblies == 1
+    assemblies{1} = neurons_to_keep;
+    predicted_nbr_neurons = predicted_nbr_neurons_evs;
+    activity = 0;
+
+elseif predicted_nbr_assemblies ~= 0
     
     %eigenvectors length computing
 
@@ -90,9 +100,14 @@ if predicted_nbr_assemblies ~= 0
     new_idx = zeros(predicted_nbr_neurons,predicted_nbr_assemblies);
     for i=1:predicted_nbr_assemblies
         p_column = M_scaled(:,i);
-
-        [idx,~,~,~] = kmeans(p_column,2, 'Replicates', 1000);%can be improved by taking into account that negative clusters will be together
-
+            
+        % you should only have one cluster if predicted neurons is equal to
+        % the size of M
+        if predicted_nbr_neurons == size(M_scaled,1) && predicted_nbr_assemblies == 1
+            [idx,~,~,~] = kmeans(p_column,1, 'Replicates', 1000);
+        else
+            [idx,~,~,~] = kmeans(p_column,2, 'Replicates', 1000);%can be improved by taking into account that negative clusters will be together
+        end
 
         mean_2 = mean(p_column(idx == 2));
         mean_1 = mean(p_column(idx == 1));
@@ -118,7 +133,7 @@ if predicted_nbr_assemblies ~= 0
     assembly_vector = new_idx;%reshape(new_idx,[],predicted_nbr_assemblies);
     assemblies = cell(predicted_nbr_assemblies,1);
     for j = 1:predicted_nbr_assemblies
-        assemblies{j} = neurons_idxs(assembly_vector(:,j)==1);
+        assemblies{j} = neurons_to_keep(neurons_idxs(assembly_vector(:,j)==1));
     end
 
     icacomp = A*M_save;

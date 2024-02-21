@@ -134,11 +134,9 @@ elseif predicted_nbr_assemblies ~= 0
     assembly_vector = new_idx;%reshape(new_idx,[],predicted_nbr_assemblies);
     assemblies = cell(predicted_nbr_assemblies,1);
     icacomp = zeros(size(A,1),predicted_nbr_assemblies);
-disp(assemblies);disp(icacomp);
     for j = 1:predicted_nbr_assemblies
-disp(j);
         assemblies{j} = neurons_to_keep(neurons_idxs(assembly_vector(:,j)==1));
-        icacomp(:,j) = A(:,assemblies{j}) * M(assemblies{j},j);
+        icacomp(:,j) = A(:,neurons_idxs(assembly_vector(:,j)==1)) * M(neurons_idxs(assembly_vector(:,j)==1),j);
     end
 
     if plotter

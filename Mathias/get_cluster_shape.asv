@@ -29,6 +29,7 @@ addpath(genpath(folder))
 
 %% load in ica data
 
+path_to_data = "takeokalabwip2023/Mathias/cluster_output\ica_10ms_bins_20_intervals
 ica_activity = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\activity.mat"); ica_activity = ica_activity.total_activity;
 ica_nb_neurons = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\nb_neurons.mat"); ica_nb_neurons = ica_nb_neurons.total_nb_neurons;
 ica_assemblies = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\assemblies.mat"); ica_assemblies = ica_assemblies.total_assemblies;
@@ -53,6 +54,7 @@ for k = 1:size(orders,1)
             actual_connections{k,i} = [];
         else
             cur_raw_connections = cell(size(cur_assembly));
+            cur_actual_connections = cell(size(cur_assembly));
             for j = 1:length(cur_assembly)
                 curcur_assembly = ica_neurons_of_interest{k,i}(cur_assembly{j});
                 cur_data = ica_data{k,i};
@@ -76,13 +78,13 @@ for k = 1:size(orders,1)
                 
                 % detect connections
                 cur_raw_connections = detect_connections(candidate_templates, bins_together);
-                cur_actual_connections = cell(size(cur_raw_connections));
+                curcur_actual_connections = cell(size(cur_raw_connections));
                 for ii = 1:length(cur_raw_connections)
-                    cur_actual_connections{ii} = curcur_assembly(cur_raw_connections{ii});
+                    curcur_actual_connections{ii} = curcur_assembly(cur_raw_connections{ii});
                 end
-                actual_connections
+                cur_actual_connections{j} = curcur_actual_connections;
             end
-            actual_connections{k,i} = actual_connections;
+            actual_connections{k,i} = cur_actual_connections;
         end
     end
     disp(k)

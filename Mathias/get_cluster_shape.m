@@ -29,12 +29,13 @@ addpath(genpath(folder))
 
 %% load in ica data
 
-ica_activity = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\activity.mat"); ica_activity = ica_activity.total_activity;
-ica_nb_neurons = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\nb_neurons.mat"); ica_nb_neurons = ica_nb_neurons.total_nb_neurons;
-ica_assemblies = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\assemblies.mat"); ica_assemblies = ica_assemblies.total_assemblies;
-ica_nb_assemblies = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\nb_assemblies.mat"); ica_nb_assemblies = ica_nb_assemblies.total_nb_assemblies;
-ica_data = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\data.mat"); ica_data = ica_data.total_data;
-ica_neurons_of_interest = load("X:\Mathias\cluster_output\ica_10ms_bins_20_intervals\neurons_of_interest.mat"); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+path_to_data = "takeokalabwip2023/Mathias/cluster_output/ica_10ms_bins_20_intervals/";
+ica_activity = load(fullfile(volume_base2, path_to_data,"activity.mat")); ica_activity = ica_activity.total_activity;
+ica_nb_neurons = load(fullfile(volume_base2, path_to_data,"nb_neurons.mat")); ica_nb_neurons = ica_nb_neurons.total_nb_neurons;
+ica_assemblies = load(fullfile(volume_base2, path_to_data,"assemblies.mat")); ica_assemblies = ica_assemblies.total_assemblies;
+ica_nb_assemblies = load(fullfile(volume_base2, path_to_data,"nb_assemblies.mat")); ica_nb_assemblies = ica_nb_assemblies.total_nb_assemblies;
+ica_data = load(fullfile(volume_base2, path_to_data,"data.mat")); ica_data = ica_data.total_data;
+ica_neurons_of_interest = load(fullfile(volume_base2, path_to_data,"neurons_of_interest.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
 
 %% initialize data
 interval_step = 20; % depends on how data was created

@@ -1,9 +1,8 @@
-function cc = create_cross_correlogram(candidate_templates, reference_neuron, event_neuron, bins_together)
+function cc = create_cross_correlogram(candidate_templates, reference_neuron, event_neuron)
 
-%[~,nb_columns] = cellfun(@size,candidate_templates);
-%max_nb_columns = max(nb_columns);
-max_nb_columns = (bins_together-1)*2+1;
-cc = zeros(2,max_nb_columns);
+[~,nb_columns] = cellfun(@size,candidate_templates);
+max_nb_columns = max(nb_columns);
+cc = zeros(2,max_nb_columns*2-1);
 
 for i = 1:length(candidate_templates)
     cur_data = candidate_templates{i};
@@ -11,9 +10,8 @@ for i = 1:length(candidate_templates)
     if ~isempty(find(cur_data(reference_neuron,:) == 1, 1))
         
         % bugs if 0 and 1
-        if length(cur_data(event_neuron,:)) == 1 && length(cur_data(reference_neuron,:)) == 1
-            cur_xcorr = xcorr(cur_data(event_neuron,:), cur_data(reference_neuron,:));
-            cur_xcorr = cur_xcorr(2);
+        if length(cur_data(event_neuron,:)) == 1 && length(ur_data(reference_neuron,:))) == 1;
+            cur_xcorr = xcorr(cur_data(event_neuron,:), cur_data(reference_neuron,:))(2);
         else
             cur_xcorr = xcorr(cur_data(event_neuron,:), cur_data(reference_neuron,:));
         end

@@ -38,6 +38,8 @@ ica_neurons_of_interest = load("X:\Mathias\cluster_output\ica_10ms_bins_20_inter
 
 %% initialize data
 interval_step = 20; % depends on how data was created
+bins_together = 10;
+actual_connections = cell(size(ica_neurons_of_interest));
 
 %% get cluster shape for each assembly
 
@@ -48,12 +50,14 @@ for k = 1:size(orders,1)
     for i = 1:size(orders,2)
         cur_assembly = ica_assemblies{k,i};
         if isempty(cur_assembly)
-            orders{k,i} = [];
+            actual_connections{k,i} = [];
         else
+            cur_raw_connections = cell(size(cur_assembly));
+            cur_actual_connections = cell(size(cur_assembly));
             for j = 1:length(cur_assembly)
                 curcur_assembly = ica_neurons_of_interest{k,i}(cur_assembly{j});
                 cur_data = ica_data{k,i};
-                [pks, locs] = findpeaks(ica_activity{k,i}(:,j),"NPeaks",interval_step,"MinPeakHeight",2*mean(ica_activity{k,i}(:,j)));
+                [pks, locs] = findpeaks(abs(ica_activity{k,i}(:,j)),"NPeaks",interval_step,"MinPeakHeight",0.4*max(abs(ica_activity{k,i}(:,j))));
                 candidate_templates = cell(1,length(locs));
                 TOTAL = [];
                 for jj = 1:length(locs)
@@ -72,15 +76,24 @@ for k = 1:size(orders,1)
                 %orders{k,i} = find_order_neurons(candidate_templates);
                 
                 % detect connections
-                cur_connections = detect_connections(candidate_templates);
-                
+                cur_raw_connections = detect_connections(candidate_templates, bins_together);
+                curcur_actual_connections = cell(size(cur_raw_connections));
+                for ii = 1:length(cur_raw_connections)
+                    curcur_actual_connections{ii} = curcur_assembly(cur_raw_connections{ii});
+                end
+                cur_actual_connections{j} = curcur_actual_connections;
             end
+            actual_connections{k,i} = cur_actual_connections;
         end
     end
+    disp(k)
 end
 
-[1;
- 3;
- 2;
- 4];
+%% transform raw connections to actual neuron numbers
 
+
+for k = 1:size(orders,1)
+    for i = 1:size(orders,2)
+        
+    end
+end

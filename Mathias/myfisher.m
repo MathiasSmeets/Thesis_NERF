@@ -153,12 +153,12 @@ else
     end
     P=MCC/tbs; %Monte Carlo p-value
     tr=repmat('-',1,80);
-    disp(tr)
-    disp('Fisher''s test - Conventional Monte Carlo Method')
-    disp(tr)
-    disp(array2table([tbs P],'VariableNames',{'Tables','p_value'}))
-    fprintf('p-value is within %0.4f units of the true one with %0.4f%% confidence\n',delta,(1-alpha)*100)
-    disp(tr)
+    %disp(tr)
+    %disp('Fisher''s test - Conventional Monte Carlo Method')
+    %disp(tr)
+    %disp(array2table([tbs P],'VariableNames',{'Tables','p_value'}))
+    %fprintf('p-value is within %0.4f units of the true one with %0.4f%% confidence\n',delta,(1-alpha)*100)
+    %disp(tr)
 end
 if nargout
     Pout=P;

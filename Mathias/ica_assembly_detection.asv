@@ -133,12 +133,13 @@ elseif predicted_nbr_assemblies ~= 0
     %create the assemblies
     assembly_vector = new_idx;%reshape(new_idx,[],predicted_nbr_assemblies);
     assemblies = cell(predicted_nbr_assemblies,1);
-    icacomp = zeros(size(A,1),predicted_nbr_assemblies);
+    icacomp = zeros(size(A,1),)
     for j = 1:predicted_nbr_assemblies
         assemblies{j} = neurons_to_keep(neurons_idxs(assembly_vector(:,j)==1));
-        icacomp(:,j) = A(:,assemblies{j}) * M(assemblies{j},j);
+        icacomp
     end
 
+    icacomp = A*M_save;
     if plotter
         figure
         subplot(2,1,1)

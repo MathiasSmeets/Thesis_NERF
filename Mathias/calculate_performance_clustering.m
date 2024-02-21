@@ -89,7 +89,7 @@ for nb_assemblies = 1:1
             for cur_nb_intervals_together = 10:10:max_intervals_together
                 for cur_background_strength = 1:1
                     for i = 1:nb_iterations
-                        [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, nb_intervals, cur_nb_bins_together, nb_neurons_of_interest, 0, cur_background_strength);
+                        [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, nb_intervals, cur_nb_bins_together, nb_neurons_of_interest, 1, cur_background_strength);
 
                         % ica
                         [ica_predicted_nbr_assemblies, ica_predicted_nbr_neurons, ica_assemblies, ica_activity] = ica_assembly_detection(synthetic_data', 0);

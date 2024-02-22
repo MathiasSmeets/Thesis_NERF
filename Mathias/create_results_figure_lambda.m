@@ -43,7 +43,7 @@ for i = 1:6
     bar(2:5,input)
     hold on
     ylim([0 1.2])
-    legend('ICA', 'CPD', 'NMF', 'PCA')
+    legend('ICA', 'CPD', 'NMF', 'CPCA')
     %legend('ICA', 'CPD', 'NMF')
     if i == 1
         title('True Positive Clustering No Noise')
@@ -97,7 +97,7 @@ for i = 1:6
     subplot(2,3,i)
     bar(2:5,input)
     hold on
-    legend('ICA', 'CPD', 'NMF', 'PCA')
+    legend('ICA', 'CPD', 'NMF', 'CPCA')
     %legend('ICA', 'CPD', 'NMF')
     if i == 1
         title('False Positive Clustering No Noise')

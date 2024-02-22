@@ -1,4 +1,4 @@
-function connections = detect_connections(candidate_templates, bins_together)
+function [connections, correlations] = detect_connections(candidate_templates, bins_together)
 
 nb_neurons = size(candidate_templates{1},1);
 options = 0;
@@ -7,6 +7,7 @@ for i = 1:nb_neurons
 end
 counter = 1;
 connections = cell(1, options);
+correlations = cell(1, options);
 for i = 1:nb_neurons
     for j = i:nb_neurons 
         if i ~= j
@@ -22,10 +23,12 @@ for i = 1:nb_neurons
             if cur_p_value < 0.05 && cur_reverse_p_value < 0.05
                 connections{counter} = [i,j];
             end
+            correlations{counter} = min(get_correlation(cc), get_correlation(cc_reverse));
             counter = counter + 1;
         end
 
     end
 end
 connections = connections(~cellfun('isempty',connections));
+correlations = correlations(~cellfun('isempty', connections));
 end

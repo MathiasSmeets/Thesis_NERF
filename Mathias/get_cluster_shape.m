@@ -41,6 +41,7 @@ ica_neurons_of_interest = load(fullfile(volume_base2, path_to_data,"neurons_of_i
 interval_step = 20; % depends on how data was created
 bins_together = 10;
 actual_connections = cell(size(ica_neurons_of_interest));
+correlation_strengths = cell(size(ica_neurons_of_interest));
 
 %% get cluster shape for each assembly
 
@@ -55,6 +56,7 @@ for k = 1:size(orders,1)
         else
             cur_raw_connections = cell(size(cur_assembly));
             cur_actual_connections = cell(size(cur_assembly));
+            cur_correlation_strength = cell(size(cur_assembly));
             for j = 1:length(cur_assembly)
                 curcur_assembly = ica_neurons_of_interest{k,i}(cur_assembly{j});
                 cur_data = ica_data{k,i};
@@ -77,14 +79,16 @@ for k = 1:size(orders,1)
                 %orders{k,i} = find_order_neurons(candidate_templates);
                 
                 % detect connections
-                cur_raw_connections = detect_connections(candidate_templates, bins_together);
+                [cur_raw_connections, curcur_correlation_strength] = detect_connections(candidate_templates, bins_together);
                 curcur_actual_connections = cell(size(cur_raw_connections));
                 for ii = 1:length(cur_raw_connections)
                     curcur_actual_connections{ii} = curcur_assembly(cur_raw_connections{ii});
                 end
                 cur_actual_connections{j} = curcur_actual_connections;
+                cur_correlation_strength{j} = curcur_correlation_strength;
             end
             actual_connections{k,i} = cur_actual_connections;
+            correlation_strengths{k,i} = cur_correlation_strength;
         end
     end
     disp(k)

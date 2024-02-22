@@ -23,7 +23,8 @@ for i = 1:nb_neurons
             if cur_p_value < 0.05 && cur_reverse_p_value < 0.05
                 connections{counter} = [i,j];
             end
-            correlations{counter} = min(get_correlation(cc), get_correlation(cc_reverse));
+            total_candidates = length(candidate_templates);
+            correlations{counter} = min(get_correlation(cc, total_candidates), get_correlation(cc_reverse, total_candidates));
             counter = counter + 1;
         end
 

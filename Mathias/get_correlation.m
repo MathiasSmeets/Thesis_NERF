@@ -1,4 +1,4 @@
-function correlation = get_correlation(cc)
+function correlation = get_correlation(cc, total_candidates)
 % calculate strength correlation based on shao and tsau 1996
 
 % y1j = value in row 1, column j
@@ -22,4 +22,5 @@ N = r1+r0;
 
 correlation = ((1/n) * intermediate_sum - ((r1^2+r0^2) / N)) / (N -((r1^2+r0^2)/N));
 
+correlation = sqrt(correlation * (n/total_candidates));
 end

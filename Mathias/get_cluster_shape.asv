@@ -49,6 +49,7 @@ orders = cell(size(ica_activity));
 % loop over each mouse
 for k = 1:size(orders,1)
     % loop over each interval
+    disp(k)
     for i = 1:size(orders,2)
         cur_assembly = ica_assemblies{k,i};
         if isempty(cur_assembly)
@@ -79,25 +80,31 @@ for k = 1:size(orders,1)
                 %orders{k,i} = find_order_neurons(candidate_templates);
                 
                 % detect connections
-                cur_raw_connections = detect_connections(candidate_templates, bins_together);
-                [curcur_actual_connections, cur_correlation_strength{j}] = cell(size(cur_raw_connections));
+                [cur_raw_connections, curcur_correlation_strength] = detect_connections(candidate_templates, bins_together);
+                curcur_actual_connections = cell(size(cur_raw_connections));
                 for ii = 1:length(cur_raw_connections)
                     curcur_actual_connections{ii} = curcur_assembly(cur_raw_connections{ii});
                 end
                 cur_actual_connections{j} = curcur_actual_connections;
+                cur_correlation_strength{j} = curcur_correlation_strength;
             end
             actual_connections{k,i} = cur_actual_connections;
-            correlation_strenghts{k,i} = cur_correlation_strength;
+            correlation_strengths{k,i} = cur_correlation_strength;
         end
     end
-    disp(k)
 end
 
-%% transform raw connections to actual neuron numbers
+%% create_figure
 
+mouse_nb = 1;
+total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
+counter = size(stimulus_data_m,2);
+while isempty(stimulus_data_m{mouse_nb,counter})
+    counter = counter - 1;
+    last_interval_data = counter;
+end 
+while isempty(correlation_strengths{mouse_nb,counter})
+    counter = counter - 1;
+    last_interval_
+[reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
 
-for k = 1:size(orders,1)
-    for i = 1:size(orders,2)
-        
-    end
-end

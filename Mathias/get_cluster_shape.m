@@ -49,6 +49,7 @@ orders = cell(size(ica_activity));
 % loop over each mouse
 for k = 1:size(orders,1)
     % loop over each interval
+    disp(k)
     for i = 1:size(orders,2)
         cur_assembly = ica_assemblies{k,i};
         if isempty(cur_assembly)
@@ -91,14 +92,20 @@ for k = 1:size(orders,1)
             correlation_strengths{k,i} = cur_correlation_strength;
         end
     end
-    disp(k)
 end
 
-%% transform raw connections to actual neuron numbers
+%% create_figure
 
-
-for k = 1:size(orders,1)
-    for i = 1:size(orders,2)
-        
-    end
+mouse_nb = 1;
+total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
+counter = size(stimulus_data_m,2);
+while isempty(stimulus_data_m{mouse_nb,counter})
+    counter = counter - 1;
+    last_interval_data = counter;
+end 
+while isempty(correlation_strengths{mouse_nb,counter})
+    counter = counter - 1;
+    last_interval_correlations = counter;
 end
+[reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
+

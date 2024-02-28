@@ -73,21 +73,24 @@ event_main_Y.event_31 = load(path + "\eventY_31.mat", "-mat", "events");
 %% loop over each event file to get data after every stimulation
 
 
-fs = 0.1; % ms
+fs = 1; % ms
 multiplier = 1/fs;
 
 fields = fieldnames(event_main_M);
 numbers = setdiff(7:34, [20, 32, 33, 34]);
 %numbers = 10;
 
-after_stimulus_data_m = cell(length(numbers), 5217); % go to get_max_onsets.m to determine this 5217
-after_stimulus_data_y = cell(length(numbers), 5217);
+
 %after_stimulus_data_m = cell(length(numbers), 157);
 %after_stimulus_data_y = cell(length(numbers), 157);
 
 start_neuron_m = 1;
 start_neuron_y = 1;
-[EventSizeM, EventSizeY] = get_start_end_events();
+%[EventSizeM, EventSizeY] = get_start_end_events();
+[EventSizeM, EventSizeY, max_m, max_y, waitingeventM, waitingeventY, switcheventM, switcheventY] = get_start_end_events_switch();
+after_stimulus_data_m = cell(length(numbers), maxm); % go to get_max_onsets.m to determine this 5217
+after_stimulus_data_y = cell(length(numbers), maxy);
+
 for i = 1:numel(fields)
     nb_mouse = numbers(i);
 

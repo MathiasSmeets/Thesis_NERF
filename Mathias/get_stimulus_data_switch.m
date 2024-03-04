@@ -28,11 +28,6 @@ data_m = struct2array(data_m);
 data_y = load(fullfile(data_path, "horridge_data_y.mat"));
 data_y = struct2array(data_y);
 
-switch_m = load(fullfile(data_path, "switch_data_m.mat"));
-switch_m = struct2array(switch_m);
-switch_y = load(fullfile(data_path, "switch_data_y.mat"));
-switch_y = struct2array(switch_y);
-
 event_main_M = struct();
 event_main_M.event_1 = load(fullfile(stimulus_path, "frM_stim_switched_1.mat"), "-mat", "frM_stim");
 event_main_M.event_2 = load(fullfile(stimulus_path, "frM_stim_switched_2.mat"), "-mat", "frM_stim");
@@ -179,9 +174,14 @@ for i = 1:numel(fields)
 end
 save(fullfile(save_path, "after_stimulus_data_m.mat"), "after_stimulus_data_m", "-v7.3")
 save(fullfile(save_path, "after_stimulus_data_y.mat"), "after_stimulus_data_y", "-v7.3")
-clearvars after_stimulus_data_m after_stimulus_data_y
+clearvars after_stimulus_data_m after_stimulus_data_y data_m data_y
 
 %% now do the same for switch data
+
+switch_m = load(fullfile(data_path, "switch_data_m.mat"));
+switch_m = struct2array(switch_m);
+switch_y = load(fullfile(data_path, "switch_data_y.mat"));
+switch_y = struct2array(switch_y);
 
 start_neuron_m = 1;
 start_neuron_y = 1;

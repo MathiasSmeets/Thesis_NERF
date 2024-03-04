@@ -178,10 +178,10 @@ for i = 1:numel(fields)
 end
 %save(fullfile(save_path, "after_stimulus_data_m_horridge.mat"), "after_stimulus_data_m", "-v7.3")
 save(fullfile(save_path, "after_stimulus_data_y_horridge.mat"), "after_stimulus_data_y", "-v7.3")
-clearvars after_stimulus_data_m data_m after_stimulus_data_y data_y
+clearvars after_stimulus_data_m_horridge data_m after_stimulus_data_y_horridge data_y
 
 %% now do the same for switch data
-
+disp("second part")
 %switch_m = load(fullfile(data_path, "switch_data_m.mat"));
 %switch_m = struct2array(switch_m);
 switch_y = load(fullfile(data_path, "switch_data_y.mat"));

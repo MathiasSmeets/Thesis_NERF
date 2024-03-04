@@ -27,7 +27,7 @@ end
 % data_m = struct2array(data_m);
 data_y = load(fullfile(data_path, "horridge_data_y.mat"));
 data_y = struct2array(data_y);
-data_y = uint16(data_y);
+data_y = uint8(data_y);
 
 
 % event_main_M = struct();

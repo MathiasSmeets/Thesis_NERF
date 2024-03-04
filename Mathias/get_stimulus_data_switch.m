@@ -11,8 +11,8 @@ elseif ismac
 else  % cluster
     volume_base = '/mnt/takeokalab/';
     volume_base2 = '/mnt/takeokalab/';
-    data_path = fullfile(volume_base,"Mathias\switch_data\tabled_data");
-    stimulus_path = fullfile(volume_base, "Mathias\switch_data\tables");
+    data_path = fullfile(volume_base,"Mathias/switch_data/tabled_data");
+    stimulus_path = fullfile(volume_base, "Mathias/switch_data/tables");
     save_path = "/scratch/mathiass-takeokalab/01";
 end
 

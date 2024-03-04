@@ -13,7 +13,7 @@ else  % cluster
     volume_base2 = '/mnt/takeokalab/';
     data_path = fullfile(volume_base,"Mathias\switch_data\tabled_data");
     stimulus_path = fullfile(volume_base, "Mathias\switch_data\tables");
-    save_path = "/scratch/mathiass-takeokalab/01";
+    save_path
 end
 
 
@@ -177,8 +177,8 @@ for i = 1:numel(fields)
     start_neuron_m = start_neuron_m + cur_nb_neurons_m;
     start_neuron_y = start_neuron_y + cur_nb_neurons_y;
 end
-save(fullfile(save_path, "after_stimulus_data_m.mat"), "after_stimulus_data_m", "-v7.3")
-save(fullfile(save_path, "after_stimulus_data_y.mat"), "after_stimulus_data_y", "-v7.3")
+save(fullfile(data_path, "after_stimulus_data_m.mat"), "after_stimulus_data_m", "-v7.3")
+save(fullfile(data_path, "after_stimulus_data_y.mat"), "after_stimulus_data_y", "-v7.3")
 clearvars after_stimulus_data_m after_stimulus_data_y
 
 %% now do the same for switch data
@@ -228,8 +228,8 @@ for i = 1:numel(fields)
 end
 
 
-save(fullfile(save_path, "after_stimulus_switch_m.mat"), "after_stimulus_data_m", "-v7.3")
-save(fullfile(save_path, "after_stimulus_switch_y.mat"), "after_stimulus_data_y", "-v7.3")
+save(fullfile(data_path, "after_stimulus_switch_m.mat"), "after_stimulus_data_m", "-v7.3")
+save(fullfile(data_path, "after_stimulus_switch_y.mat"), "after_stimulus_data_y", "-v7.3")
 
 
 

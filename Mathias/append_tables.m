@@ -2,29 +2,25 @@
 
 clear; clc; close all;
 %datapath = "\\nerffs13\takeokalabwip2020\Mathias\";
-datapath = "X:\Mathias\switch_data\frTables";
+datapath = "X:\Mathias\switch_data\tables";
 savepath = "X:\Mathias\switch_data\stimulus_data";
 
-frM_2 = load(fullfile(datapath, "frM2.mat"));
-cur_table = struct2array(frM_7);
+frM_1 = load(fullfile(datapath, "frY_switched_1.mat"));
+cur_table = struct2array(frM_1);
 cur_table = cur_table(:,[1,7:9,11,15]);
-clearvars frM_2
+clearvars frM_1
 
 % append tables
-i = 8;
-while i <= 34 
-    if i ~= 20 && i ~= 32 && i~=33 && i ~=34
-        new_table = load(datapath + "frY_" + i + ".mat");
-        new_table = struct2array(new_table);
+for i = 2:11
+    new_table = load(fullfile(datapath, "frY_switched_" + i + ".mat"));
+    new_table = struct2array(new_table);
 
-        % remove rows that contain zero in the recording column
-        new_table(~new_table.Recording,:) = [];
-        
-        % append to total table
-        cur_table = [cur_table; new_table(:,[1,7:9])];
-    end
+    % remove rows that contain zero in the recording column
+    new_table(~new_table.Recording,:) = [];
 
-    i = i + 1;
+    % append to total table
+    cur_table = [cur_table; new_table(:,[1,7:9,11,15])];
+
     clearvars new_table
 end
 
@@ -47,6 +43,15 @@ for i = 1:size(switch_data,1)
     cur_switch_data = [cur_table.Recording(i,1), cur_table.Fr_switch{i,1}];
     switch_data(i,:) = cur_switch_data;
 end
+
+% get after data in array with recording nb in front
+after_data = zeros(size(cur_table.Fr_after,1), size(cur_table.Fr_after{1,1},2)+1);
+for i = 1:size(after_data,1)
+    cur_after_data = [cur_table.Recording(i,1), cur_table.Fr_after{i,1}];
+    after_data(i,:) = cur_after_data;
+end
+
 %save(savepath + "frY_peak_total.mat", "data", "-v7.3")
 save(fullfile(savepath, "horridge_data.mat"), "data", "-v7.3")
 save(fullfile(savepath, "switch_data.mat"), "switch_data", "-v7.3")
+save(fullfile(savepath, "after_data.mat"), "after_data", "-v7.3")

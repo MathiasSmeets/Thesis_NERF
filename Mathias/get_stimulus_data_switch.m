@@ -161,18 +161,19 @@ for i = 1:numel(fields)
     %         %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
     %     end
     % end
+    %cur_data = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,:);
+    %data_y([start_neuron_y:start_neuron_y+cur_nb_neurons_y-1],:) = [];
     for j = 2:length(cur_onsets_y)
         if round(cur_onsets_y(j)*1000)+59 > 600000
             after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
-            after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
+            %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         else
             after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
-            after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
+            %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         end
     end
-    data_y([start_neuron_y:start_neuron_y+cur_nb_neurons_y-1],:) = [];
     % start_neuron_m = start_neuron_m + cur_nb_neurons_m;
-    %start_neuron_y = start_neuron_y + cur_nb_neurons_y;
+    start_neuron_y = start_neuron_y + cur_nb_neurons_y;
 end
 %save(fullfile(save_path, "after_stimulus_data_m_horridge.mat"), "after_stimulus_data_m", "-v7.3")
 save(fullfile(save_path, "after_stimulus_data_y_horridge.mat"), "after_stimulus_data_y", "-v7.3")

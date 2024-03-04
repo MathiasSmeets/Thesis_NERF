@@ -27,7 +27,8 @@ end
 % data_m = struct2array(data_m);
 data_y = load(fullfile(data_path, "horridge_data_y.mat"));
 data_y = struct2array(data_y);
-data_y = single(data_y);
+data_y = uint16(data_y);
+
 
 % event_main_M = struct();
 % event_main_M.event_1 = load(fullfile(stimulus_path, "frM_stim_switched_1.mat"), "-mat", "frM_stim");
@@ -137,6 +138,7 @@ start_neuron_y = 1;
 after_stimulus_data_y = cell(length(numbers), maxy);
 
 for i = 1:numel(fields)
+    
     nb_mouse = numbers(i);
 
     %cur_onsets_m = event_main_M.(fields{i}).events.onsets;
@@ -161,23 +163,16 @@ for i = 1:numel(fields)
     %         %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
     %     end
     % end
-    cur_data = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,:);
-    data_y([start_neuron_y:start_neuron_y+cur_nb_neurons_y-1],:) = [];
-    cur_index = 0;
     for j = 2:length(cur_onsets_y)
         if round(cur_onsets_y(j)*1000)+59 > 600000
-            after_stimulus_data_y{i,j-1} = cur_data(:,round(cur_onsets_y(j)*1000)-10+2-cur_index:end);
-            cur_data(:,1:end) = [];
-            %after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
+            after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
             %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         else
-            after_stimulus_data_y{i,j-1} = cur_data(:,round(cur_onsets_y(j)*1000)-10+2-cur_index:round(cur_onsets_y(j)*1000)+59+2-cur_index);
-            cur_index = round(cur_onsets_y(j)*1000)+59+2-cur_index;
-            cur_data(:,1:cur_index) = [];
-            %after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
+            after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
             %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         end
     end
+    %data_y([start_neuron_y:start_neuron_y+cur_nb_neurons_y-1],:) = [];
     % start_neuron_m = start_neuron_m + cur_nb_neurons_m;
     start_neuron_y = start_neuron_y + cur_nb_neurons_y;
 end

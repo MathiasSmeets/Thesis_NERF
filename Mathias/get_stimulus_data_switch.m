@@ -28,18 +28,18 @@ end
 data_y = load(fullfile(data_path, "horridge_data_y.mat"));
 data_y = struct2array(data_y);
 
-event_main_M = struct();
-event_main_M.event_1 = load(fullfile(stimulus_path, "frM_stim_switched_1.mat"), "-mat", "frM_stim");
-event_main_M.event_2 = load(fullfile(stimulus_path, "frM_stim_switched_2.mat"), "-mat", "frM_stim");
-event_main_M.event_3 = load(fullfile(stimulus_path, "frM_stim_switched_3.mat"), "-mat", "frM_stim");
-event_main_M.event_4 = load(fullfile(stimulus_path, "frM_stim_switched_4.mat"), "-mat", "frM_stim");
-event_main_M.event_5 = load(fullfile(stimulus_path, "frM_stim_switched_5.mat"), "-mat", "frM_stim");
-event_main_M.event_6 = load(fullfile(stimulus_path, "frM_stim_switched_6.mat"), "-mat", "frM_stim");
-event_main_M.event_7 = load(fullfile(stimulus_path, "frM_stim_switched_7.mat"), "-mat", "frM_stim");
-event_main_M.event_8 = load(fullfile(stimulus_path, "frM_stim_switched_8.mat"), "-mat", "frM_stim");
-event_main_M.event_9 = load(fullfile(stimulus_path, "frM_stim_switched_9.mat"), "-mat", "frM_stim");
-event_main_M.event_10 = load(fullfile(stimulus_path, "frM_stim_switched_10.mat"), "-mat", "frM_stim");
-event_main_M.event_11 = load(fullfile(stimulus_path, "frM_stim_switched_11.mat"), "-mat", "frM_stim");
+% event_main_M = struct();
+% event_main_M.event_1 = load(fullfile(stimulus_path, "frM_stim_switched_1.mat"), "-mat", "frM_stim");
+% event_main_M.event_2 = load(fullfile(stimulus_path, "frM_stim_switched_2.mat"), "-mat", "frM_stim");
+% event_main_M.event_3 = load(fullfile(stimulus_path, "frM_stim_switched_3.mat"), "-mat", "frM_stim");
+% event_main_M.event_4 = load(fullfile(stimulus_path, "frM_stim_switched_4.mat"), "-mat", "frM_stim");
+% event_main_M.event_5 = load(fullfile(stimulus_path, "frM_stim_switched_5.mat"), "-mat", "frM_stim");
+% event_main_M.event_6 = load(fullfile(stimulus_path, "frM_stim_switched_6.mat"), "-mat", "frM_stim");
+% event_main_M.event_7 = load(fullfile(stimulus_path, "frM_stim_switched_7.mat"), "-mat", "frM_stim");
+% event_main_M.event_8 = load(fullfile(stimulus_path, "frM_stim_switched_8.mat"), "-mat", "frM_stim");
+% event_main_M.event_9 = load(fullfile(stimulus_path, "frM_stim_switched_9.mat"), "-mat", "frM_stim");
+% event_main_M.event_10 = load(fullfile(stimulus_path, "frM_stim_switched_10.mat"), "-mat", "frM_stim");
+% event_main_M.event_11 = load(fullfile(stimulus_path, "frM_stim_switched_11.mat"), "-mat", "frM_stim");
 
 event_main_Y = struct();
 event_main_Y.event_1 = load(fullfile(stimulus_path, "frY_stim_switched_1.mat"), "-mat", "frM_stim");
@@ -143,7 +143,7 @@ for i = 1:numel(fields)
     % cur_onsets_m = event_main_M.(fields{i}).frM_stim.horridge{1,1};
     cur_onsets_y = event_main_Y.(fields{i}).frM_stim.horridge{1,1};
     % cur_onsets_m = cur_onsets_m;%(EventSizeM(nb_mouse,1):EventSizeM(nb_mouse,2));
-    cur_onsets_y = cur_onsets_y;%(EventSizeY(nb_mouse,1):EventSizeY(nb_mouse,2));
+    % cur_onsets_y = cur_onsets_y;%(EventSizeY(nb_mouse,1):EventSizeY(nb_mouse,2));
     % cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
     cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
 

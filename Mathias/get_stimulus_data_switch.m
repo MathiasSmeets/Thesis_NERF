@@ -27,7 +27,7 @@ end
 % data_m = struct2array(data_m);
 data_y = load(fullfile(data_path, "horridge_data_y.mat"));
 data_y = struct2array(data_y);
-data_y = uint8(data_y);
+data_y = uint16(data_y);
 
 
 % event_main_M = struct();
@@ -186,7 +186,7 @@ clearvars after_stimulus_data_m data_m after_stimulus_data_y data_y
 %switch_m = struct2array(switch_m);
 switch_y = load(fullfile(data_path, "switch_data_y.mat"));
 switch_y = struct2array(switch_y);
-switch_y = single(switch_y);
+switch_y = uint16(switch_y);
 
 start_neuron_m = 1;
 start_neuron_y = 1;

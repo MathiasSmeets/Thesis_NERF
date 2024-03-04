@@ -23,14 +23,14 @@ end
 
 
 
-data_m = load(data_path + "\horridge_data_m.mat");
+data_m = load(fullfile(data_path,"horridge_data_m.mat"));
 data_m = struct2array(data_m);
-data_y = load(data_path + "\horridge_data_y.mat");
+data_y = load(fullfile(data_path, "horridge_data_y.mat"));
 data_y = struct2array(data_y);
 
-switch_m = load(data_path + "\switch_data_m.mat");
+switch_m = load(fullfile(data_path, "switch_data_m.mat"));
 switch_m = struct2array(switch_m);
-switch_y = load(data_path + "\switch_data_y.mat");
+switch_y = load(fullfile(data_path, "switch_data_y.mat"));
 switch_y = struct2array(switch_y);
 
 event_main_M = struct();

@@ -172,7 +172,7 @@ for i = 1:numel(fields)
             %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
         else
             after_stimulus_data_y{i,j-1} = cur_data(:,round(cur_onsets_y(j)*1000)-10+2-cur_index:round(cur_onsets_y(j)*1000)+59+2-cur_index);
-            cur_index = round(cur_onsets_y(j)*1000)+59+2;
+            cur_index = round(cur_onsets_y(j)*1000)+59+2-cur_index;
             cur_data(:,1:cur_index) = [];
             %after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
             %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;

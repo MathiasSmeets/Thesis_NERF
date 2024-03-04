@@ -120,7 +120,7 @@ event_main_Y.event_11 = load(fullfile(stimulus_path, "frY_stim_switched_11.mat")
 fs = 1; % ms
 multiplier = 1/fs;
 
-fields = fieldnames(event_main_M);
+fields = fieldnames(event_main_Y);
 %numbers = setdiff(7:34, [20, 32, 33, 34]);
 numbers = 1:11;
 

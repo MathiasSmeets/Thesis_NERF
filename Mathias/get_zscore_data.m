@@ -12,16 +12,16 @@ else  % cluster
     volume_base2 = '/mnt/takeokalab/';
 end
 
-path_to_code = "takeokalabwip2023/Mathias/data";
-write_path = fullfile(volume_base2, "takeokalabwip2023/Mathias/data");
+path_to_code = "\takeokalabwip2023\Mathias\switch_data\tables";
+write_path = fullfile(volume_base2, "/takeokalabwip2023/Mathias/switch_data/sos_data");
 
 
 %%
-sos_results_m = cell(size(setdiff(7:34, [20, 32, 33, 34]),2),2);
-sos_results_y = cell(size(setdiff(7:34, [20, 32, 33, 34]),2),2);
+sos_results_m = cell(11,2);
+sos_results_y = cell(11,2);
 counter = 1;
-for i = setdiff(7:34, [20, 32, 33, 34])
-    cur_frM = load(fullfile(volume_base2, path_to_code, "frM_" + i));
+for i = 1:11
+    cur_frM = load(fullfile(volume_base2, path_to_code, "frM_switched_" + i));
     cur_frM = cur_frM.frM;
 
     % remove rows that contain zero in the recording column
@@ -36,8 +36,8 @@ for i = setdiff(7:34, [20, 32, 33, 34])
 
     clearvars cur_frM
 
-    cur_frY = load(fullfile(volume_base2, path_to_code, "frY_" + i));
-    cur_frY = cur_frY.frY;
+    cur_frY = load(fullfile(volume_base2, path_to_code, "frY_switched_" + i));
+    cur_frY = cur_frY.frM;
 
     % remove rows that contain zero in the recording column
     cur_frY(~cur_frY.Recording,:) = [];

@@ -38,7 +38,7 @@ nb_intervals = 10;
 bins_together = 10;
 interval_length = 7;
 nb_neurons_of_interest = 10;
-max_bins_together = 20;
+max_bins_together = 26;
 max_intervals_together = 50;
 missing_neurons = 0;
 
@@ -84,12 +84,14 @@ for nb_assemblies = 1:1
         %for missing_neurons = 0:iterations_missing_neurons
         for cur_nb_bins_together = 1:5:max_bins_together
             if cur_nb_bins_together ~= 1
-                cur_nb_bins_together = cur_nb_bins_together - 1;
+                cur_cur_nb_bins_together = cur_nb_bins_together - 1;
+            else
+                cur_cur_nb_bins_together = 1;
             end
             for cur_nb_intervals_together = 10:10:max_intervals_together
                 for cur_background_strength = 1:1
                     for i = 1:nb_iterations
-                        [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, nb_intervals, cur_nb_bins_together, nb_neurons_of_interest, 1, cur_background_strength);
+                        [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, nb_intervals, cur_cur_nb_bins_together, nb_neurons_of_interest, 1, cur_background_strength);
 
                         % ica
                         [ica_predicted_nbr_assemblies, ica_predicted_nbr_neurons, ica_assemblies, ica_activity] = ica_assembly_detection(synthetic_data', 0);
@@ -121,7 +123,7 @@ for nb_assemblies = 1:1
                         nb_assembly_array = [nb_assembly_array, nb_assemblies];
                         nb_neurons_array = [nb_neurons_array, nb_neurons];
                         %nb_missing_neurons_array = [nb_missing_neurons_array, missing_neurons];
-                        nb_bins_array = [nb_bins_array, cur_nb_bins_together];
+                        nb_bins_array = [nb_bins_array, cur_cur_nb_bins_together];
                         nb_intervals_array = [nb_intervals_array, cur_nb_intervals_together];
                         nb_iterations_array = [nb_iterations_array, i];
                         background_strength = [background_strength, cur_background_strength];

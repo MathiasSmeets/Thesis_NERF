@@ -1,13 +1,20 @@
 clear; clc; close all; % make sure to reference paper lab if i end up using this code
 
-path_to_code = "\\nerffs13\takeokalabwip2020\Mathias\data\";
+path_to_code = "X:\Mathias\switch_data\data_after_stimulus\";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
-stimulus_data_y = load(path_to_code + "data_after_stimulus_y.mat");
+% stimulus_data_m = load(path_to_code + "data_after_stimulus_m.mat");
+% stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+% stimulus_data_y = load(path_to_code + "data_after_stimulus_y.mat");
+% stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
+
+stimulus_data_m = load(path_to_code + "after_stimulus_data_y_horridge.mat");
+stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
+stimulus_data_m = cellfun(@double, stimulus_data_m, 'UniformOutput', false);
+stimulus_data_y = load(path_to_code + "after_stimulus_data_y_horridge.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
+stimulus_data_y = cellfun(@double, stimulus_data_y, 'UniformOutput', false);
 
 
 interval_size = 70;
@@ -41,7 +48,12 @@ for i = 1:size(stimulus_data_m,1)
                 neuron_spikes_m(cur_neuron_nb_m:cur_neuron_nb_m + size(stimulus_data_m{i,j},1) - 1, :) = neuron_spikes_m(cur_neuron_nb_m:cur_neuron_nb_m + size(stimulus_data_m{i,j}, 1) - 1, :) + stimulus_data_m{i,j};
             end
         end
-        if ~isempty(stimulus_data_y{i,j})
+    end
+    cur_neuron_nb_m = cur_neuron_nb_m + size(stimulus_data_m{i,1},1);
+end
+
+for i = 1:size(stimulus_data_y,1)
+    for j = 1:size(stimulus_data_y,2)
             if size(stimulus_data_y{i,j},2) < size(total_y,2)
                 total_y(1:size(stimulus_data_y{i,j},2)) = total_y(1:size(stimulus_data_y{i,j},2)) + sum(stimulus_data_y{i,j});
                 neuron_spikes_y(cur_neuron_nb_y:cur_neuron_nb_y + size(stimulus_data_y{i,j},1) - 1, 1:size(stimulus_data_y{i,j},2)) = neuron_spikes_y(cur_neuron_nb_y:cur_neuron_nb_y + size(stimulus_data_y{i,j}, 1) - 1 ,1:size(stimulus_data_y{i,j},2)) + stimulus_data_y{i,j};
@@ -49,9 +61,7 @@ for i = 1:size(stimulus_data_m,1)
                 total_y = total_y + sum(stimulus_data_y{i,j});
                 neuron_spikes_y(cur_neuron_nb_y:cur_neuron_nb_y + size(stimulus_data_y{i,j}, 1) - 1, :) = neuron_spikes_y(cur_neuron_nb_y:cur_neuron_nb_y + size(stimulus_data_y{i,j}, 1) - 1, :) + stimulus_data_y{i,j};
             end
-        end
     end
-    cur_neuron_nb_m = cur_neuron_nb_m + size(stimulus_data_m{i,1},1);
     cur_neuron_nb_y = cur_neuron_nb_y + size(stimulus_data_y{i,1},1);
 end
 

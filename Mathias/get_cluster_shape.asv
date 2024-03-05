@@ -29,8 +29,8 @@ addpath(genpath(folder))
 
 %% load in ica data
 
-path_to_data = "takeokalabwip2023/Mathias/cluster_output/ica_10ms_bins_20_intervals/";
-ica_activity = load(fullfile(volume_base2, path_to_data,"activity.mat")); ica_activity = ica_activity.total_activity;
+path_to_data = "takeokalabwip2023/Mathias/switch_data/clusters";
+ica_activity = load(fullfile(volume_base2, path_to_data,"activity_horridge_m.mat")); ica_activity = ica_activity.total_activity;
 ica_nb_neurons = load(fullfile(volume_base2, path_to_data,"nb_neurons.mat")); ica_nb_neurons = ica_nb_neurons.total_nb_neurons;
 ica_assemblies = load(fullfile(volume_base2, path_to_data,"assemblies.mat")); ica_assemblies = ica_assemblies.total_assemblies;
 ica_nb_assemblies = load(fullfile(volume_base2, path_to_data,"nb_assemblies.mat")); ica_nb_assemblies = ica_nb_assemblies.total_nb_assemblies;
@@ -96,15 +96,17 @@ end
 
 %% create_figure
 
-mouse_nb = 1;
-total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
-counter = size(stimulus_data_m,2);
-while isempty(stimulus_data_m{mouse_nb,counter})
-    counter = counter - 1;
-    last_interval_data = counter;
-end 
-while isempty(correlation_strengths{mouse_nb,counter})
-    counter = counter - 1;
-    last_interval_
-[reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
+for mouse_nb = 1:size(stimulus_data_m)
+    total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
+    counter = size(stimulus_data_m,2);
+    while isempty(stimulus_data_m{mouse_nb,counter})
+        counter = counter - 1;
+        last_interval_data = counter;
+    end
+    while isempty(correlation_strengths{mouse_nb,counter})
+        counter = counter - 1;
+        last_interval_correlations = counter;
+    end
+    [reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
+end
 

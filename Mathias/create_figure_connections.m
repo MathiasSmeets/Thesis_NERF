@@ -1,7 +1,7 @@
 function [reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(connections, correlations, mouse_nb, total_nb_neurons, last_interval_connections, last_interval_data, interval_size)
 
 nb_connections = 0;
-for i = 1:total_nb_neurons
+for i = 1:total_nb_neurons-1
     nb_connections = nb_connections + i;
 end
 
@@ -20,7 +20,9 @@ for i = 1:last_interval_connections
                     cur_connection = connections{mouse_nb,i}{j}{k};
                     cur_index = get_index(cur_connection, total_nb_neurons);
                     cur_correlation = correlations{mouse_nb,i}{j}{k};
-                    figure_connections(cur_index,1+interval_size*(i-1):interval_size*i) = cur_correlation;
+                    if cur_correlation > figure_connections(cur_index,1+interval_size*(i-1))
+                        figure_connections(cur_index,1+interval_size*(i-1):interval_size*i) = cur_correlation;
+                    end
                     connections_indices(cur_index,:) = cur_connection;
                 end
             end

@@ -33,7 +33,7 @@ folder = fileparts(which("calculate_performance_clustering.m"));
 addpath(genpath(folder))
 
 %%
-nb_iterations = 20;
+nb_iterations = 50;
 nb_intervals = 10;
 bins_together = 10;
 interval_length = 7;
@@ -167,5 +167,6 @@ results_table = table(nb_assembly_array', nb_neurons_array', nb_iterations_array
     'TP_assemblies_CPD','FP_assemblies_CPD', 'FN_assemblies_CPD', 'TP_CPD', 'FP_CPD', 'FN_CPD', ...
     'TP_assemblies_NMF','FP_assemblies_NMF', 'FN_assemblies_NMF', 'TP_NMF', 'FP_NMF', 'FN_NMF'});
     %'TP_assemblies_PCA','FP_assemblies_PCA', 'FN_assemblies_PCA', 'TP_PCA', 'FP_PCA', 'FN_PCA'
-save("X:\Mathias\cluster_output\results_table", "results_table", "-v7.3");
+%save("X:\Mathias\cluster_output\results_table", "results_table", "-v7.3");
+save("/scratch/mathiass-takeokalab/01/results_table", "results_table", "-v7.3");
 create_results_figure(results_table)

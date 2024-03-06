@@ -22,5 +22,5 @@ N = r1+r0;
 
 correlation = ((1/n) * intermediate_sum - ((r1^2+r0^2) / N)) / (N -((r1^2+r0^2)/N));
 
-correlation = sqrt(correlation * (n/total_candidates));
+%correlation = sqrt(correlation * (n/total_candidates));
 end

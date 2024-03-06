@@ -114,7 +114,7 @@ for mouse_nb = 1:size(stimulus_data_m)
         counter = counter - 1;
         last_interval_data = counter;
     end
-    while isempty(correlation_strengths{mouse_nb,counter})
+    while isempty(correlation_strengths{mouse_nb,counter}) || isempty(correlation_strengths{mouse_nb,counter}{1,1})
         counter = counter - 1;
         last_interval_correlations = counter;
     end

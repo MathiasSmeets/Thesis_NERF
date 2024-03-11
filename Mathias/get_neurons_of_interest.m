@@ -1,4 +1,5 @@
 function neurons_of_interest = get_neurons_of_interest(data, output_m, inhibited_neurons_m, neuron_counter)
+% outputs neurons of interest with input the original data, output_m file, inhibited file and where the neuron count starts 
 
     % get neurons of interest
     cur_neurons_of_interest = [];

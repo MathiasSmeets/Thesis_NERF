@@ -17,14 +17,14 @@ path_to_neurons_of_interest = "takeokalabwip2023/Mathias/switch_data/neurons_of_
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_stimulus_data_m_horridge.mat"));
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_stimulus_data_m_switch.mat"));
+stimulus_data_m = stimulus_data_m.after_stimulus_switch_m;
 %stimulus_data_y = load(fullfile(volume_base2, path_to_code,"data_after_stimulus_y.mat"));
 %stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_m.mat"));
+neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_switch_m.mat"));
 neurons_of_interest_m = neurons_of_interest_m.output_m;
-inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_m.mat"));
+inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_switch_m.mat"));
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
 sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_m.mat"));
@@ -36,8 +36,8 @@ addpath(genpath(folder))
 %% variables initialization
 
 interval_size = size(stimulus_data_m{1,1},2);
-wanted_bin_size = 10;
-interval_step = 20;
+wanted_bin_size = 15;
+interval_step = 30;
 create_plots = false;
 neuron_counter = 1;
 index_counter = 1;
@@ -68,7 +68,7 @@ for k = 1:size(stimulus_data_m,1)
                             cur_mouse = stimulus_data_m{k,ii}(cur_neurons_of_interest,:);
 
                             % transform to 10ms bins
-                            cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),size(cur_mouse,2)/wanted_bin_size);
+                            cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),ceil(size(cur_mouse,2)/wanted_bin_size));
                             for j = 1:size(cur_mouse,1)
                                 cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
                             end
@@ -107,16 +107,85 @@ for k = 1:size(stimulus_data_m,1)
 end
 
 savepath = "X:\Mathias\switch_data\clusters";
-save(fullfile(savepath, "neurons_of_interest_horridge_m.mat"), "total_neurons_of_interest", "-v7.3")
-save(fullfile(savepath, "nb_assemblies_horridge_m.mat"), "total_nb_assemblies", "-v7.3")
-save(fullfile(savepath, "nb_neurons_horridge_m.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_horridge_m.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_horridge_m.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_horridge_m.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "neurons_of_interest_switch_m.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_switch_m.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_switch_m.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_switch_m.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_switch_m.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_switch_m.mat"), "total_data", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
 % nb_neurons = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\nb_neurons.mat"); nb_neurons = nb_neurons.total_nb_neurons;
 % assemblies = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\assemblies.mat"); assemblies = assemblies.total_assemblies;
 % nb_assemblies = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\nb_assemblies.mat"); nb_assemblies = nb_assemblies.total_nb_assemblies;
+
+%% create figure on how this evolves
+
+intervals_to_combine = 3;
+population_similarities_start = zeros(2+1,size(total_assemblies,1));
+population_similarities_end = zeros(2+1,size(total_assemblies,1));
+% loop over all mice
+for i = 1:size(total_assemblies,1)
+    % get last interval
+    j = size(total_data,2);
+    while isempty(total_data{i,j}) && j > 1
+        j = j-1;
+    end
+    last_interval_index = j;
+
+    % create clustermatrix
+    cluster_matrix = zeros(size(total_data,1), last_interval_index);
+    for k = 1:last_interval_index
+        for l = 1:length(total_assemblies{i,k})
+            cluster_matrix(total_assemblies{i,k}{l},k) = 1;
+        end
+    end
+    figure
+    heatmap(cluster_matrix,'CellLabelColor','none')
+    xlabel("Intervals (" + interval_step + " together)")
+    ylabel("Neurons")
+    title("Neurons in a cluster")
+    
+
+    % calculate population similarity for this matrix
+    % similarity at the start
+    counter = 0;
+    for k = 1:intervals_to_combine-1
+        for l = k+1:intervals_to_combine
+            if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
+                counter = counter + 1;
+                cur_x = cluster_matrix(:,k);
+                cur_y = cluster_matrix(:,l);
+                population_similarities_start(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+            end
+        end
+    end
+    % similarity at the end
+    counter = 0;
+    last_interval = size(cluster_matrix,2);
+    for k = last_interval:-1:last_interval-intervals_to_combine+2
+        for l = k-1:-1:last_interval-intervals_to_combine+1
+            if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
+                counter = counter + 1;
+                cur_x = cluster_matrix(:,k);
+                cur_y = cluster_matrix(:,l);
+                population_similarities_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+            end
+        end
+    end
+    % similarity between start and end
+    counter = 0;
+    last_interval = size(cluster_matrix,2);
+    for k = 1:intervals_to_combine
+        for l = last_interval:-1:last_interval-intervals_to_combine+1
+            if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
+                counter = counter + 1;
+                cur_x = cluster_matrix(:,k);
+                cur_y = cluster_matrix(:,l);
+                population_similarities_start_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+            end
+        end
+    end
+end
 

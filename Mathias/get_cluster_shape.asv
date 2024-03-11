@@ -105,19 +105,28 @@ for k = 1:size(orders,1)
     end
 end
 
+save("X:\Mathias\switch_data\connections\connections_switch_m.mat",actual_connections, "-v7.3");
+save("X:\Mathias\switch_data\connections\correlations_switch_m.mat",correlation_strengths, "-v7.3");
+
+
 %% create_figure
 
-for mouse_nb = 1:size(stimulus_data_m)
-    total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
-    counter = size(stimulus_data_m,2);
-    while isempty(stimulus_data_m{mouse_nb,counter})
-        counter = counter - 1;
-        last_interval_data = counter;
-    end
-    while isempty(correlation_strengths{mouse_nb,counter})
-        counter = counter - 1;
-        last_interval_correlations = counter;
-    end
-    [reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
-end
+% for mouse_nb = 1:size(stimulus_data_m)
+%     total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
+%     counter = size(stimulus_data_m,2);
+%     while isempty(stimulus_data_m{mouse_nb,counter})
+%         counter = counter - 1;
+%         last_interval_data = counter;
+%     end
+%     while isempty(correlation_strengths{mouse_nb,counter}) || isempty(correlation_strengths{mouse_nb,counter}{1,1})
+%         counter = counter - 1;
+%         last_interval_correlations = counter;
+%     end
+%     [reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
+% end
 
+%% create figure
+
+for i = 1:size(stimulus_data_m,1)
+
+end

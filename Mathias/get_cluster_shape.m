@@ -39,8 +39,8 @@ ica_data = load(fullfile(volume_base2, path_to_data,"data_switch_m.mat")); ica_d
 ica_neurons_of_interest = load(fullfile(volume_base2, path_to_data,"neurons_of_interest_switch_m.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
 
 %% initialize data
-interval_step = 20; % depends on how data was created
-bins_together = 10;
+interval_step = 30; % depends on how data was created
+bins_together = 15;
 actual_connections = cell(size(ica_neurons_of_interest));
 correlation_strengths = cell(size(ica_neurons_of_interest));
 
@@ -105,19 +105,40 @@ for k = 1:size(orders,1)
     end
 end
 
+save("X:\Mathias\switch_data\connections\connections_switch_m.mat","actual_connections", "-v7.3");
+save("X:\Mathias\switch_data\connections\correlations_switch_m.mat","correlation_strengths", "-v7.3");
+
+
 %% create_figure
 
-for mouse_nb = 1:size(stimulus_data_m)
-    total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
+% for mouse_nb = 1:size(stimulus_data_m)
+%     total_nb_neurons = size(stimulus_data_m{mouse_nb,1},1);
+%     counter = size(stimulus_data_m,2);
+    % while isempty(stimulus_data_m{mouse_nb,counter})
+    %     counter = counter - 1;
+    %     last_interval_data = counter;
+    % end
+%     while isempty(correlation_strengths{mouse_nb,counter}) || isempty(correlation_strengths{mouse_nb,counter}{1,1})
+%         counter = counter - 1;
+%         last_interval_correlations = counter;
+%     end
+%     [reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
+% end
+
+%% create figure
+
+for i = 1:size(stimulus_data_m,1)
+    % get last interval
     counter = size(stimulus_data_m,2);
-    while isempty(stimulus_data_m{mouse_nb,counter})
+    last_interval_data = counter;
+    while isempty(stimulus_data_m{i,counter})
         counter = counter - 1;
         last_interval_data = counter;
     end
-    while isempty(correlation_strengths{mouse_nb,counter}) || isempty(correlation_strengths{mouse_nb,counter}{1,1})
-        counter = counter - 1;
-        last_interval_correlations = counter;
+    % create figure_data
+    figure_data = zeros(size(stimulus_data_m{i,1},1), ceil(last_interval_data/interval_step));
+    for j = 1:ceil(last_interval_data/interval_step)
+        figure_data(:,j) = get_labels_from_connections(actual_connections{i,j}, size(stimulus_data_m{i,1},1));
     end
-    [reduced_figure_connections, indices_non_removed_rows] = create_figure_connections(actual_connections, correlation_strengths, mouse_nb, total_nb_neurons, last_interval_correlations, last_interval_data, interval_step);
+    figure;imagesc(figure_data)
 end
-

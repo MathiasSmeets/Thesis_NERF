@@ -1,4 +1,4 @@
-clear; clc; close all;
+%clear; clc; close all;
 
 if ispc
     volume_base = '\\nerffs13';
@@ -28,6 +28,13 @@ addpath(genpath(folder))
 
 intervals_to_combine = 5;
 
+
+%% calculate all possible connections
+nb_combinations = 0;
+for i = 1:intervals_to_combine-1
+    nb_combinations = nb_combinations+i;
+end
+
 %% calculate mean activity after stimulus (12ms-70ms)
 
 all_mean_activity = cell(size(stimulus_data_m));
@@ -35,39 +42,55 @@ all_mean_activity = cell(size(stimulus_data_m));
 for i = 1:size(stimulus_data_m,1)
     % loop over all intervals
     for j = 1:size(stimulus_data_m,2)
-        %all_mean_activity{i,j} = sum(stimulus_data_m{i,j}(:,12:end),2);
-        all_mean_activity{i,j} = mean(stimulus_data_m{i,j}(:,12:end),2);
+        if ~isempty(stimulus_data_m{i,j})
+            all_mean_activity{i,j} = mean(stimulus_data_m{i,j}(:,12:end),2);
+        end
     end
 end
 
 %% calculate similarities (over intervals_to_combine)
 
-population_similarities = zeros(size(stimulus_data_m,1), ceil(size(stimulus_data_m,2) / intervals_to_combine));
+population_similarities_start = zeros(nb_combinations, size(stimulus_data_m,1));
+population_similarities_end = zeros(nb_combinations, size(stimulus_data_m,1));
 % loop over each mouse
 for i = 1:size(stimulus_data_m,1)
-    % loop over intervals
+    % calculate last interval
+    j = size(stimulus_data_m,2);
+    while isempty(stimulus_data_m{i,j})
+        j = j-1;
+    end
+    last_interval = j;
+
+    % loop over first intervals_to_combine intervals   
     counter = 0;
-    for j = 1:intervals_to_combine:size(stimulus_data_m,2)-intervals_to_combine+1
-        if size(stimulus_data_m,2) > j+intervals_to_combine-1
-            if ~isempty(stimulus_data_m{i,j+intervals_to_combine-1})
+    for k = 1:intervals_to_combine-1
+        for l = k+1:intervals_to_combine
+            if ~isempty(stimulus_data_m{i,k}) && ~isempty(stimulus_data_m{i,l})
                 counter = counter + 1;
-                cur_numerator = 0;
-                cur_x_denum = 0;
-                cur_y_denum = 0;
-                for k = 0:intervals_to_combine-2
-                    for l = k+1:intervals_to_combine-1
-                        cur_x = all_mean_activity{i,j+k};
-                        cur_y = all_mean_activity{i,j+l};
-                        cur_numerator = cur_numerator + dot(cur_x,cur_y);
-                        cur_x_denum = cur_x_denum + dot(cur_x, cur_x);
-                        cur_y_denum = cur_y_denum + dot(cur_y, cur_y);
-                    end
-                end
-                population_similarities(i,counter) = cur_numerator / sqrt(cur_x_denum*cur_y_denum);
+                cur_x = all_mean_activity{i,k};
+                cur_y = all_mean_activity{i,l};
+                population_similarities_start(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+            end
+        end
+    end
+
+    % loop over last intervals_to_combine intervals
+    counter = 0;
+    for k = last_interval:-1:last_interval-intervals_to_combine+2
+        for l = k-1:-1:last_interval-intervals_to_combine+1
+            if ~isempty(stimulus_data_m{i,k}) && ~isempty(stimulus_data_m{i,l})
+                counter = counter + 1;
+                cur_x = all_mean_activity{i,k};
+                cur_y = all_mean_activity{i,l};
+                population_similarities_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
             end
         end
     end
 end
+
+average_similarities_start = mean(population_similarities_start)';
+average_similarities_end = mean(population_similarities_end)';
+
 figure;hold on;
 for i = 1:size(stimulus_data_m,1)
     subplot(6,4,i)

@@ -22,6 +22,8 @@ for i = 1:length(candidate_templates)
         inverse_cur_xcorr = zeros(1,size(cc,2));
         inverse_cur_xcorr(1,size_difference/2+1:end-size_difference/2) = cur_xcorr;
         cc(2,:) = cc(2,:) + ~round(inverse_cur_xcorr);
+    else
+        cc(2,:) = cc(2,:) + 1;
     end
 end
 cc = round(cc);

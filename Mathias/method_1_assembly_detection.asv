@@ -51,7 +51,7 @@ end
 
 
 
-%% problem with second method:
+%% problem with this method:
 % if i only take one interval after stimulus, there is no such thing as
 % doing this guassian kernel and measuring max, i will only have one peak
 % in general along with some noise

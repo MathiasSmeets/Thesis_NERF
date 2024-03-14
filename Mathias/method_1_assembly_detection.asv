@@ -1,6 +1,8 @@
+
+
 function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = method_1_assembly_detection(data)
 % input: vector with rows = neurons; columns = time
-
+%% calculate statistics for parameters
 
 %% add gaussian kernel
 % Gaussian kernel parameters
@@ -51,7 +53,7 @@ end
 
 
 
-%% problem with this method:
+%% problem with second method:
 % if i only take one interval after stimulus, there is no such thing as
 % doing this guassian kernel and measuring max, i will only have one peak
 % in general along with some noise

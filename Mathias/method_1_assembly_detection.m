@@ -1,6 +1,30 @@
-function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = method_1_assembly_detection(data)
-% input: vector with rows = neurons; columns = time
+clear;clc;close all
+stimulus_data_m = load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat");stimulus_data_m=stimulus_data_m.after_stimulus_data_m;
 
+[avg_param, std_param] = calculate_distribution_params(stimulus_data_m{2,1});
+total_params = calculate_params(stimulus_data_m{2,1});
+
+function [avg_param, std_param] = calculate_distribution_params(data)
+total_ones = sum(data,'all');
+% Get the size of the matrix
+[rows, cols] = size(data);
+
+all_params = zeros(rows*1000,1);
+for i = 1:1000
+% Create a new matrix with the same size filled with zeros
+random_matrix = zeros(rows, cols);
+% Randomly scatter ones in the new matrix
+indices = randperm(rows*cols, total_ones);
+[r, c] = ind2sub([rows, cols], indices);
+random_matrix(sub2ind([rows, cols], r, c)) = 1;
+all_params((i-1)*rows + 1:i*rows) = calculate_params(random_matrix);
+end
+avg_param = mean(all_params);
+std_param = std(all_params);
+end
+
+function total_params = calculate_params(data)
+% input: vector with rows = neurons; columns = time
 
 %% add gaussian kernel
 % Gaussian kernel parameters

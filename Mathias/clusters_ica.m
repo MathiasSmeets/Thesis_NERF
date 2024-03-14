@@ -49,6 +49,7 @@ total_assemblies = cell(size(stimulus_data_m));
 total_activity = cell(size(stimulus_data_m));
 total_neurons_of_interest = cell(size(stimulus_data_m));
 total_data = cell(size(stimulus_data_m));
+total_vector = cell(size(stimulus_data_m));
 
 %% calculate assembly for each interval
 
@@ -90,7 +91,7 @@ for k = 1:size(stimulus_data_m,1)
                     cur_neurons_of_interest(jj) = [];
                 end
             end
-            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_total_mouse_zscore', create_plots);
+            [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,vector] = ica_assembly_detection(cur_total_mouse_zscore', create_plots);
             if predicted_nbr_assemblies ~= 0
                 total_neurons_of_interest{k,index_counter} = cur_neurons_of_interest;
                 total_nb_assemblies{k,index_counter} = predicted_nbr_assemblies;
@@ -98,6 +99,7 @@ for k = 1:size(stimulus_data_m,1)
                 total_assemblies{k,index_counter} = assemblies;
                 total_activity{k,index_counter} = activity;
                 total_data{k,index_counter} = cur_total_mouse_zscore;
+                total_vector{k, index_counter} = vector;
             end
             index_counter = index_counter + 1;
         end
@@ -106,13 +108,14 @@ for k = 1:size(stimulus_data_m,1)
     disp(k)
 end
 
-% savepath = "X:\Mathias\switch_data\clusters";
-% save(fullfile(savepath, "neurons_of_interest_horridge_m.mat"), "total_neurons_of_interest", "-v7.3")
-% save(fullfile(savepath, "nb_assemblies_horridge_m.mat"), "total_nb_assemblies", "-v7.3")
-% save(fullfile(savepath, "nb_neurons_horridge_m.mat"), "total_nb_neurons", "-v7.3")
-% save(fullfile(savepath, "assemblies_horridge_m.mat"), "total_assemblies", "-v7.3")
-% save(fullfile(savepath, "activity_horridge_m.mat"), "total_activity", "-v7.3")
-% save(fullfile(savepath, "data_horridge_m.mat"), "total_data", "-v7.3")
+savepath = "X:\Mathias\switch_data\clusters";
+save(fullfile(savepath, "neurons_of_interest_horridge_m.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_horridge_m.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_horridge_m.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_horridge_m.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_horridge_m.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_horridge_m.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "ica_vector_horridge_m.mat"), "total_vector", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
@@ -125,6 +128,7 @@ end
 intervals_to_combine = 3;
 population_similarities_start = zeros(2+1,size(total_assemblies,1));
 population_similarities_end = zeros(2+1,size(total_assemblies,1));
+all_cluster_matrices = cell(1,size(stimulus_data_m,1));
 % loop over all mice
 for i = 1:size(total_assemblies,1)
     % get last interval
@@ -146,7 +150,7 @@ for i = 1:size(total_assemblies,1)
     xlabel("Intervals (" + interval_step + " together)")
     ylabel("Neurons")
     title("Neurons in a cluster")
-
+    all_cluster_matrices{i} = cluster_matrix;
     % row_indices = [3,14,19,30];
     % for column_index = 1:size(cluster_matrix, 2)
     %     for cur_row = 1:numel(row_indices)
@@ -198,4 +202,4 @@ for i = 1:size(total_assemblies,1)
         end
     end
 end
-
+save(fullfile(savepath, "cluster_matrices_between_m.mat"), "all_cluster_matrices", "-v7.3")

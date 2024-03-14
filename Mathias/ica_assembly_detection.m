@@ -2,7 +2,7 @@
 %Largely based on :
 % Lopes-dos-Santos, V., Ribeiro, S., &#38; Tort, A. B. L. (2013). Detecting cell assemblies in large neuronal populations. Journal of Neuroscience Methods, 220 (2), 149–166. https://doi.org/10.1016/J.JNEUMETH.2013.04.010
 
-function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(M,plotter)
+function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,ica_vector] = ica_assembly_detection(M,plotter)
 %given a matrix A containing the zscores of N neurons throughout M time bins,
 % this function will detect neuronal assemblies, and the neurons that are
 %part of the different assemblies.
@@ -134,9 +134,11 @@ elseif predicted_nbr_assemblies ~= 0
     assembly_vector = new_idx;%reshape(new_idx,[],predicted_nbr_assemblies);
     assemblies = cell(predicted_nbr_assemblies,1);
     icacomp = zeros(size(A,1),predicted_nbr_assemblies);
+    ica_vector = cell(predicted_nbr_assemblies,1);
     for j = 1:predicted_nbr_assemblies
         assemblies{j} = neurons_to_keep(neurons_idxs(assembly_vector(:,j)==1));
-        icacomp(:,j) = A(:,neurons_idxs(assembly_vector(:,j)==1)) * M(neurons_idxs(assembly_vector(:,j)==1),j);
+        ica_vector{j} = M(neurons_idxs(assembly_vector(:,j)==1),j);
+        icacomp(:,j) = A(:,neurons_idxs(assembly_vector(:,j)==1)) * ica_vector{j};
     end
 
     if plotter
@@ -155,11 +157,13 @@ elseif predicted_nbr_assemblies ~= 0
         predicted_nbr_neurons = 0;
         assemblies = 0;
         activity= 0;
+        ica_vector = 0;
     end
     
 else
     predicted_nbr_neurons = 0;
     assemblies = 0;
     activity= 0;
+    ica_vector = 0;
 end
 end

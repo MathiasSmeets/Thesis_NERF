@@ -82,7 +82,7 @@ for k = 1:max(stimulus_data_m(:,1))
             end
         end
 
-        [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_data_zscore', create_plots);
+        [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,~] = ica_assembly_detection(cur_data_zscore', create_plots);
         if predicted_nbr_assemblies ~= 0
             total_neurons_of_interest{k,index_counter} = cur_neurons_of_interest;
             total_nb_assemblies{k,index_counter} = predicted_nbr_assemblies;
@@ -98,12 +98,12 @@ for k = 1:max(stimulus_data_m(:,1))
 end
 
 savepath = "X:\Mathias\switch_data\clusters";
-save(fullfile(savepath, "neurons_of_interest_rest_m.mat"), "total_neurons_of_interest", "-v7.3")
-save(fullfile(savepath, "nb_assemblies_rest_m.mat"), "total_nb_assemblies", "-v7.3")
-save(fullfile(savepath, "nb_neurons_rest_m.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_rest_m.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_rest_m.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_rest_m.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "neurons_of_interest_after_m.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_after_m.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_after_m.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_after_m.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_after_m.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_after_m.mat"), "total_data", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
@@ -116,6 +116,7 @@ save(fullfile(savepath, "data_rest_m.mat"), "total_data", "-v7.3")
 intervals_to_combine = 3;
 population_similarities_start = zeros(2+1,size(total_assemblies,1));
 population_similarities_end = zeros(2+1,size(total_assemblies,1));
+all_cluster_matrices = cell(1,max(stimulus_data_m(:,1)));
 % loop over all mice
 for i = 1:max(stimulus_data_m(:,1))
     % get last interval
@@ -133,6 +134,7 @@ for i = 1:max(stimulus_data_m(:,1))
     xlabel("Time Bins (" + interval_size + " together)")
     ylabel("Neurons")
     title("Neurons in a cluster")
+    all_cluster_matrices{i} = cluster_matrix;
 
     % row_indices = [3,14,19,30];
     % for column_index = 1:size(cluster_matrix, 2)
@@ -185,4 +187,5 @@ for i = 1:max(stimulus_data_m(:,1))
     %     end
     % end
 end
+save(fullfile(savepath, "cluster_matrices_after_m.mat"), "all_cluster_matrices", "-v7.3")
 

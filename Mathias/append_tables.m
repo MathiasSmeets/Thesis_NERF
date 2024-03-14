@@ -74,9 +74,10 @@ end
 clearvars after_data
 
 % waiting_data
-waiting_data = zeros(size(cur_table.Fr_waiting,1), size(cur_table.Fr_waiting{1,1},2)+1);
+waiting_data = cell(11,1);
 for i = 1:size(waiting_data,1)
     cur_waiting_data = [cur_table.Recording(i,1), cur_table.Fr_waiting{i,1}];
-    waiting_data(i,:) = cur_waiting_data;
+    cur_mouse = cur_table.Recording(i,1);
+    waiting_data{cur_mouse} = cur_waiting_data;
 end
 save(fullfile(savepath, "waiting_data_m.mat"), "waiting_data", "-v7.3")

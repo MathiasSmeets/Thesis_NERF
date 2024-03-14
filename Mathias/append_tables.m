@@ -20,7 +20,7 @@ for i = 2:11
     new_table(~new_table.Recording,:) = [];
 
     % append to total table
-    cur_table = [cur_table; new_table(:,[1,4,7:9,11,15])];
+    cur_table = [cur_table; new_table(:,[1,4,7:9,11,13,15])];
 
     clearvars new_table
 end

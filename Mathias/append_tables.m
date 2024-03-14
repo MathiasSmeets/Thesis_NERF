@@ -8,7 +8,7 @@ savepath = "/scratch/mathiass-takeokalab/01/";
 
 frM_1 = load(fullfile(datapath, "frM_switched_1.mat"));
 cur_table = struct2array(frM_1);
-cur_table = cur_table(:,[1,4,7:9,11,15]);
+cur_table = cur_table(:,[1,4,7:9,11,13,15]);
 clearvars frM_1
 
 % append tables

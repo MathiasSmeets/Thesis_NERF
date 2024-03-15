@@ -97,12 +97,13 @@ for i = 1:size(stimulus_data_m,1)
     end
     threshold_20percent = 0.2*size(cur_before_data,2);
     active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
+    disp(active_assemblies_before)
     
     % get most active assembly that is not active before experiment (20% of the time)
     maxvalue = sort(all_assemblies_count_before,'descend');
     value_counter = 1;
     cur_value = maxvalue(value_counter);
-    most_common_cluster = all_assemblies_before{cur_value};
+    most_common_cluster = all_assemblies_before{all_assemblies_count_before==cur_value};
     while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
         value_counter = value_counter+1;
         cur_value = maxvalue(value_counter);

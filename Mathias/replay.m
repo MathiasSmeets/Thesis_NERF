@@ -175,10 +175,11 @@ end
 
 avg_cor_before = mean(cur_correlation_before,2);
 avg_cor_between=zeros(numel(cur_correlation_between),1);
+avg_cor_after=zeros(numel(cur_correlation_after),1);
 for i = 1:numel(cur_correlation_between)
     avg_cor_between(i) = mean(cur_correlation_between{i});
+    avg_cor_after(i) = mean(cur_correlation_after{i});
 end
-avg_cor_after = mean(cur_correlation_after,2);
 %avg_act_before = mean(abs(cur_activity_before),2);
 %avg_act_after = mean(abs(cur_activity_after),2);
 figure;boxplot([avg_cor_before,avg_cor_between,avg_cor_after])
@@ -186,10 +187,11 @@ figure;boxplot([avg_cor_before,avg_cor_between,avg_cor_after])
 
 avg_adj_cur_correlation_before = mean(adj_cur_correlation_before,2);
 avg_adj_cur_correlation_between = zeros(numel(adj_cur_correlation_between),1);
+avg_adj_cur_correlation_after = zeros(numel(adj_cur_correlation_after),1);
 for i = 1:numel(adj_cur_correlation_between)
     avg_adj_cur_correlation_between(i) = mean(adj_cur_correlation_between{i});
+    avg_adj_cur_correlation_after(i) = mean(adj_cur_correlation_after{i});
 end
-avg_adj_cur_correlation_after = mean(adj_cur_correlation_after,2);
 
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);

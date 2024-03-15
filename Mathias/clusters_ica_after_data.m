@@ -126,7 +126,7 @@ for i = 1:size(stimulus_data_m,1)
     % get last interval
     cur_after_data = stimulus_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
-    last_interval_index = ceil(size(cur_after_data,2)/interval_size);
+    last_interval_index = floor(size(cur_after_data,2)/interval_size);
 
     % create clustermatrix
     cluster_matrix = zeros(size(cur_after_data,1), last_interval_index);

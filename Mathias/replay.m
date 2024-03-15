@@ -73,7 +73,7 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-    maxvalue = maxk(all_assemblies_count,1);%maxvalue = maxvalue(2);                 %%% !!!!!!!!!!
+    maxvalue = maxk(all_assemblies_count,2);maxvalue = maxvalue(2);                 %%% !!!!!!!!!!
     maxindex = find(all_assemblies_count == maxvalue,1, 'last');
     most_common_cluster = all_assemblies{maxindex};
     template_cluster{i} = most_common_cluster;

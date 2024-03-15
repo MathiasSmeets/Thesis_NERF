@@ -112,7 +112,7 @@ for i = 1:size(stimulus_data_m,1)
     template_cluster{i} = most_common_cluster;
     template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
-    template_vector{i} = all_vectors{maxindex}(:,1);
+    %template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(most_common_cluster),bins_together);

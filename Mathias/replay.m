@@ -33,8 +33,8 @@ ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_
 ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_horridge_m.mat")); ica_activity = ica_activity.total_activity;
 ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_horridge_m.mat")); ica_vector = ica_vector.total_vector;
 
-ica_neurons_of_interest_before = load(fullfile(savepath, "neurons_of_interest_after_m.mat"));ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
-ica_assemblies_before = load(fullfile(savepath, "assemblies_after_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
+ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_after_m.mat"));ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_after_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
 %% get template
 
 interval_size = 70;

@@ -97,7 +97,7 @@ for i = 1:size(stimulus_data_m,1)
     end
     threshold_20percent = 0.2*size(cur_before_data,2);
     active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
-    disp(active_assemblies_before)
+    all_active_assemblies_before{i} = active_assemblies_before;
     
     % get most active assembly that is not active before experiment (20% of the time)
     maxvalue = sort(all_assemblies_count,'descend');

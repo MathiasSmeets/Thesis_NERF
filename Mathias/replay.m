@@ -107,13 +107,13 @@ end
 
 %% check for replay in before and after data
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
-cur_correlation_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
+cur_correlation_after = cell(size(stimulus_data_m,1),1);
 cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell because different lengths
 % cur_activity_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 % cur_activity_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
 % cur_activity_between = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
-adj_cur_correlation_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
+adj_cur_correlation_after = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell because different lengths
 for i = 1:size(stimulus_data_m,1)
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
@@ -129,8 +129,9 @@ for i = 1:size(stimulus_data_m,1)
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
         cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
     end
+    cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(cur_template,2)+1);
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        cur_correlation_after(i,j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+        cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
@@ -144,9 +145,10 @@ for i = 1:size(stimulus_data_m,1)
             adj_cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
+    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data_m,2)-1-size(cur_template,2)+1);
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
         if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
-            adj_cur_correlation_after(i,j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+            adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
     for j = 1:last_interval_data(i)
@@ -218,6 +220,11 @@ avg_adj_cur_correlation_after = mean(adj_cur_correlation_after,2);
 % [p,h,stats] = ranksum(x,y)
 
 
-
+for i = 1:11
+figure;plot([cur_correlation_before(i,:), cur_correlation_between{i},cur_correlation_after(i,:)])
+saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation" + i + ".png")
+figure;plot([adj_cur_correlation_before(i,:), adj_cur_correlation_between{i},adj_cur_correlation_after(i,:)])
+saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation_adj" + i + ".png")
+end
 
 

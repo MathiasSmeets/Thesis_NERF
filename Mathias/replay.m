@@ -40,6 +40,7 @@ ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblie
 interval_size = 70;
 intervals_together = 30;
 bins_together = 15;
+intervals_together_before = intervals_together*interval_size;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
@@ -79,7 +80,7 @@ for i = 1:size(stimulus_data_m,1)
     % check if cluster that is found is not also most occurring in before data, if this is the case, take next one that does not contain any of these neurons
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);
-    last_interval_before = ceil(size(cur_before_data,2)/intervals_together);
+    last_interval_before = ceil(size(cur_before_data,2)/intervals_together_before);
     all_assemblies_before = {};
     all_assemblies_count_before = [];
     for j = 1:last_interval_before

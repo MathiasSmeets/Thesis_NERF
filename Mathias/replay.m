@@ -145,7 +145,7 @@ for i = 1:size(stimulus_data_m,1)
             adj_cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
-    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data_m,2)-1-size(cur_template,2)+1);
+    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(cur_template,2)+1);
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
         if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));

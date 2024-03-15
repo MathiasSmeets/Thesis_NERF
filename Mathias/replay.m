@@ -10,14 +10,15 @@ end
 
 path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
+path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 
-output_m = load(fullfile(volume_base2, path_to_data, "neurons_of_interest_horridge_m.mat"));
+output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
 output_m = output_m.output_m;
 
-inhibited_m = load(fullfile(volume_base2, path_to_data, "inhibited_horridge_m.mat"));
+inhibited_m = load(fullfile(volume_base2, path_to_noi, "inhibited_horridge_m.mat"));
 inhibited_m = inhibited_m.inhibited_m;
 
 after_data_m = load(fullfile(volume_base2, path_to_data, "after_data_m.mat"));

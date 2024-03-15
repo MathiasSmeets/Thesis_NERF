@@ -6,14 +6,14 @@ clear; clc; close all;
 datapath = "/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/tables";
 savepath = "/scratch/mathiass-takeokalab/01/";
 
-frM_1 = load(fullfile(datapath, "frY_switched_1.mat"));
+frM_1 = load(fullfile(datapath, "frM_switched_1.mat"));
 cur_table = struct2array(frM_1);
 cur_table = cur_table(:,[1,4,7:9,11,13,15]);
 clearvars frY_1
 
 % append tables
 for i = 2:11
-    new_table = load(fullfile(datapath, "frY_switched_" + i + ".mat"));
+    new_table = load(fullfile(datapath, "frM_switched_" + i + ".mat"));
     new_table = struct2array(new_table);
 
     % remove rows that contain zero in the recording column
@@ -81,4 +81,4 @@ for i = 1:size(waiting_data,1)
     cur_mouse = i;
     waiting_data{cur_mouse} = cur_waiting_data;
 end
-save(fullfile(savepath, "waiting_data_y.mat"), "waiting_data", "-v7.3")
+save(fullfile(savepath, "waiting_data_m.mat"), "waiting_data", "-v7.3")

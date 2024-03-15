@@ -33,6 +33,8 @@ ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_
 ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_horridge_m.mat")); ica_activity = ica_activity.total_activity;
 ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_horridge_m.mat")); ica_vector = ica_vector.total_vector;
 
+ica_neurons_of_interest_before = load(fullfile(savepath, "neurons_of_interest_after_m.mat"));ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+ica_assemblies_before = load(fullfile(savepath, "assemblies_after_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
 %% get template
 
 interval_size = 70;
@@ -42,6 +44,7 @@ last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
 template_vector = cell(1,size(stimulus_data_m,1));
+template_cluster_count = cell(1,size(stimulus_data_m,1));
 for i = 1:size(stimulus_data_m,1)
     % get last interval
     % get last interval
@@ -73,11 +76,40 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-    maxvalue = maxk(all_assemblies_count,2);maxvalue = maxvalue(2);                 %%% !!!!!!!!!!
-    maxindex = find(all_assemblies_count == maxvalue,1, 'last');
-    most_common_cluster = all_assemblies{maxindex};
-    template_cluster{i} = most_common_cluster;
+    % check if cluster that is found is not also most occurring in before data, if this is the case, take next one that does not contain any of these neurons
+    cur_before_data = before_data_m(before_data_m(:,1) == i,:);
+    cur_before_data = cur_before_data(:,2:end);
+    last_interval_before = ceil(size(cur_before_data,2)/intervals_together);
+    all_assemblies_before = {};
+    all_assemblies_count_before = [];
+    for j = 1:last_interval_before
+        for k = 1:numel(ica_assemblies_before{i,j})
+            cur_assembly_before = ica_neurons_of_interest_before{i,j}(ica_assemblies_before{i,j}{k});
+            idx_before = find(cellfun(@(x) isequal(x, cur_assembly_before), all_assemblies_before));
+            if ~isempty(idx_before)
+                all_assemblies_count_before(idx_before) = all_assemblies_count_before(idx_before) + 1;
+            else
+                all_assemblies_before{end+1} = cur_assembly_before;
+                all_assemblies_count_before = [all_assemblies_count_before, 1];
+            end
+        end
+    end
+    threshold_20percent = 0.2*size(cur_before_data,2);
+    active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
+    
+    % get most active assembly that is not active before experiment (20% of the time)
+    maxvalue = sort(all_assemblies_count,'descend');
+    value_counter = 1;
+    cur_value = maxvalue(value_counter);
+    most_common_cluster = all_assemblies{cur_value};
+    while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
+        value_counter = value_counter+1;
+        cur_value = maxvalue(value_counter);
+        most_common_cluster = all_assemblies{cur_value};
+    end
 
+    template_cluster{i} = most_common_cluster;
+    template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
     template_vector{i} = all_vectors{maxindex}(:,1);
 

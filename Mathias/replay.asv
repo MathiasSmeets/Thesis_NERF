@@ -33,6 +33,8 @@ ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_
 ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_horridge_m.mat")); ica_activity = ica_activity.total_activity;
 ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_horridge_m.mat")); ica_vector = ica_vector.total_vector;
 
+ica_neurons_of_interest_before = load(fullfile(savepath, "neurons_of_interest_after_m.mat"));ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+ica_assemblies_before = load(fullfile(savepath, "assemblies_after_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
 %% get template
 
 interval_size = 70;
@@ -42,6 +44,7 @@ last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
 template_vector = cell(1,size(stimulus_data_m,1));
+template_cluster_count = cell(1,size(stimulus_data_m,1));
 for i = 1:size(stimulus_data_m,1)
     % get last interval
     % get last interval
@@ -73,11 +76,39 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-    maxvalue = max(all_assemblies_count);
-    maxindex = find(all_assemblies_count == maxvalue,1, 'last');
-    most_common_cluster = all_assemblies{maxindex};
-    template_cluster{i} = most_common_cluster;
+    % check if cluster that is found is not also most occurring in before data, if this is the case, take next one that does not contain any of these neurons
+    cur_before_data = before_data_m(before_data_m(:,1) == i,:);
+    cur_before_data = cur_before_data(:,2:end);
+    last_interval_before = ceil(size(cur_before_data,2)/intervals_together);
+    all_assemblies_before = {};
+    all_assemblies_count_before = [];
+    for j = 1:last_interval_before
+        for k = 1:numel(ica_assemblies_before{i,j})
+            cur_assembly_before = ica_neurons_of_interest_before{i,j}(ica_assemblies_before{i,j}{k});
+            idx_before = find(cellfun(@(x) isequal(x, cur_assembly_before), all_assemblies_before));
+            if ~isempty(idx_before)
+                all_assemblies_count_before(idx_before) = all_assemblies_count_before(idx_before) + 1;
+            else
+                all_assemblies_before{end+1} = cur_assembly_before;
+                all_assemblies_count_before = [all_assemblies_count_before, 1];
+            end
+        end
+    end
+    threshold_20percent = 0.2*size(cur_before_data,2);
+    active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
+    
+    % get most active assembly that is not active before experiment (20% of the time)
+    maxvalue = sort(all_assemblies_count,'descend');
+    value_counter = 1;
+    cur_value = maxvalue(value_counter);
+    most_common_cluster = all_assemblies{cur_value};
+    while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
+        value_counter = value_counter+1;
+        most_common_cluster = all_assemblies{cur_value};
+    end
 
+    template_cluster{i} = most_common_cluster;
+    template_cluster_count{i} = maxvalue;
     % in order to get vector, take average vector but fix sign ambiguity first
     template_vector{i} = all_vectors{maxindex}(:,1);
 
@@ -191,7 +222,7 @@ scatter(ones(size(avg_cor_between,1))*2,avg_cor_between, 'filled', 'blue')
 scatter(ones(size(avg_cor_after,1))*3,avg_cor_after, 'filled', 'blue')
 line([ones(size(avg_cor_before)), ones(size(avg_cor_between))*2]',[avg_cor_before, avg_cor_between]','Color','green')
 line([ones(size(avg_cor_between))*2, ones(size(avg_cor_after))*3]',[avg_cor_between, avg_cor_after]','Color','green')
-
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_bba.png")
 
 figure
 boxplot([avg_cor_before, avg_cor_after], 'Labels', {'Baseline', 'Rest'})
@@ -199,6 +230,7 @@ hold on
 scatter(ones(size(avg_cor_before,1)),avg_cor_before, 'filled', 'blue')
 scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
 line([ones(size(avg_cor_before)), ones(size(avg_cor_after))*2]',[avg_cor_before, avg_cor_after]','Color','green')
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba.png")
 
 avg_adj_cur_correlation_before = mean(adj_cur_correlation_before,2);
 avg_adj_cur_correlation_between = zeros(numel(adj_cur_correlation_between),1);
@@ -217,6 +249,7 @@ scatter(ones(size(avg_adj_cur_correlation_between,1))*2,avg_adj_cur_correlation_
 scatter(ones(size(avg_adj_cur_correlation_after,1))*3,avg_adj_cur_correlation_after, 'filled', 'blue')
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_between))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_between]','Color','green')
 line([ones(size(avg_adj_cur_correlation_between))*2, ones(size(avg_adj_cur_correlation_after))*3]',[avg_adj_cur_correlation_between, avg_adj_cur_correlation_after]','Color','green')
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_bba.png")
 
 figure
 boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Rest'})
@@ -224,7 +257,7 @@ hold on
 scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
 scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
-
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;
@@ -255,12 +288,15 @@ line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlat
 
 
 for i = 1:11
-figure;
-subplot(3,1,1);plot(cur_correlation_before(i,:), cur_correlation_between{i},cur_correlation_after{i}])
+figure
+subplot(3,1,1);plot(cur_correlation_before(i,:))
 subplot(3,1,2);plot(cur_correlation_between{i})
 subplot(3,1,3);plot(cur_correlation_after{i})
 saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation" + i + ".png")
-figure;plot([adj_cur_correlation_before(i,:), adj_cur_correlation_between{i},adj_cur_correlation_after{i}])
+figure
+subplot(3,1,1);plot(adj_cur_correlation_before(i,:))
+subplot(3,1,2);plot(adj_cur_correlation_between{i})
+subplot(3,1,3);plot(adj_cur_correlation_after{i})
 saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation_adj" + i + ".png")
 end
 

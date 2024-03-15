@@ -96,6 +96,8 @@ for i = 1:size(stimulus_data_m,1)
         end
     end
     threshold_20percent = 0.2*last_interval_before;
+    all_active_assemblies_before_before_threshold{i} = active_assemblies_before;
+    all_act_as_count{i} = all_assemblies_count_before;
     active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
     all_active_assemblies_before{i} = active_assemblies_before;
     

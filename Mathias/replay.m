@@ -223,9 +223,9 @@ end
 
 
 for i = 1:11
-figure;plot([cur_correlation_before(i,:), cur_correlation_between{i},cur_correlation_after(i,:)])
+figure;plot([cur_correlation_before(i,:), cur_correlation_between{i},cur_correlation_after{i}])
 saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation" + i + ".png")
-figure;plot([adj_cur_correlation_before(i,:), adj_cur_correlation_between{i},adj_cur_correlation_after(i,:)])
+figure;plot([adj_cur_correlation_before(i,:), adj_cur_correlation_between{i},adj_cur_correlation_after{i}])
 saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation_adj" + i + ".png")
 end
 

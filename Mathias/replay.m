@@ -104,8 +104,9 @@ adj_cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell beca
 for i = 1:size(stimulus_data_m,1)
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);
-    cur_after_data = after_data_m(after_data_m(:,1) == i,:);
-    cur_after_data = cur_after_data(:,2:end);
+    %cur_after_data = after_data_m(after_data_m(:,1) == i,:);
+    %cur_after_data = cur_after_data(:,2:end);
+    cur_after_data = after_data_m{i};
 
     cur_template = template{i};
     cur_cluster = template_cluster{i};

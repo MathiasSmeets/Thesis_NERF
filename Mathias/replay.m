@@ -100,14 +100,20 @@ for i = 1:size(stimulus_data_m,1)
     disp(active_assemblies_before)
     
     % get most active assembly that is not active before experiment (20% of the time)
-    maxvalue = sort(all_assemblies_count_before,'descend');
+    maxvalue = sort(all_assemblies_count,'descend');
     value_counter = 1;
     cur_value = maxvalue(value_counter);
-    most_common_cluster = all_assemblies_before{all_assemblies_count_before==cur_value};
+    most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+    most_common_cluster = most_common_cluster{end};
     while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
         value_counter = value_counter+1;
         cur_value = maxvalue(value_counter);
-        most_common_cluster = all_assemblies_before{cur_value};
+        most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+        if cur_value == maxvalue(value_counter-1)
+            most_common_cluster = most_common_cluster{end-1};
+        else
+            most_common_cluster = most_common_cluster{end};
+        end
     end
 
     template_cluster{i} = most_common_cluster;

@@ -40,6 +40,7 @@ ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblie
 interval_size = 70;
 intervals_together = 30;
 bins_together = 15;
+intervals_together_before = intervals_together*interval_size;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
@@ -79,7 +80,7 @@ for i = 1:size(stimulus_data_m,1)
     % check if cluster that is found is not also most occurring in before data, if this is the case, take next one that does not contain any of these neurons
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);
-    last_interval_before = ceil(size(cur_before_data,2)/intervals_together);
+    last_interval_before = ceil(size(cur_before_data,2)/intervals_together_before);
     all_assemblies_before = {};
     all_assemblies_count_before = [];
     for j = 1:last_interval_before
@@ -96,22 +97,28 @@ for i = 1:size(stimulus_data_m,1)
     end
     threshold_20percent = 0.2*size(cur_before_data,2);
     active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
+    disp(active_assemblies_before)
     
     % get most active assembly that is not active before experiment (20% of the time)
-    maxvalue = sort(all_assemblies_count_before,'descend');
+    maxvalue = sort(all_assemblies_count,'descend');
     value_counter = 1;
     cur_value = maxvalue(value_counter);
-    most_common_cluster = all_assemblies_before{cur_value};
+    most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+    most_common_cluster = most_common_cluster{end};
     while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
         value_counter = value_counter+1;
         cur_value = maxvalue(value_counter);
-        most_common_cluster = all_assemblies_before{cur_value};
+        most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+        most_common_cluster = most_common_cluster{end};
+        
+            most_common_cluster = most_common_cluster{end-1};
+        end
     end
 
     template_cluster{i} = most_common_cluster;
     template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
-    template_vector{i} = all_vectors{maxindex}(:,1);
+    %template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(most_common_cluster),bins_together);

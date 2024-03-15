@@ -121,6 +121,7 @@ for i = 1:size(stimulus_data_m,1)
     %cur_after_data = after_data_m(after_data_m(:,1) == i,:);
     %cur_after_data = cur_after_data(:,2:end);
     cur_after_data = after_data_m{i};
+    cur_after_data = cell2mat(cur_after_data);
 
     cur_template = template{i};
     cur_cluster = template_cluster{i};

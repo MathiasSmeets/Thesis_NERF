@@ -40,19 +40,19 @@ last_interval_data = zeros(1,size(stimulus_data_m,1));
 % cur_activity_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 % cur_activity_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
 % cur_activity_between = cell(size(stimulus_data_m,1),1);
-adj_cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+adj_cur_correlation_before = zeros(size(stimulus_data_m,1),1);
 adj_cur_correlation_after = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between = cell(size(stimulus_data_m,1),1);
-adj_cur_correlation_before_02 = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+adj_cur_correlation_before_02 = zeros(size(stimulus_data_m,1),1);
 adj_cur_correlation_after_02 = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between_02 = cell(size(stimulus_data_m,1),1);
-adj_cur_correlation_before_05 = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+adj_cur_correlation_before_05 = zeros(size(stimulus_data_m,1),1);
 adj_cur_correlation_after_05 = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between_05 = cell(size(stimulus_data_m,1),1);
-adj_cur_correlation_before_3 = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+adj_cur_correlation_before_3 = zeros(size(stimulus_data_m,1),1);
 adj_cur_correlation_after_3 = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between_3 = cell(size(stimulus_data_m,1),1);
-adj_cur_correlation_before_5 = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+adj_cur_correlation_before_5 = zeros(size(stimulus_data_m,1),1);
 adj_cur_correlation_after_5 = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between_5 = cell(size(stimulus_data_m,1),1);
 for i = 1:size(stimulus_data_m,1)
@@ -64,9 +64,6 @@ for i = 1:size(stimulus_data_m,1)
         counter = counter - 1;
         last_interval_data(i) = counter;
     end
-
-    cur_template = template{i};
-    cur_cluster = template_cluster{i};
 
     % do a compression of 0.2; 0.5; 3; 5
     compressed_02 = create_compressed_template(template{i},0.2);

@@ -180,27 +180,28 @@ for i = 1:size(switch_data_m,1)
     cur_cluster = template_cluster{i};
 
     % check if at least 2 spikes in data, otherwise 0
+    threshold = ceil(size(cur_template,1)/2);
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
+        if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= threshold
             adj_cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
     adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(cur_template,2)+1);
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
+        if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= threshold
             adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
     for j = 1:last_interval_data_horridge(i)
         for k = 1:size(switch_data_m{i,j},2)-size(cur_template,2)+1
-            if sum(sum(switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2
+            if sum(sum(switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= threshold
                 adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
             end
         end
     end
     for j = 1:last_interval_data_switch(i)
         for k = 1:size(switch_data_m{i,j},2)-size(cur_template,2)+1
-            if sum(sum(switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2
+            if sum(sum(switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= threshold
                 adj_cur_correlation_switch{i}((j-1)*size(switch_data_m{i,j},2)+k) = sum(cur_template.*switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
             end
         end
@@ -229,9 +230,16 @@ scatter(ones(size(avg_adj_cur_correlation_after,1))*3,avg_adj_cur_correlation_af
 scatter(ones(size(avg_adj_cur_correlation_switch,1))*4,avg_adj_cur_correlation_switch,'filled', 'blue')
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_between))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_between]','Color','green')
 line([ones(size(avg_adj_cur_correlation_between))*2, ones(size(avg_adj_cur_correlation_after))*3]',[avg_adj_cur_correlation_between, avg_adj_cur_correlation_after]','Color','green')
-line([ones(size(avg_adj_cur_correlation_after))*3, ones(size(avg_adj_cur_correlation_switch))*3]',[avg_adj_cur_correlation_after, avg_adj_cur_correlation_switch]','Color','green')
+line([ones(size(avg_adj_cur_correlation_after))*3, ones(size(avg_adj_cur_correlation_switch))*4]',[avg_adj_cur_correlation_after, avg_adj_cur_correlation_switch]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_bbas_based_on_switch.png")
 
+figure
+boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Rest'})
+hold on
+scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
+scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
+line([ones(size(avg_adj_cur_correlation_before))*1, ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_based_on_switch.png")
 %% determine 95% threshold based on before data ---->>> not working well
 
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)

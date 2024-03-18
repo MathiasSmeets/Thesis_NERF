@@ -78,6 +78,9 @@ for i = 1:size(stimulus_data_m,1)
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
 
+    cur_template = template{i};
+    cur_cluster = template_cluster{i};
+
     % check if at least 2 spikes in data, otherwise 0
     % compression 1
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1

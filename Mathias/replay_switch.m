@@ -74,6 +74,24 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-
-
 end
+
+%% calculate average
+% compression 1
+avg_cur_cor_horrige = zeros(numel(adj_cur_correlation_horridge),1);
+for i = 1:numel(avg_cur_cor_horrige)
+    avg_cur_cor_horrige(i) = mean(adj_cur_correlation_horridge{i});
+end
+avg_cur_cor_switch = zeros(numel(adj_cur_correlation_switch),1);
+for i = 1:numel(avg_cur_cor_switch)
+    avg_cur_cor_switch(i) = mean(adj_cur_correlation_switch{i});
+end
+
+% create boxplots
+figure
+boxplot([avg_cur_cor_horrige, avg_cur_cor_switch], 'Labels', {'Horridge', 'Switch'})
+hold on
+scatter(ones(size(avg_cur_cor_horrige,1)),avg_cur_cor_horrige, 'filled', 'blue')
+scatter(ones(size(avg_cur_cor_switch,1))*2,avg_cur_cor_switch, 'filled', 'blue')
+line([ones(size(avg_cur_cor_horrige)), ones(size(avg_cur_cor_switch))*2]',[avg_cur_cor_horrige, avg_cur_cor_switch]','Color','green')
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_horridge_switch.png")

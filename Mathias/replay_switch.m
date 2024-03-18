@@ -16,7 +16,7 @@ stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 
 switch_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
-switch_data_m = switch_data_m.after_stimulus_switch_m;
+switch_data_m = switch_data_m.after_stimulus_data_m;
 
 output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
 output_m = output_m.output_m;

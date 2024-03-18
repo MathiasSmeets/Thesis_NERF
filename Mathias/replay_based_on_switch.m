@@ -32,7 +32,7 @@ after_data_m = after_data_m(1:9,:);
 
 before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_m.mat"));
 before_data_m = before_data_m.before_data;
-before_data_m(before_data_m(:,1)>=10) = [];
+before_data_m(before_data_m(:,1)>=10,:) = [];
 
 ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_switch_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
 ica_data = load(fullfile(volume_base2,path_to_clusters, "data_switch_m.mat")); ica_data = ica_data.total_data;

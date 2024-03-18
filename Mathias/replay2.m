@@ -66,10 +66,10 @@ for i = 1:size(stimulus_data_m,1)
     end
 
     % do a compression of 0.2; 0.5; 3; 5
-    compressed_02 = create_compressed_template(template{i},0.2);
+    compressed_02 = create_compressed_template(template{i},0.1);
     compressed_05 = create_compressed_template(template{i},0.5);
     compressed_3 = create_compressed_template(template{i},3);
-    compressed_5 = create_compressed_template(template{i},10);
+    compressed_5 = create_compressed_template(template{i},5);
 
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);

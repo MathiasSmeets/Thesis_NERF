@@ -149,8 +149,8 @@ for i = 1:size(switch_data_m,1)
     template{i} =  cur_template/counter;
 end
 
-save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template_switch')
-save('/scratch/mathiass-takeokalab/01/template_cluster_m.mat', 'template_cluster_switch')
+save('/scratch/mathiass-takeokalab/01/template_switch_m.mat', 'template')
+save('/scratch/mathiass-takeokalab/01/template_cluster_switch_m.mat', 'template_cluster')
 %% check for replay in before and after data
 
 adj_cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);

@@ -69,7 +69,7 @@ for i = 1:size(stimulus_data_m,1)
     compressed_02 = create_compressed_template(template{i},0.2);
     compressed_05 = create_compressed_template(template{i},0.5);
     compressed_3 = create_compressed_template(template{i},3);
-    compressed_5 = create_compressed_template(template{i},5);
+    compressed_5 = create_compressed_template(template{i},10);
 
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);
@@ -238,6 +238,8 @@ line([ones(size(avg_adj_cor_after_5)), ones(size(avg_adj_cor_after_3))*2]',[avg_
 line([ones(size(avg_adj_cor_after_3))*2, ones(size(avg_adj_cor_after))*3]',[avg_adj_cor_after_3, avg_adj_cor_after]','Color','green')
 line([ones(size(avg_adj_cor_after))*3, ones(size(avg_adj_cor_after_05))*4]',[avg_adj_cor_after, avg_adj_cor_after_05]','Color','green')
 line([ones(size(avg_adj_cor_after_05))*4, ones(size(avg_adj_cor_after_02))*5]',[avg_adj_cor_after_05, avg_adj_cor_after_02]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_scaled_template" + i + ".png")
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_scaled_template_after.png")
+
+
 
 

@@ -34,7 +34,7 @@ ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_switch
 ica_data = load(fullfile(volume_base2,path_to_clusters, "data_switch_m.mat")); ica_data = ica_data.total_data;
 ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_of_interest_switch_m.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
 ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_switch_m.mat")); ica_activity = ica_activity.total_activity;
-ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_m.mat")); ica_vector = ica_vector.total_vector;
+%ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_m.mat")); ica_vector = ica_vector.total_vector;
 
 ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_after_m.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_after_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
@@ -68,15 +68,15 @@ for i = 1:size(switch_data_m,1)
     for j = 1:cur_last_interval
         for k = 1:numel(ica_assemblies{i,j})
             cur_assembly = ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k});
-            cur_vector = ica_vector{i,j}{k};
+            %cur_vector = ica_vector{i,j}{k};
             idx = find(cellfun(@(x) isequal(x, cur_assembly), all_assemblies));
             if ~isempty(idx)
                 all_assemblies_count(idx) = all_assemblies_count(idx) + 1;
-                all_vectors{idx} = [all_vectors{idx}, cur_vector];
+                %all_vectors{idx} = [all_vectors{idx}, cur_vector];
             else
                 all_assemblies{end+1} = cur_assembly;
                 all_assemblies_count = [all_assemblies_count, 1];
-                all_vectors{end + 1} = cur_vector;
+                %all_vectors{end + 1} = cur_vector;
             end
         end
     end

@@ -146,7 +146,7 @@ for i = 1:size(stimulus_data_m,1)
     template{i} =  cur_template/counter;
 end
 
-
+save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
 %% check for replay in before and after data
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_correlation_after = cell(size(stimulus_data_m,1),1);

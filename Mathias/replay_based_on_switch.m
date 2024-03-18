@@ -65,7 +65,7 @@ for i = 1:size(switch_data_m,1)
     end
     counter = size(stimulus_data_m,2);
     last_interval_data_horridge(i) = counter;
-    while isempty(switch_data_m{i,counter})
+    while isempty(stimulus_data_m{i,counter})
         counter = counter - 1;
         last_interval_data_horridge(i) = counter;
     end

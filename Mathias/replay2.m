@@ -108,7 +108,7 @@ for i = 1:size(stimulus_data_m,1)
             adj_cur_correlation_before_02(i,j) = sum(compressed_02.*cur_before_data(cur_cluster,j:j+size(compressed_02,2)-1),'all') / (size(compressed_02,1) * size(compressed_02,2));
         end
     end
-    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_02,2)+1);
+    adj_cur_correlation_after_02{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_02,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_02,2)+1
         if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_02{i}(j) = sum(compressed_02.*cur_after_data(cur_cluster,j:j+size(compressed_02,2)-1),'all') / (size(compressed_02,1) * size(compressed_02,2));
@@ -128,7 +128,7 @@ for i = 1:size(stimulus_data_m,1)
             adj_cur_correlation_before_05(i,j) = sum(compressed_05.*cur_before_data(cur_cluster,j:j+size(compressed_05,2)-1),'all') / (size(compressed_05,1) * size(compressed_05,2));
         end
     end
-    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_05,2)+1);
+    adj_cur_correlation_after_05{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_05,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_05,2)+1
         if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_05{i}(j) = sum(compressed_05.*cur_after_data(cur_cluster,j:j+size(compressed_05,2)-1),'all') / (size(compressed_05,1) * size(compressed_05,2));
@@ -148,7 +148,7 @@ for i = 1:size(stimulus_data_m,1)
             adj_cur_correlation_before_3(i,j) = sum(compressed_3.*cur_before_data(cur_cluster,j:j+size(compressed_3,2)-1),'all') / (size(compressed_3,1) * size(compressed_3,2));
         end
     end
-    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_3,2)+1);
+    adj_cur_correlation_after_3{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_3,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_3,2)+1
         if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_3{i}(j) = sum(compressed_3.*cur_after_data(cur_cluster,j:j+size(compressed_3,2)-1),'all') / (size(compressed_3,1) * size(compressed_3,2));
@@ -168,7 +168,7 @@ for i = 1:size(stimulus_data_m,1)
             adj_cur_correlation_before_5(i,j) = sum(compressed_5.*cur_before_data(cur_cluster,j:j+size(compressed_5,2)-1),'all') / (size(compressed_5,1) * size(compressed_5,2));
         end
     end
-    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_5,2)+1);
+    adj_cur_correlation_after_5{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_5,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_5,2)+1
         if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_5{i}(j) = sum(compressed_5.*cur_after_data(cur_cluster,j:j+size(compressed_5,2)-1),'all') / (size(compressed_5,1) * size(compressed_5,2));
@@ -234,10 +234,10 @@ scatter(ones(size(avg_adj_cor_after_3,1))*2,avg_adj_cor_after_3, 'filled', 'blue
 scatter(ones(size(avg_adj_cor_after,1))*3,avg_adj_cor_after, 'filled', 'blue')
 scatter(ones(size(avg_adj_cor_after_05,1))*4,avg_adj_cor_after_05, 'filled', 'blue')
 scatter(ones(size(avg_adj_cor_after_02,1))*5,avg_adj_cor_after_02, 'filled', 'blue')
-line([ones(size(avg_nb_cluster_before)), ones(size(avg_nb_cluster_between))*2]',[avg_adj_cor_after_5, avg_adj_cor_after_3]','Color','green')
-line([ones(size(avg_nb_cluster_between))*2, ones(size(avg_nb_cluster_after))*3]',[avg_adj_cor_after_3, avg_adj_cor_after]','Color','green')
-line([ones(size(avg_nb_cluster_between))*3, ones(size(avg_nb_cluster_after))*4]',[avg_adj_cor_after, avg_adj_cor_after_05]','Color','green')
-line([ones(size(avg_nb_cluster_between))*4, ones(size(avg_nb_cluster_after))*5]',[avg_adj_cor_after_05, avg_adj_cor_after_02]','Color','green')
+line([ones(size(avg_adj_cor_after_5)), ones(size(avg_adj_cor_after_3))*2]',[avg_adj_cor_after_5, avg_adj_cor_after_3]','Color','green')
+line([ones(size(avg_adj_cor_after_3))*2, ones(size(avg_adj_cor_after))*3]',[avg_adj_cor_after_3, avg_adj_cor_after]','Color','green')
+line([ones(size(avg_adj_cor_after))*3, ones(size(avg_adj_cor_after_05))*4]',[avg_adj_cor_after, avg_adj_cor_after_05]','Color','green')
+line([ones(size(avg_adj_cor_after_05))*4, ones(size(avg_adj_cor_after_02))*5]',[avg_adj_cor_after_05, avg_adj_cor_after_02]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_scaled_template" + i + ".png")
 
 

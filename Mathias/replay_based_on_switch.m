@@ -48,7 +48,8 @@ interval_size = 70;
 intervals_together = 30;
 bins_together = 15;
 intervals_together_before = intervals_together*interval_size;
-last_interval_data = zeros(1,size(switch_data_m,1));
+last_interval_data_switch = zeros(1,size(switch_data_m,1));
+last_interval_data_horridge = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(switch_data_m,1));
 template_cluster = cell(1,size(switch_data_m,1));
 template_vector = cell(1,size(switch_data_m,1));
@@ -57,15 +58,21 @@ for i = 1:size(switch_data_m,1)
     % get last interval
     % get last interval
     counter = size(switch_data_m,2);
-    last_interval_data(i) = counter;
+    last_interval_data_switch(i) = counter;
     while isempty(switch_data_m{i,counter})
         counter = counter - 1;
-        last_interval_data(i) = counter;
+        last_interval_data_switch(i) = counter;
     end
-    cur_avg = zeros(size(switch_data_m{i,last_interval_data(i)}));
+    counter = size(stimulus_data_m,2);
+    last_interval_data_horridge(i) = counter;
+    while isempty(switch_data_m{i,counter})
+        counter = counter - 1;
+        last_interval_data_horridge(i) = counter;
+    end
+    cur_avg = zeros(size(switch_data_m{i,last_interval_data_switch(i)}));
     %% template: avergae neurons in cluster that is most common
     % find cluster that is most common
-    cur_last_interval = ceil(last_interval_data(i)/intervals_together);
+    cur_last_interval = ceil(last_interval_data_switch(i)/intervals_together);
     all_assemblies = {};
     all_assemblies_count = [];
     all_vectors = {};
@@ -184,14 +191,14 @@ for i = 1:size(switch_data_m,1)
             adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
-    for j = 1:last_interval_data(i)
+    for j = 1:last_interval_data_horridge(i)
         for k = 1:size(switch_data_m{i,j},2)-size(cur_template,2)+1
             if sum(sum(switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
             end
         end
     end
-    for j = 1:last_interval_data(i)
+    for j = 1:last_interval_data_switch(i)
         for k = 1:size(switch_data_m{i,j},2)-size(cur_template,2)+1
             if sum(sum(switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_switch{i}((j-1)*size(switch_data_m{i,j},2)+k) = sum(cur_template.*switch_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));

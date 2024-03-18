@@ -242,13 +242,13 @@ line([ones(size(avg_adj_cur_correlation_before))*1, ones(size(avg_adj_cur_correl
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_based_on_switch.png")
 
 for i = 1:9
-    cur_cor = [adj_cur_correlation_before(i), adj_cur_correlation_between(i), adj_cur_correlation_after(i), adj_cur_correlation_switch(i)];
+    cur_cor = [adj_cur_correlation_before(i,:), adj_cur_correlation_between{i}, adj_cur_correlation_after{i}, adj_cur_correlation_switch{i}];
     figure
     plot(cur_cor)
     hold on
-    xline(numel(adj_cur_correlation_before(i)))
-    xline(numel(adj_cur_correlation_before(i))+numel(adj_cur_correlation_between(i)))
-    xline(numel(adj_cur_correlation_before(i))+numel(adj_cur_correlation_between(i))+numel(adj_cur_correlation_after(i)))
+    xline(numel(adj_cur_correlation_before(i,:)))
+    xline(numel(adj_cur_correlation_before(i,:))+numel(adj_cur_correlation_between{i}))
+    xline(numel(adj_cur_correlation_before(i,:))+numel(adj_cur_correlation_between{i})+numel(adj_cur_correlation_after{i}))
     saveas(gcf,"/scratch/mathiass-takeokalab/01/correlations_based_on_switch"+i+".png")
 end
 %% determine 95% threshold based on before data ---->>> not working well

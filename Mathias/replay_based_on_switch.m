@@ -240,6 +240,17 @@ scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_bef
 scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
 line([ones(size(avg_adj_cur_correlation_before))*1, ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_based_on_switch.png")
+
+for i = 1:9
+    cur_cor = [avg_adj_cur_correlation_before(i), avg_adj_cur_correlation_between(i), avg_adj_cur_correlation_after(i), avg_adj_cur_correlation_switch(i)];
+    figure
+    plot(cur_cor)
+    hold on
+    xline(numel(avg_adj_cur_correlation_before(i)))
+    xline(numel(avg_adj_cur_correlation_before(i))+numel(avg_adj_cur_correlation_between(i)))
+    xline(numel(avg_adj_cur_correlation_before(i))+numel(avg_adj_cur_correlation_between(i))+numel(avg_adj_cur_correlation_after(i)))
+    saveas(gcf,"/scratch/mathiass-takeokalab/01/correlations_based_on_switch.png")
+end
 %% determine 95% threshold based on before data ---->>> not working well
 
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)

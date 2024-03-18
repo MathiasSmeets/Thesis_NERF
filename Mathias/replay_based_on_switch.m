@@ -13,7 +13,7 @@ path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
 
 switch_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_switch.mat"));
-switch_data_m = switch_data_m.after_stimulus_data_m;
+switch_data_m = switch_data_m.after_stimulus_switch_m;
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;

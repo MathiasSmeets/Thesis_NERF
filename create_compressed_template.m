@@ -20,7 +20,7 @@ function compressed_template = create_compressed_template(template, factor)
         end
     else
         % Initialize the transformed matrix
-        compressed_template = zeros(rows, 1:cols/new_cols:cols);
+        compressed_template = zeros(rows, numel(1:cols/new_cols:cols));
         % Expand the matrix
         for i = 1:rows
             % Interpolate values for the new column using linear interpolation

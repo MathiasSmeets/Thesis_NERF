@@ -147,6 +147,7 @@ for i = 1:size(stimulus_data_m,1)
 end
 
 save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
+save('/scratch/mathiass-takeokalab/01/template_cluster_m.mat', 'template_cluster')
 %% check for replay in before and after data
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_correlation_after = cell(size(stimulus_data_m,1),1);

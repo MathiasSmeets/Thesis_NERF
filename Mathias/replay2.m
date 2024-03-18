@@ -24,11 +24,11 @@ inhibited_m = inhibited_m.inhibited_m;
 
 after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_m.mat"));
 after_data_m = after_data_m.waiting_data;
-after_data_m = after_data_m(1:9,:);
+after_data_m(after_data_m(:,1)>=10) = [];
 
 before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_m.mat"));
 before_data_m = before_data_m.before_data;
-before_data_m = before_data_m(1:9,:);
+before_data_m(before_data_m(:,1)>=10) = [];
 
 template = load(fullfile(volume_base2, path_to_clusters, "template_m.mat"));template = template.template;
 template_cluster = load(fullfile(volume_base2, path_to_clusters, "template_cluster_m.mat"));template_cluster = template_cluster.template_cluster;

@@ -14,6 +14,7 @@ path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = stimulus_data_m(1:9,:);
 
 output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
 output_m = output_m.output_m;
@@ -23,9 +24,11 @@ inhibited_m = inhibited_m.inhibited_m;
 
 after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_m.mat"));
 after_data_m = after_data_m.waiting_data;
+after_data_m(after_data_m(:,1)>=10) = [];
 
 before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_m.mat"));
 before_data_m = before_data_m.before_data;
+before_data_m(before_data_m(:,1)>=10) = [];
 
 ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_horridge_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
 ica_data = load(fullfile(volume_base2,path_to_clusters, "data_horridge_m.mat")); ica_data = ica_data.total_data;

@@ -24,7 +24,7 @@ inhibited_m = inhibited_m.inhibited_m;
 
 after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_m.mat"));
 after_data_m = after_data_m.waiting_data;
-after_data_m(after_data_m(:,1)>=10) = [];
+after_data_m = after_data_m(1:9,:);
 
 before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_m.mat"));
 before_data_m = before_data_m.before_data;

@@ -124,7 +124,7 @@ for i = 1:size(stimulus_data_m,1)
     template_cluster{i} = most_common_cluster;
     template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
-    %template_vector{i} = all_vectors{maxindex}(:,1);
+    template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(most_common_cluster),bins_together);
@@ -155,9 +155,9 @@ save('/scratch/mathiass-takeokalab/01/template_cluster_m.mat', 'template_cluster
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_correlation_after = cell(size(stimulus_data_m,1),1);
 cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell because different lengths
-% cur_activity_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
-% cur_activity_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
-% cur_activity_between = cell(size(stimulus_data_m,1),1);
+cur_activity_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+cur_activity_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
+cur_activity_between = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 adj_cur_correlation_after = cell(size(stimulus_data_m,1),1);
 adj_cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell because different lengths
@@ -204,30 +204,34 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-    % for j = 1:size(cur_before_data,2)
-    %     cur_activity_before(i,j) = cur_before_data(cur_cluster, j)'*template_vector{i};
-    % end
-    % for j = 1:size(cur_after_data,2)
-    %     cur_activity_after(i,j) = cur_after_data(cur_cluster, j)'*template_vector{i};
-    % end
-    % for j = 1:last_interval_data(i)
-    %     for k = 1:size(stimulus_data_m{i,j},2)
-    %         cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = stimulus_data_m{i,j}(cur_cluster,k)'*template_vector{i};
-    %     end
-    % end
+    for j = 1:size(cur_before_data,2)-15
+        cur_activity_before(i,j) = sum(cur_before_data(cur_cluster, j:j+14),2)'*template_vector{i};
+    end
+    for j = 1:size(cur_after_data,2)-15
+        cur_activity_after(i,j) = sum(cur_after_data(cur_cluster,j:j+14),2)'*template_vector{i};
+    end
+    for j = 1:last_interval_data(i)
+        for k = 1:size(stimulus_data_m{i,j},2)-15
+            cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(stimulus_data_m{i,j}(cur_cluster,k:k+14),2)'*template_vector{i};
+        end
+    end
 end
 % using activity is a worse measure, as it is only one column, so using
 % this is actually a template of one column only
+% but now i tried with 15 ms bins which makes much more sense so let's see
 
 avg_cor_before = mean(cur_correlation_before,2);
 avg_cor_between=zeros(numel(cur_correlation_between),1);
 avg_cor_after=zeros(numel(cur_correlation_after),1);
+avg_act_between=zeros(numel(cur_activity_between),1);
 for i = 1:numel(cur_correlation_between)
     avg_cor_between(i) = mean(cur_correlation_between{i});
     avg_cor_after(i) = mean(cur_correlation_after{i});
+    avg_act_between(i) = mean(cur_activity_between{i});
 end
-%avg_act_before = mean(abs(cur_activity_before),2);
-%avg_act_after = mean(abs(cur_activity_after),2);
+avg_act_before = mean(abs(cur_activity_before),2);
+avg_act_after = mean(abs(cur_activity_after),2);
+
 figure;boxplot([avg_cor_before,avg_cor_between,avg_cor_after])
 figure
 boxplot([avg_cor_before, avg_cor_between, avg_cor_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})

@@ -28,5 +28,5 @@ function compressed_template = create_compressed_template(template, factor)
         end
     end
 
-compressed_template = compressed_template*factor;
+compressed_template = (compressed_template/sum(compressed_template,'all'))*sum(template,'all');
 end

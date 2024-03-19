@@ -101,7 +101,7 @@ for i = 1:size(stimulus_data_m,1)
     occurrences = zeros(1,size(cur_before_data,1));
     % get occurence in cluster for each neuron
     for j = 1:numel(all_assemblies_before)
-        occurrences = occurrences + histcounts(all_assemblies_before{j}, [1:size(cur_before_data,1)+1]-0.5) * all_assemblies_count_before{j};
+        occurrences = occurrences + histcounts(all_assemblies_before{j}, [1:size(cur_before_data,1)+1]-0.5) * all_assemblies_count_before(j);
     end
     total_occurrences{i} = occurrences;
 

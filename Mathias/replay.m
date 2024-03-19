@@ -99,13 +99,16 @@ for i = 1:size(stimulus_data_m,1)
         end
     end
     % get occurence in cluster for each neuron
-    numeric_assemblies_before = cell2mat(all_assemblies_before);
-    occurrences = histcounts(numeric_assemblies_before, [1:size(cur_before_data,1)+1]-0.5);
-    total_occurences{i} = occurrences;
+    for j = 1:numel(all_assemblies_before)
+        occurrences = occurrences + histcounts(cell2mat(all_assemblies_before{j}), [1:size(cur_before_data,1)+1]-0.5) * all_assemblies_count_before{j};
+    end
+    total_occurrences{i} = occurrences;
 
     % if neurons are active in clusters at least 10% of time, avoid these
-    threshold_10percent = 0.1*last_interval_before;
+    threshold_10percent = 0.25*last_interval_before;
     neurons_to_avoid = find(occurrences>threshold_10percent);
+    disp(i)
+    disp(neurons_to_avoid)
 
     all_active_assemblies_before_before_threshold{i} = all_assemblies_before;
     all_act_as_count{i} = all_assemblies_count_before;

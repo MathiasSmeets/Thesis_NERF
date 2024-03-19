@@ -98,42 +98,61 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-    threshold_20percent = 0.2*last_interval_before;
+    % get occurence in cluster for each neuron
+    numeric_assemblies_before = cell2mat(all_assemblies_before);
+    occurrences = histcounts(numericArray, [1:size(cur_before_data,1)+1]-0.5);
+
+    % if neurons are active in clusters at least 10% of time, avoid these
+    threshold_10percent = 0.1*last_interval_before;
+    neurons_to_avoid = find(occurrences>threshold_10percent);
+
     all_active_assemblies_before_before_threshold{i} = all_assemblies_before;
     all_act_as_count{i} = all_assemblies_count_before;
-    active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_20percent);
-    all_active_assemblies_before{i} = active_assemblies_before;
+    %active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_10percent);
+    %all_active_assemblies_before{i} = active_assemblies_before;
     
     % get most active assembly that is not active before experiment (20% of the time)
     maxvalue = sort(all_assemblies_count,'descend');
     value_counter = 1;
     cur_value = maxvalue(value_counter);
     most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
-    most_common_cluster = most_common_cluster{end};
-    while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
-        value_counter = value_counter+1;
-        cur_value = maxvalue(value_counter);
-        most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
-        if cur_value == maxvalue(value_counter-1)
-            most_common_cluster = most_common_cluster{end-1};
-            
+    actual_most_common_cluster = most_common_cluster{end};
+    while ~isempty(find(ismember(actual_most_common_cluster, neurons_to_avoid), 1))
+        if ~isequal(actual_most_common_cluster, most_common_cluster{1})
+            actual_most_common_cluster = most_common_cluster{end-1};
         else
-            most_common_cluster = most_common_cluster{end};
+            value_counter = value_counter + 1;
+            cur_value = maxvalue(value_counter);
+            most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+            actual_most_common_cluster = most_common_cluster{end};
         end
     end
 
-    template_cluster{i} = most_common_cluster;
+
+    % while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
+    %     value_counter = value_counter+1;
+    %     cur_value = maxvalue(value_counter);
+    %     most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+    %     if cur_value == maxvalue(value_counter-1)
+    %         most_common_cluster = most_common_cluster{end-1};
+    % 
+    %     else
+    %         most_common_cluster = most_common_cluster{end};
+    %     end
+    % end
+
+    template_cluster{i} = actual_most_common_cluster;
     template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
-    maxindex = find(cellfun(@(x) isequal(x, most_common_cluster), all_assemblies));
+    maxindex = find(cellfun(@(x) isequal(x, actual_most_common_cluster), all_assemblies));
     template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
-    cur_template = zeros(numel(most_common_cluster),bins_together);
+    cur_template = zeros(numel(actual_most_common_cluster),bins_together);
     counter = 0;
     for j = 1:cur_last_interval
         for k = 1:numel(ica_assemblies{i,j})
-            if isequal(ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k}), most_common_cluster)
+            if isequal(ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k}), actual_most_common_cluster)
                 if length(ica_activity{i,j}(:,k)) >= 3
                     [pks, locs] = findpeaks(abs(ica_activity{i,j}(:,k)),"NPeaks",intervals_together,"MinPeakHeight",0.4*max(abs(ica_activity{i,j}(:,k))));
                     for jj = 1:length(locs)

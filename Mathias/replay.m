@@ -108,7 +108,7 @@ for i = 1:size(stimulus_data_m,1)
     total_assemblies{i} = all_assemblies;
 
     % if neurons are active in clusters at least 10% of time, avoid these
-    threshold_10percent = 0.50*last_interval_before;
+    threshold_10percent = 0.20*last_interval_before;
     neurons_to_avoid = find(occurrences>threshold_10percent);
     disp(i)
     disp(neurons_to_avoid)
@@ -133,6 +133,12 @@ for i = 1:size(stimulus_data_m,1)
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
         end
+        if cur_value == 1
+            cur_value = maxvalue(1);
+            most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+            actual_most_common_cluster = most_common_cluster{end};
+            break;
+        end
     end
 
 
@@ -153,6 +159,7 @@ for i = 1:size(stimulus_data_m,1)
     % in order to get vector, take average vector but fix sign ambiguity first
     maxindex = find(cellfun(@(x) isequal(x, actual_most_common_cluster), all_assemblies));
     template_vector{i} = all_vectors{maxindex}(:,1);
+    disp(template_cluster)
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(actual_most_common_cluster),bins_together);

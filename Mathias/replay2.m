@@ -172,7 +172,7 @@ for i = 1:size(stimulus_data_m,1)
         for k = 1:size(stimulus_data_m{i,j},2)-size(compressed_3,2)+1
             if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(compressed_3.*stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1),'all') / (size(compressed_3,1) * size(compressed_3,2));
-                a%dj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1), 2) > 0);
+                %adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1), 2) > 0);
             end
         end
     end

@@ -35,7 +35,7 @@ addpath(genpath(folder))
 
 %% variables initialization
 
-interval_size = size(stimulus_data_m{1,1},2);
+interval_size = 60;
 wanted_bin_size = 15;
 interval_step = 30;
 create_plots = false;
@@ -66,7 +66,7 @@ for k = 1:size(stimulus_data_m,1)
                 if ii <= size(stimulus_data_m,2)
                     if 70 <= size(stimulus_data_m{k,ii},2)
                         if ~isempty(stimulus_data_m{k,ii})
-                            cur_mouse = stimulus_data_m{k,ii}(cur_neurons_of_interest,:);
+                            cur_mouse = stimulus_data_m{k,ii}(cur_neurons_of_interest,11:end);
 
                             % transform to 10ms bins
                             cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),ceil(size(cur_mouse,2)/wanted_bin_size));

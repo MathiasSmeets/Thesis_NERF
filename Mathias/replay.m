@@ -116,6 +116,7 @@ for i = 1:size(stimulus_data_m,1)
         most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
         if cur_value == maxvalue(value_counter-1)
             most_common_cluster = most_common_cluster{end-1};
+            
         else
             most_common_cluster = most_common_cluster{end};
         end
@@ -124,6 +125,7 @@ for i = 1:size(stimulus_data_m,1)
     template_cluster{i} = most_common_cluster;
     template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
+    maxindex = find(cellfun(@(x) isequal(x, most_common_cluster), all_assemblies));
     template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
@@ -232,6 +234,8 @@ end
 avg_act_before = mean(abs(cur_activity_before),2);
 avg_act_after = mean(abs(cur_activity_after),2);
 
+%% create boxplot figures
+
 figure;boxplot([avg_cor_before,avg_cor_between,avg_cor_after])
 figure
 boxplot([avg_cor_before, avg_cor_between, avg_cor_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
@@ -298,7 +302,7 @@ saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
 
 
 
-
+%% plot correlations
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)
 % [p,h,stats] = signrank(x,y)
 
@@ -306,44 +310,44 @@ saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
 % [p,h,stats] = ranksum(x,y)
 
 
-for i = 1:11
-figure
-subplot(3,1,1);plot(cur_correlation_before(i,:))
-subplot(3,1,2);plot(cur_correlation_between{i})
-subplot(3,1,3);plot(cur_correlation_after{i})
-saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation" + i + ".png")
-figure
-subplot(3,1,1);plot(adj_cur_correlation_before(i,:))
-subplot(3,1,2);plot(adj_cur_correlation_between{i})
-subplot(3,1,3);plot(adj_cur_correlation_after{i})
-saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation_adj" + i + ".png")
-end
+% for i = 1:11
+% figure
+% subplot(3,1,1);plot(cur_correlation_before(i,:))
+% subplot(3,1,2);plot(cur_correlation_between{i})
+% subplot(3,1,3);plot(cur_correlation_after{i})
+% saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation" + i + ".png")
+% figure
+% subplot(3,1,1);plot(adj_cur_correlation_before(i,:))
+% subplot(3,1,2);plot(adj_cur_correlation_between{i})
+% subplot(3,1,3);plot(adj_cur_correlation_after{i})
+% saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation_adj" + i + ".png")
+% end
 
 %% more neurons in cluster afterwards?
-
-load("X:\Mathias\switch_data\clusters\cluster_matrices_before_m.mat")
-all_cluster_matrices_before = all_cluster_matrices;
-load("X:\Mathias\switch_data\clusters\cluster_matrices_between_m.mat")
-all_cluster_matrices_between = all_cluster_matrices;
-load("X:\Mathias\switch_data\clusters\cluster_matrices_after_m.mat")
-all_cluster_matrices_after = all_cluster_matrices;
-
-avg_nb_cluster_before = zeros(numel(all_cluster_matrices_before),1);
-avg_nb_cluster_between = zeros(numel(all_cluster_matrices_between),1);
-avg_nb_cluster_after = zeros(numel(all_cluster_matrices_after),1);
-for i = 1:numel(all_cluster_matrices_between)
-    avg_nb_cluster_before(i) = sum(all_cluster_matrices_before{i},'all') / size(all_cluster_matrices_before{i},2);
-    avg_nb_cluster_between(i) = sum(all_cluster_matrices_between{i},'all') / size(all_cluster_matrices_between{i},2);
-    avg_nb_cluster_after(i) = sum(all_cluster_matrices_after{i},'all') / size(all_cluster_matrices_after{i},2);
-end
-figure
-boxplot([avg_nb_cluster_before, avg_nb_cluster_between, avg_nb_cluster_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
-hold on
-scatter(ones(size(avg_nb_cluster_before,1)),avg_nb_cluster_before, 'filled', 'blue')
-scatter(ones(size(avg_nb_cluster_between,1))*2,avg_nb_cluster_between, 'filled', 'blue')
-scatter(ones(size(avg_nb_cluster_after,1))*3,avg_nb_cluster_after, 'filled', 'blue')
-line([ones(size(avg_nb_cluster_before)), ones(size(avg_nb_cluster_between))*2]',[avg_nb_cluster_before, avg_nb_cluster_between]','Color','green')
-line([ones(size(avg_nb_cluster_between))*2, ones(size(avg_nb_cluster_after))*3]',[avg_nb_cluster_between, avg_nb_cluster_after]','Color','green')
-
-
+% 
+% load("X:\Mathias\switch_data\clusters\cluster_matrices_before_m.mat")
+% all_cluster_matrices_before = all_cluster_matrices;
+% load("X:\Mathias\switch_data\clusters\cluster_matrices_between_m.mat")
+% all_cluster_matrices_between = all_cluster_matrices;
+% load("X:\Mathias\switch_data\clusters\cluster_matrices_after_m.mat")
+% all_cluster_matrices_after = all_cluster_matrices;
+% 
+% avg_nb_cluster_before = zeros(numel(all_cluster_matrices_before),1);
+% avg_nb_cluster_between = zeros(numel(all_cluster_matrices_between),1);
+% avg_nb_cluster_after = zeros(numel(all_cluster_matrices_after),1);
+% for i = 1:numel(all_cluster_matrices_between)
+%     avg_nb_cluster_before(i) = sum(all_cluster_matrices_before{i},'all') / size(all_cluster_matrices_before{i},2);
+%     avg_nb_cluster_between(i) = sum(all_cluster_matrices_between{i},'all') / size(all_cluster_matrices_between{i},2);
+%     avg_nb_cluster_after(i) = sum(all_cluster_matrices_after{i},'all') / size(all_cluster_matrices_after{i},2);
+% end
+% figure
+% boxplot([avg_nb_cluster_before, avg_nb_cluster_between, avg_nb_cluster_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
+% hold on
+% scatter(ones(size(avg_nb_cluster_before,1)),avg_nb_cluster_before, 'filled', 'blue')
+% scatter(ones(size(avg_nb_cluster_between,1))*2,avg_nb_cluster_between, 'filled', 'blue')
+% scatter(ones(size(avg_nb_cluster_after,1))*3,avg_nb_cluster_after, 'filled', 'blue')
+% line([ones(size(avg_nb_cluster_before)), ones(size(avg_nb_cluster_between))*2]',[avg_nb_cluster_before, avg_nb_cluster_between]','Color','green')
+% line([ones(size(avg_nb_cluster_between))*2, ones(size(avg_nb_cluster_after))*3]',[avg_nb_cluster_between, avg_nb_cluster_after]','Color','green')
+% 
+% 
 

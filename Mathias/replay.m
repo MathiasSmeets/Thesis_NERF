@@ -104,6 +104,8 @@ for i = 1:size(stimulus_data_m,1)
         occurrences = occurrences + histcounts(all_assemblies_before{j}, [1:size(cur_before_data,1)+1]-0.5) * all_assemblies_count_before(j);
     end
     total_occurrences{i} = occurrences;
+    total_assemblies_count{i} = all_assemblies_count;
+    total_assemblies{i} = all_assemblies;
 
     % if neurons are active in clusters at least 10% of time, avoid these
     threshold_10percent = 0.25*last_interval_before;

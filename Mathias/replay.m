@@ -112,7 +112,7 @@ for i = 1:size(stimulus_data_m,1)
     % if neurons are active in clusters similar to between, avoid these
     % similar = at least activity during experiment - 10%
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
-    variable_threshold = 0.50*neuron_between_activities*size(cur_before_data,2);
+    variable_threshold = 0.50*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
     disp(i)
     disp(neurons_to_avoid)

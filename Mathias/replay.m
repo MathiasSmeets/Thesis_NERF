@@ -348,6 +348,8 @@ save("/scratch/mathiass-takeokalab/01/correlation_after.mat","avg_adj_cur_correl
 % wilcoxon rank-sum test (no gaussian assumptions + no paired data)
 % [p,h,stats] = ranksum(avg_adj_cur_correlation_before,avg_adj_cur_correlation_after)
 
+% test for gaussianity: shapiro wilk, kolmogorov smimov, qqplot
+
 
 % for i = 1:11
 % figure

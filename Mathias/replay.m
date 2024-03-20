@@ -38,6 +38,7 @@ ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_horridge_m
 
 ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_m.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
+cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_between_m.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
 %% get template
 
 interval_size = 60;
@@ -108,9 +109,11 @@ for i = 1:size(stimulus_data_m,1)
     total_assemblies_count{i} = all_assemblies_count;
     total_assemblies{i} = all_assemblies;
 
-    % if neurons are active in clusters at least 10% of time, avoid these
-    threshold_10percent = 0.50*last_interval_before;
-    neurons_to_avoid = find(occurrences>threshold_10percent);
+    % if neurons are active in clusters similar to between, avoid these
+    % similar = at least activity during experiment - 10%
+    neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2)'; % in percentage
+    variable_threshold = 0.50*neuron_between_activities;
+    neurons_to_avoid = find(occurrences>variable_threshold);
     disp(i)
     disp(neurons_to_avoid)
 
@@ -341,7 +344,7 @@ saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
 % [p,h,stats] = signrank(x,y)
 
 % wilcoxon rank-sum test (no gaussian assumptions + no paired data)
-% [p,h,stats] = ranksum(x,y)
+% [p,h,stats] = ranksum(avg_adj_cur_correlation_before,avg_adj_cur_correlation_after)
 
 
 % for i = 1:11

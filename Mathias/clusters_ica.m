@@ -17,14 +17,14 @@ path_to_neurons_of_interest = "takeokalabwip2023/Mathias/switch_data/neurons_of_
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_stimulus_data_m_horridge.mat"));
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_stimulus_data_m_switch.mat"));
+stimulus_data_m = stimulus_data_m.after_stimulus_switch_m;
 %stimulus_data_y = load(fullfile(volume_base2, path_to_code,"data_after_stimulus_y.mat"));
 %stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_m.mat"));
+neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_switch_m.mat"));
 neurons_of_interest_m = neurons_of_interest_m.output_m;
-inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_m.mat"));
+inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_switch_m.mat"));
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
 sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_m.mat"));
@@ -109,13 +109,13 @@ for k = 1:size(stimulus_data_m,1)
 end
 
 savepath = "X:\Mathias\switch_data\clusters";
-save(fullfile(savepath, "neurons_of_interest_horridge_m.mat"), "total_neurons_of_interest", "-v7.3")
-save(fullfile(savepath, "nb_assemblies_horridge_m.mat"), "total_nb_assemblies", "-v7.3")
-save(fullfile(savepath, "nb_neurons_horridge_m.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_horridge_m.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_horridge_m.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_horridge_m.mat"), "total_data", "-v7.3")
-save(fullfile(savepath, "ica_vector_horridge_m.mat"), "total_vector", "-v7.3")
+save(fullfile(savepath, "neurons_of_interest_switch_m.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_switch_m.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_switch_m.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_switch_m.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_switch_m.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_switch_m.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "ica_vector_switch_m.mat"), "total_vector", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
@@ -146,10 +146,11 @@ for i = 1:size(total_assemblies,1)
         end
     end
     figure
-    heatmap(cluster_matrix,'CellLabelColor','none')
-    xlabel("Intervals (" + interval_step + " together)")
-    ylabel("Neurons")
-    title("Neurons in a cluster")
+    imagesc(cluster_matrix)
+    % heatmap(cluster_matrix,'CellLabelColor','none')
+    % xlabel("Intervals (" + interval_step + " together)")
+    % ylabel("Neurons")
+    % title("Neurons in a cluster")
     all_cluster_matrices{i} = cluster_matrix;
     % row_indices = [3,14,19,30];
     % for column_index = 1:size(cluster_matrix, 2)

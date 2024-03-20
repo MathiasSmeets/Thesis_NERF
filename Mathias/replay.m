@@ -40,7 +40,7 @@ ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
 %% get template
 
-interval_size = 70;
+interval_size = 60;
 intervals_together = 30;
 bins_together = 15;
 intervals_together_before = intervals_together*interval_size;

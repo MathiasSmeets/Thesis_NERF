@@ -114,6 +114,7 @@ for i = 1:size(stimulus_data_m,1)
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
     variable_threshold = 0.50*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
+    all_variable_threshold{i} = variable_threshold;
     disp(i)
     disp(neurons_to_avoid)
 

@@ -69,7 +69,7 @@ for i = 1:size(stimulus_data_m,1)
     end
 
     % do a compression of 0.2; 0.5; 3; 5
-    compressed_02 = create_compressed_template(template{i},0.1);
+    compressed_02 = create_compressed_template(template{i},0.2);
     compressed_05 = create_compressed_template(template{i},0.5);
     compressed_3 = create_compressed_template(template{i},3);
     compressed_5 = create_compressed_template(template{i},5);
@@ -87,117 +87,117 @@ for i = 1:size(stimulus_data_m,1)
     % check if at least 2 spikes in data, otherwise 0
     % compression 1
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
             adj_cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
             %adj_cur_correlation_before(i,j) = adj_cur_correlation_before(i,j)/sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0);
-        end
+        %end
     end
     adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(cur_template,2)+1);
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
             %adj_cur_correlation_after{i}(j) = adj_cur_correlation_after{i}(j)/sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0);
-        end
+        %end
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2
+            %if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
                 %adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0);
-            end
+            %end
         end
     end
 
     % compression 0.2
     for j = 1:size(cur_before_data,2)-size(compressed_02,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0) >= 2
             adj_cur_correlation_before_02(i,j) = sum(compressed_02.*cur_before_data(cur_cluster,j:j+size(compressed_02,2)-1),'all');% / (size(compressed_02,1) * size(compressed_02,2));
             %adj_cur_correlation_before_02(i,j) = adj_cur_correlation_before_02(i,j)/sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0);
-        end
+        %end
     end
     adj_cur_correlation_after_02{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_02,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_02,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_02{i}(j) = sum(compressed_02.*cur_after_data(cur_cluster,j:j+size(compressed_02,2)-1),'all');% / (size(compressed_02,1) * size(compressed_02,2));
             %adj_cur_correlation_after_02{i}(j) = adj_cur_correlation_after_02{i}(j)/sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_02,2)-1), 2) > 0);
-        end
+        %end
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(compressed_02,2)+1
-            if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_02,2)-1), 2) > 0) >= 2
+            %if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_02,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between_02{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(compressed_02.*stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_02,2)-1),'all');% / (size(compressed_02,1) * size(compressed_02,2));
                 %adj_cur_correlation_between_02{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between_02{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_02,2)-1), 2) > 0);
-            end
+            %end
         end
     end
 
     % compression 0.5
     for j = 1:size(cur_before_data,2)-size(compressed_05,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0) >= 2
             adj_cur_correlation_before_05(i,j) = sum(compressed_05.*cur_before_data(cur_cluster,j:j+size(compressed_05,2)-1),'all');% / (size(compressed_05,1) * size(compressed_05,2));
             %adj_cur_correlation_before_05(i,j) = adj_cur_correlation_before_05(i,j)/sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0);
-        end
+        %end
     end
     adj_cur_correlation_after_05{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_05,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_05,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_05{i}(j) = sum(compressed_05.*cur_after_data(cur_cluster,j:j+size(compressed_05,2)-1),'all');% / (size(compressed_05,1) * size(compressed_05,2));
             %adj_cur_correlation_after_05{i}(j) = adj_cur_correlation_after_05{i}(j)/sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_05,2)-1), 2) > 0);
-        end
+        %end
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(compressed_05,2)+1
-            if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_05,2)-1), 2) > 0) >= 2
+            %if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_05,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between_05{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(compressed_05.*stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_05,2)-1),'all');% / (size(compressed_05,1) * size(compressed_05,2));
                 %adj_cur_correlation_between_05{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between_05{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_05,2)-1), 2) > 0);
-            end
+            %end
         end
     end
 
     % compression 3
     for j = 1:size(cur_before_data,2)-size(compressed_3,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0) >= 2
             adj_cur_correlation_before_3(i,j) = sum(compressed_3.*cur_before_data(cur_cluster,j:j+size(compressed_3,2)-1),'all');% / (size(compressed_3,1) * size(compressed_3,2));
             %adj_cur_correlation_before_3(i,j) = adj_cur_correlation_before_3(i,j)/sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0);
-        end
+        %end
     end
     adj_cur_correlation_after_3{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_3,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_3,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_3{i}(j) = sum(compressed_3.*cur_after_data(cur_cluster,j:j+size(compressed_3,2)-1),'all');% / (size(compressed_3,1) * size(compressed_3,2));
             %adj_cur_correlation_after_3{i}(j) = adj_cur_correlation_after_3{i}(j)/sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_3,2)-1), 2) > 0);
-        end
+        %end
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(compressed_3,2)+1
-            if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1), 2) > 0) >= 2
+            %if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(compressed_3.*stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1),'all');% / (size(compressed_3,1) * size(compressed_3,2));
                 %adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between_3{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_3,2)-1), 2) > 0);
-            end
+            %end
         end
     end
 
     % compression 5
     for j = 1:size(cur_before_data,2)-size(compressed_5,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0) >= 2
             adj_cur_correlation_before_5(i,j) = sum(compressed_5.*cur_before_data(cur_cluster,j:j+size(compressed_5,2)-1),'all');% / (size(compressed_5,1) * size(compressed_5,2));
             %adj_cur_correlation_before_5(i,j) = adj_cur_correlation_before_5(i,j)/sum(sum(cur_before_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0);
-        end
+        %end
     end
     adj_cur_correlation_after_5{i} = zeros(1,size(cur_after_data,2)-1-size(compressed_5,2)+1);
     for j = 1:size(cur_after_data,2)-size(compressed_5,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0) >= 2
+        %if sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0) >= 2
             adj_cur_correlation_after_5{i}(j) = sum(compressed_5.*cur_after_data(cur_cluster,j:j+size(compressed_5,2)-1),'all');% / (size(compressed_5,1) * size(compressed_5,2));
             %adj_cur_correlation_after_5{i}(j) = adj_cur_correlation_after_5{i}(j)/sum(sum(cur_after_data(cur_cluster,j:j+size(compressed_5,2)-1), 2) > 0);
-        end
+        %end
     end
     for j = 1:last_interval_data(i)
-        for k = 1:size(stimulus_data_m{i,j},2)-size(compressed_5,2)+1
+        %for k = 1:size(stimulus_data_m{i,j},2)-size(compressed_5,2)+1
             if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_5,2)-1), 2) > 0) >= 2
                 adj_cur_correlation_between_5{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(compressed_5.*stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_5,2)-1),'all');% / (size(compressed_5,1) * size(compressed_5,2));
                 %adj_cur_correlation_between_5{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = adj_cur_correlation_between_5{i}((j-1)*size(stimulus_data_m{i,j},2)+k)/sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(compressed_5,2)-1), 2) > 0);
             end
-        end
+        %end
     end
 end
 

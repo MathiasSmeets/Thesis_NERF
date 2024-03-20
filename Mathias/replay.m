@@ -188,7 +188,7 @@ for i = 1:size(stimulus_data_m,1)
 
 
     % Gaussian kernel parameters
-    kernel_size = 5; % Size of the kernel (odd number)
+    kernel_size = 3; % Size of the kernel (odd number)
     sigma = 1; % Standard deviation of the Gaussian kernel
 
     % Create the Gaussian kernel

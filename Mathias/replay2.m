@@ -202,6 +202,79 @@ for i = 1:size(stimulus_data_m,1)
 end
 
 %% calculate average
+
+% calculate based on 99% percentile threshold
+threshold = prctile(adj_cur_correlation_after,99,2);
+adjusted_cor_before = adj_cur_correlation_before;
+adjusted_cor_before_02 = adj_cur_correlation_before_02;
+adjusted_cor_before_05 = adj_cur_correlation_before_05;
+adjusted_cor_before_3 = adj_cur_correlation_before_3;
+adjusted_cor_before_5 = adj_cur_correlation_before_5;
+
+adjusted_cor_before(adjusted_cor_before<threshold) = 0;
+adjusted_cor_before_02(adjusted_cor_before_02<threshold) = 0;
+adjusted_cor_before_05(adjusted_cor_before_05<threshold) = 0;
+adjusted_cor_before_3(adjusted_cor_before_3<threshold) = 0;
+adjusted_cor_before_5(adjusted_cor_before_5<threshold) = 0;
+
+for i = 1:numel(cur_correlation_between)
+    adjusted_cor_between{i}(adjusted_cor_between{i}<threshold(i)) = 0;
+    adjusted_cor_between_02{i}(adjusted_cor_between_02{i}<threshold(i)) = 0;
+    adjusted_cor_between_05{i}(adjusted_cor_between_05{i}<threshold(i)) = 0;
+    adjusted_cor_between_3{i}(adjusted_cor_between_3{i}<threshold(i)) = 0;
+    adjusted_cor_between_5{i}(adjusted_cor_between_5{i}<threshold(i)) = 0;
+    adjusted_cor_after{i}(adjusted_cor_after{i}<threshold(i)) = 0;
+    adjusted_cor_after_02{i}(adjusted_cor_after_02{i}<threshold(i)) = 0;
+    adjusted_cor_after_05{i}(adjusted_cor_after_05{i}<threshold(i)) = 0;
+    adjusted_cor_after_3{i}(adjusted_cor_after_3{i}<threshold(i)) = 0;
+    adjusted_cor_after_5{i}(adjusted_cor_after_5{i}<threshold(i)) = 0;
+end
+
+threshold_before = mean(adjusted_cor_before,2);
+threshold_before_02 = mean(adjusted_cor_before_02,2);
+threshold_before_05 = mean(adjusted_cor_before_05,2);
+threshold_before_3 = mean(adjusted_cor_before_3,2);
+threshold_before_5 = mean(adjusted_cor_before_5,2);
+
+threshold_between=zeros(numel(adjusted_cor_between),1);
+threshold_between_02=zeros(numel(adjusted_cor_between_02),1);
+threshold_between_05=zeros(numel(adjusted_cor_between_05),1);
+threshold_between_3=zeros(numel(adjusted_cor_between_3),1);
+threshold_between_5=zeros(numel(adjusted_cor_between_5),1);
+threshold_after=zeros(numel(adjusted_cor_after),1);
+threshold_after_02=zeros(numel(adjusted_cor_after_02),1);
+threshold_after_05=zeros(numel(adjusted_cor_after_05),1);
+threshold_after_3=zeros(numel(adjusted_cor_after_3),1);
+threshold_after_5=zeros(numel(adjusted_cor_after_5),1);
+for i = 1:numel(adjusted_cor_between)
+    threshold_between(i) = mean(adjusted_cor_between{i});
+    threshold_between_02(i) = mean(adjusted_cor_between_02{i});
+    threshold_between_05(i) = mean(adjusted_cor_between_05{i});
+    threshold_between_3(i) = mean(adjusted_cor_between_3{i});
+    threshold_between_5(i) = mean(adjusted_cor_between_5{i});
+    threshold_after(i) = mean(adjusted_cor_after{i});
+    threshold_after_02(i) = mean(adjusted_cor_after_02{i});
+    threshold_after_05(i) = mean(adjusted_cor_after_05{i});
+    threshold_after_3(i) = mean(adjusted_cor_after_3{i});
+    threshold_after_5(i) = mean(adjusted_cor_after_5{i});
+end
+% create boxplots
+figure
+boxplot([threshold_after_5, threshold_after_3, threshold_after,threshold_after_05,threshold_after_02], 'Labels', {'5x Compression', '3x Compression', '1x Compression', '2x Expansion', '5x Expansion'})
+hold on
+scatter(ones(size(threshold_after_5,1)),threshold_after_5, 'filled', 'blue')
+scatter(ones(size(threshold_after_3,1))*2,threshold_after_3, 'filled', 'blue')
+scatter(ones(size(threshold_after,1))*3,threshold_after, 'filled', 'blue')
+scatter(ones(size(threshold_after_05,1))*4,threshold_after_05, 'filled', 'blue')
+scatter(ones(size(threshold_after_02,1))*5,threshold_after_02, 'filled', 'blue')
+line([ones(size(threshold_after_5)), ones(size(threshold_after_3))*2]',[threshold_after_5, threshold_after_3]','Color','green')
+line([ones(size(threshold_after_3))*2, ones(size(threshold_after))*3]',[threshold_after_3, threshold_after]','Color','green')
+line([ones(size(threshold_after))*3, ones(size(threshold_after_05))*4]',[threshold_after, threshold_after_05]','Color','green')
+line([ones(size(threshold_after_05))*4, ones(size(threshold_after_02))*5]',[threshold_after_05, threshold_after_02]','Color','green')
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_scaled_template_after_thresholded.png")
+
+
+%%
 % compression 1
 avg_adj_cor_before = mean(adj_cur_correlation_before,2);
 avg_adj_cor_between = zeros(numel(adj_cur_correlation_between),1);

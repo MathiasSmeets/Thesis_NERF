@@ -210,6 +210,7 @@ end
 
 save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
 save('/scratch/mathiass-takeokalab/01/template_cluster_m.mat', 'template_cluster')
+save('/scratch/mathiass-takeokalab/01/template_smoothed_3_m.mat', 'template_smoothed')
 %% check for replay in before and after data
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_correlation_after = cell(size(stimulus_data_m,1),1);
@@ -228,7 +229,8 @@ for i = 1:size(stimulus_data_m,1)
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
 
-    cur_template = template_smoothed{i};
+    %cur_template = template_smoothed{i};
+    cur_template = template{i};
     cur_cluster = template_cluster{i};
 
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
@@ -365,7 +367,7 @@ save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3.mat","av
 
 %% plot correlations
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)
-% [p,h,stats] = signrank(x,y)
+% [p,h,stats] = signrank(avg_adj_cur_correlation_before,avg_adj_cur_correlation_after)
 
 % wilcoxon rank-sum test (no gaussian assumptions + no paired data)
 % [p,h,stats] = ranksum(avg_adj_cur_correlation_before,avg_adj_cur_correlation_after)

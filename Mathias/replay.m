@@ -184,7 +184,8 @@ for i = 1:size(stimulus_data_m,1)
             end
         end
     end
-    template{i} =  cur_template/counter;
+    cur_template = cur_template/counter;
+    template{i} =  cur_template;
 
 
     % Gaussian kernel parameters
@@ -202,8 +203,10 @@ for i = 1:size(stimulus_data_m,1)
     smoothed_template = zeros(size(cur_template));
 
     % Apply convolution to each row independently
+    disp(i)
     for j = 1:size(cur_template, 1)
         smoothed_template(j, :) = conv(cur_template(j, :), kernel, 'same');
+        disp(smoothed_template)
     end
     template_smoothed{i} = smoothed_template;
 end

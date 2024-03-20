@@ -133,18 +133,21 @@ for i = 1:size(stimulus_data_m,1)
         if ~isequal(actual_most_common_cluster, most_common_cluster{1})
             actual_most_common_cluster = most_common_cluster{end-1};
             disp('x')
+            disp(actual_most_common_cluster)
         else
             value_counter = value_counter + 1;
             cur_value = maxvalue(value_counter);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
             disp('xx')
+            disp(actual_most_common_cluster)
         end
         if cur_value == 1
             cur_value = maxvalue(1);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
             disp('xxx')
+            disp(actual_most_common_cluster)
             break;
         end
     end

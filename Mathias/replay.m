@@ -105,25 +105,17 @@ for i = 1:size(stimulus_data_m,1)
     for j = 1:numel(all_assemblies_before)
         occurrences = occurrences + histcounts(all_assemblies_before{j}, [1:size(cur_before_data,1)+1]-0.5) * all_assemblies_count_before(j);
     end
-    total_occurrences{i} = occurrences;
-    total_assemblies_count{i} = all_assemblies_count;
-    total_assemblies{i} = all_assemblies;
 
     % if neurons are active in clusters similar to between, avoid these
     % similar = at least activity during experiment - 10%
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
     variable_threshold = 0.50*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
-    all_variable_threshold{i} = variable_threshold;
-    disp(i)
-    disp(neurons_to_avoid)
 
-    all_active_assemblies_before_before_threshold{i} = all_assemblies_before;
-    all_act_as_count{i} = all_assemblies_count_before;
     %active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_10percent);
     %all_active_assemblies_before{i} = active_assemblies_before;
     
-    % get most active assembly that is not active before experiment (20% of the time)
+    % 
     maxvalue = sort(all_assemblies_count,'descend');
     value_counter = 1;
     cur_value = maxvalue(value_counter);
@@ -138,22 +130,16 @@ for i = 1:size(stimulus_data_m,1)
                 internal_counter = internal_counter + 1;
             end
             actual_most_common_cluster = most_common_cluster{end-internal_counter};
-            disp('x')
-            disp(actual_most_common_cluster)
         else
             value_counter = value_counter + 1;
             cur_value = maxvalue(value_counter);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
-            disp('xx')
-            disp(actual_most_common_cluster)
         end
         if cur_value == 1 && isequal(actual_most_common_cluster, most_common_cluster{1})
             cur_value = maxvalue(1);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
-            disp('xxx')
-            disp(actual_most_common_cluster)
             break;
         end
     end
@@ -176,7 +162,6 @@ for i = 1:size(stimulus_data_m,1)
     % in order to get vector, take average vector but fix sign ambiguity first
     maxindex = find(cellfun(@(x) isequal(x, actual_most_common_cluster), all_assemblies));
     template_vector{i} = all_vectors{maxindex}(:,1);
-    disp(template_cluster)
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(actual_most_common_cluster),bins_together);

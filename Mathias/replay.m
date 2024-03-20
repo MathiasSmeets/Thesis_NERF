@@ -41,9 +41,10 @@ ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblie
 %% get template
 
 interval_size = 60;
+interval_size_before = 70;
 intervals_together = 30;
 bins_together = 15;
-intervals_together_before = intervals_together*interval_size;
+intervals_together_before = intervals_together*interval_size_before;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));

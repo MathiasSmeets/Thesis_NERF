@@ -48,6 +48,7 @@ bins_together = 15;
 intervals_together_before = intervals_together*interval_size_before;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
+template_smoothed = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
 template_vector = cell(1,size(stimulus_data_m,1));
 template_cluster_count = cell(1,size(stimulus_data_m,1));
@@ -184,6 +185,27 @@ for i = 1:size(stimulus_data_m,1)
         end
     end
     template{i} =  cur_template/counter;
+
+
+    % Gaussian kernel parameters
+    kernel_size = 5; % Size of the kernel (odd number)
+    sigma = 1; % Standard deviation of the Gaussian kernel
+
+    % Create the Gaussian kernel
+    kernel = gausswin(kernel_size, sigma);
+
+    % Normalize the kernel
+    kernel = kernel / sum(kernel);
+
+
+    % Initialize a matrix to store smoothed data
+    smoothed_template = zeros(size(cur_template));
+
+    % Apply convolution to each row independently
+    for j = 1:size(cur_template, 1)
+        smoothed_template(j, :) = conv(cur_template(j, :), kernel, 'same');
+    end
+    template_smoothed{i} = smoothed_template;
 end
 
 save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
@@ -206,7 +228,7 @@ for i = 1:size(stimulus_data_m,1)
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
 
-    cur_template = template{i};
+    cur_template = template_smoothed{i};
     cur_cluster = template_cluster{i};
 
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
@@ -317,9 +339,9 @@ scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_af
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
 
-save("/scratch/mathiass-takeokalab/01/correlation_before.mat","avg_adj_cur_correlation_before")
-save("/scratch/mathiass-takeokalab/01/correlation_between.mat","avg_adj_cur_correlation_between")
-save("/scratch/mathiass-takeokalab/01/correlation_after.mat","avg_adj_cur_correlation_after")
+save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3.mat","avg_adj_cur_correlation_before")
+save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3.mat","avg_adj_cur_correlation_between")
+save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3.mat","avg_adj_cur_correlation_after")
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;

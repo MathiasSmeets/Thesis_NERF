@@ -48,6 +48,7 @@ bins_together = 15;
 intervals_together_before = intervals_together*interval_size_before;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
+template_smoothed = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
 template_vector = cell(1,size(stimulus_data_m,1));
 template_cluster_count = cell(1,size(stimulus_data_m,1));
@@ -105,25 +106,17 @@ for i = 1:size(stimulus_data_m,1)
     for j = 1:numel(all_assemblies_before)
         occurrences = occurrences + histcounts(all_assemblies_before{j}, [1:size(cur_before_data,1)+1]-0.5) * all_assemblies_count_before(j);
     end
-    total_occurrences{i} = occurrences;
-    total_assemblies_count{i} = all_assemblies_count;
-    total_assemblies{i} = all_assemblies;
 
     % if neurons are active in clusters similar to between, avoid these
     % similar = at least activity during experiment - 10%
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
     variable_threshold = 0.50*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
-    all_variable_threshold{i} = variable_threshold;
-    disp(i)
-    disp(neurons_to_avoid)
 
-    all_active_assemblies_before_before_threshold{i} = all_assemblies_before;
-    all_act_as_count{i} = all_assemblies_count_before;
     %active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_10percent);
     %all_active_assemblies_before{i} = active_assemblies_before;
     
-    % get most active assembly that is not active before experiment (20% of the time)
+    % 
     maxvalue = sort(all_assemblies_count,'descend');
     value_counter = 1;
     cur_value = maxvalue(value_counter);
@@ -138,22 +131,16 @@ for i = 1:size(stimulus_data_m,1)
                 internal_counter = internal_counter + 1;
             end
             actual_most_common_cluster = most_common_cluster{end-internal_counter};
-            disp('x')
-            disp(actual_most_common_cluster)
         else
             value_counter = value_counter + 1;
             cur_value = maxvalue(value_counter);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
-            disp('xx')
-            disp(actual_most_common_cluster)
         end
-        if cur_value == 1 && actual_most_common_cluster == most_common_cluster{end-internal_counter}
+        if cur_value == 1 && isequal(actual_most_common_cluster, most_common_cluster{1})
             cur_value = maxvalue(1);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
-            disp('xxx')
-            disp(actual_most_common_cluster)
             break;
         end
     end
@@ -176,7 +163,6 @@ for i = 1:size(stimulus_data_m,1)
     % in order to get vector, take average vector but fix sign ambiguity first
     maxindex = find(cellfun(@(x) isequal(x, actual_most_common_cluster), all_assemblies));
     template_vector{i} = all_vectors{maxindex}(:,1);
-    disp(template_cluster)
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(actual_most_common_cluster),bins_together);
@@ -199,6 +185,27 @@ for i = 1:size(stimulus_data_m,1)
         end
     end
     template{i} =  cur_template/counter;
+
+
+    % Gaussian kernel parameters
+    kernel_size = 5; % Size of the kernel (odd number)
+    sigma = 1; % Standard deviation of the Gaussian kernel
+
+    % Create the Gaussian kernel
+    kernel = gausswin(kernel_size, sigma);
+
+    % Normalize the kernel
+    kernel = kernel / sum(kernel);
+
+
+    % Initialize a matrix to store smoothed data
+    smoothed_template = zeros(size(cur_template));
+
+    % Apply convolution to each row independently
+    for j = 1:size(cur_template, 1)
+        smoothed_template(j, :) = conv(cur_template(j, :), kernel, 'same');
+    end
+    template_smoothed{i} = smoothed_template;
 end
 
 save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
@@ -362,6 +369,8 @@ save("/scratch/mathiass-takeokalab/01/correlation_after.mat","avg_adj_cur_correl
 
 % wilcoxon rank-sum test (no gaussian assumptions + no paired data)
 % [p,h,stats] = ranksum(avg_adj_cur_correlation_before,avg_adj_cur_correlation_after)
+
+% test for gaussianity: shapiro wilk, kolmogorov smimov, qqplot
 
 
 % for i = 1:11

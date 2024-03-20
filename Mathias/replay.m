@@ -132,16 +132,19 @@ for i = 1:size(stimulus_data_m,1)
     while ~isempty(find(ismember(actual_most_common_cluster, neurons_to_avoid), 1))
         if ~isequal(actual_most_common_cluster, most_common_cluster{1})
             actual_most_common_cluster = most_common_cluster{end-1};
+            disp('x')
         else
             value_counter = value_counter + 1;
             cur_value = maxvalue(value_counter);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
+            disp('xx')
         end
         if cur_value == 1
             cur_value = maxvalue(1);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};
+            disp('xxx')
             break;
         end
     end
@@ -320,7 +323,9 @@ scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_af
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
 
-save
+save("/scratch/mathiass-takeokalab/01/correlation_before.mat","avg_adj_cur_correlation_before")
+save("/scratch/mathiass-takeokalab/01/correlation_between.mat","avg_adj_cur_correlation_between")
+save("/scratch/mathiass-takeokalab/01/correlation_after.mat","avg_adj_cur_correlation_after")
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;

@@ -112,7 +112,7 @@ for i = 1:size(stimulus_data_m,1)
     % if neurons are active in clusters similar to between, avoid these
     % similar = at least activity during experiment - 10%
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
-    variable_threshold = 0.50*neuron_between_activities*last_interval_before;
+    variable_threshold = 0.40*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
     all_variable_threshold{i} = variable_threshold;
     disp(i)
@@ -319,6 +319,8 @@ scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_bef
 scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba.png")
+
+save
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;

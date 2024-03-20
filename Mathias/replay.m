@@ -148,7 +148,7 @@ for i = 1:size(stimulus_data_m,1)
             disp('xx')
             disp(actual_most_common_cluster)
         end
-        if cur_value == 1 && actual_most_common_cluster == most_common_cluster{end-internal_counter}
+        if cur_value == 1 && isequal(actual_most_common_cluster, most_common_cluster{1})
             cur_value = maxvalue(1);
             most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
             actual_most_common_cluster = most_common_cluster{end};

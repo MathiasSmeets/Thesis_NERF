@@ -109,7 +109,7 @@ for i = 1:size(stimulus_data_m,1)
     total_assemblies{i} = all_assemblies;
 
     % if neurons are active in clusters at least 10% of time, avoid these
-    threshold_10percent = 0.20*last_interval_before;
+    threshold_10percent = 0.50*last_interval_before;
     neurons_to_avoid = find(occurrences>threshold_10percent);
     disp(i)
     disp(neurons_to_avoid)

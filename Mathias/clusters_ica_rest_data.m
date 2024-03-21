@@ -18,7 +18,7 @@ path_to_neurons_of_interest = "takeokalabwip2023/Mathias/switch_data/neurons_of_
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data,"before_data_y.mat"));
-stimulus_data_m = stimulus_data_m.waiting_data;
+stimulus_data_m = stimulus_data_m.before_data;
 %stimulus_data_y = load(fullfile(volume_base2, path_to_code,"data_after_stimulus_y.mat"));
 %stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 

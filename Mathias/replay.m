@@ -148,9 +148,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             actual_most_common_cluster = most_common_cluster{end};
             break;
         end
-        disp('x')
     end
-    disp(i)
 
     % while ~isempty(find(cellfun(@(x) isequal(x, most_common_cluster), active_assemblies_before), 1))
     %     value_counter = value_counter+1;

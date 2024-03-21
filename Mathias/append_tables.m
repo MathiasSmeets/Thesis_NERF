@@ -6,14 +6,14 @@ clear; clc; close all;
 datapath = "/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/tables";
 savepath = "/scratch/mathiass-takeokalab/01/";
 
-frM_1 = load(fullfile(datapath, "frM_switched_1.mat"));
+frM_1 = load(fullfile(datapath, "frM_np2_1.mat"));
 cur_table = struct2array(frM_1);
 cur_table = cur_table(:,[1,4,7:9,11,13,15]);
 clearvars frY_1
 
 % append tables
 for i = 2:11
-    new_table = load(fullfile(datapath, "frM_switched_" + i + ".mat"));
+    new_table = load(fullfile(datapath, "frM_np2_" + i + ".mat"));
     new_table = struct2array(new_table);
 
     % remove rows that contain zero in the recording column
@@ -25,7 +25,7 @@ for i = 2:11
     clearvars new_table
 end
 
-%save(savepath + "frY_peak_total.mat", "data", "-v7.3")
+save(savepath + "frM_peak_total_np2.mat", "data", "-v7.3")
 
 % append 3 parts of horridge into one
 data = zeros(size(cur_table,1), 1 + size(cur_table.Fr_early{1,1},2)+size(cur_table.Fr_middle{1,1},2)+size(cur_table.Fr_late{1,1},2));
@@ -39,7 +39,7 @@ for i = 1:size(data,1)
         data(i,:) = cur_data;
     end
 end
-%save(fullfile(savepath, "horridge_data.mat"), "data", "-v7.3")
+save(fullfile(savepath, "horridge_data_np2.mat"), "data", "-v7.3")
 clearvars data
 
 % get switch data in array with recording nb in front
@@ -49,7 +49,7 @@ for i = 1:size(switch_data,1)
     switch_data(i,:) = cur_switch_data;
 end
 
-%save(fullfile(savepath, "switch_data.mat"), "switch_data", "-v7.3")
+save(fullfile(savepath, "switch_data_np2.mat"), "switch_data", "-v7.3")
 clearvars switch_data
 clearvars cur_switch_data
 
@@ -60,7 +60,7 @@ for i = 1:size(after_data,1)
     after_data(i,:) = cur_after_data;
 end
 
-%save(fullfile(savepath, "after_data.mat"), "after_data", "-v7.3")
+save(fullfile(savepath, "after_data_np2.mat"), "after_data", "-v7.3")
 clearvars after_data
 
 % before_data
@@ -70,7 +70,7 @@ for i = 1:size(before_data,1)
     before_data(i,:) = cur_before_data;
 end
 
-%save(fullfile(savepath, "before_data_y.mat"), "before_data", "-v7.3")
+save(fullfile(savepath, "before_data_np2.mat"), "before_data", "-v7.3")
 clearvars after_data
 
 % waiting_data
@@ -81,4 +81,4 @@ for i = 1:size(waiting_data,1)
     cur_mouse = i;
     waiting_data{cur_mouse} = cur_waiting_data;
 end
-save(fullfile(savepath, "waiting_data_m.mat"), "waiting_data", "-v7.3")
+save(fullfile(savepath, "waiting_data_np2.mat"), "waiting_data", "-v7.3")

@@ -279,7 +279,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-15
-            cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14),2))'*template_vector{i};
+            cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
         end
     end
 end

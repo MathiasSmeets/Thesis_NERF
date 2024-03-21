@@ -127,7 +127,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     actual_most_common_cluster = most_common_cluster{end};
     internal_counter = 0;
     % contains neuron to avoid
-    while ~isempty(find(ismember(actual_most_common_cluster, neurons_to_avoid), 1))
+    while numel(find(ismember(actual_most_common_cluster, neurons_to_avoid))) >= 2
         % if another has equal count
         if ~isequal(actual_most_common_cluster, most_common_cluster{1})
             internal_counter = internal_counter + 1;

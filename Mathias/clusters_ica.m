@@ -140,11 +140,11 @@ for i = setdiff(1:size(total_assemblies,1),2)
         j = j-1;
     end
     last_interval_index = j;
-
+    disp(last_interval_index)
     % create clustermatrix
     cluster_matrix = zeros(size(stimulus_data_m{i,1},1), last_interval_index);
     for k = 1:last_interval_index
-        for l = 1:length(total_assemblies{i,k})
+        for l = 1:(total_assemblies{i,k})
             cluster_matrix(total_neurons_of_interest{i,k}(total_assemblies{i,k}{l}),k) = 1;
         end
     end

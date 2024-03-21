@@ -114,7 +114,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     % if neurons are active in clusters similar to between, avoid these
     % similar = at least activity during experiment - 10%
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
-    variable_threshold = 0.50*neuron_between_activities*last_interval_before;
+    variable_threshold = 0.33*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
 
     %active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_10percent);
@@ -128,7 +128,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     actual_most_common_cluster = most_common_cluster{end};
     internal_counter = 0;
     % contains neuron to avoid
-    while numel(find(ismember(actual_most_common_cluster, neurons_to_avoid))) >= 1
+    while numel(find(ismember(actual_most_common_cluster, neurons_to_avoid))) >= 2
         % if another has equal count
         if ~isequal(actual_most_common_cluster, most_common_cluster{1})
             internal_counter = internal_counter + 1;

@@ -1,5 +1,5 @@
 clear; clc; close all;
-
+% use this code for before
 %% get data
 
 if ispc
@@ -17,18 +17,18 @@ path_to_neurons_of_interest = "takeokalabwip2023/Mathias/switch_data/neurons_of_
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_data_m.mat"));
-stimulus_data_m = stimulus_data_m.after_data;
+stimulus_data_m = load(fullfile(volume_base2, path_to_data,"before_data_y.mat"));
+stimulus_data_m = stimulus_data_m.before_data;
 %stimulus_data_y = load(fullfile(volume_base2, path_to_code,"data_after_stimulus_y.mat"));
 %stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_m.mat"));
+neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_y.mat"));
 neurons_of_interest_m = neurons_of_interest_m.output_m;
-inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_m.mat"));
+inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_y.mat"));
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
-sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_m.mat"));
-sos_results_m = sos_results_m.sos_results_m;
+sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_y.mat"));
+sos_results_m = sos_results_m.sos_results_y;
 
 folder = fileparts(which("clusters_ica.m"));
 addpath(genpath(folder))
@@ -56,7 +56,8 @@ total_data = cell(size(stimulus_data_m,1),ceil(size(stimulus_data_m,2)/interval_
 for k = 1:max(stimulus_data_m(:,1))
     cur_after_data = stimulus_data_m(stimulus_data_m(:,1) == k,:);
     cur_after_data = cur_after_data(:,2:end);
-    cur_neurons_of_interest = get_neurons_of_interest(cur_after_data, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+    %cur_neurons_of_interest = get_neurons_of_interest(cur_after_data, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+    cur_neurons_of_interest = 1:size(cur_after_data,1);
     reduced_cur_after_data = cur_after_data(cur_neurons_of_interest,:);
     index_counter = 1;
     for i = 1:interval_size:size(reduced_cur_after_data,2)-interval_size+1
@@ -69,7 +70,8 @@ for k = 1:max(stimulus_data_m(:,1))
         % calculate zscores
         cur_std = sos_results_m{k,2};
         cur_std(cur_std==0) = 0.01;
-        cur_neurons_of_interest = get_neurons_of_interest(cur_after_data, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+        %cur_neurons_of_interest = get_neurons_of_interest(cur_after_data, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
+        cur_neurons_of_interest = 1:size(cur_after_data,1);
         cur_data_zscore = (cur_mouse_fs_adjusted - sos_results_m{k,1}(cur_neurons_of_interest,:)) ./ cur_std(cur_neurons_of_interest,:);
 
         % remove neurons that are not active
@@ -80,7 +82,7 @@ for k = 1:max(stimulus_data_m(:,1))
             end
         end
 
-        [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity] = ica_assembly_detection(cur_data_zscore', create_plots);
+        [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,~] = ica_assembly_detection(cur_data_zscore', create_plots);
         if predicted_nbr_assemblies ~= 0
             total_neurons_of_interest{k,index_counter} = cur_neurons_of_interest;
             total_nb_assemblies{k,index_counter} = predicted_nbr_assemblies;
@@ -96,12 +98,12 @@ for k = 1:max(stimulus_data_m(:,1))
 end
 
 savepath = "X:\Mathias\switch_data\clusters";
-save(fullfile(savepath, "neurons_of_interest_rest_m.mat"), "total_neurons_of_interest", "-v7.3")
-save(fullfile(savepath, "nb_assemblies_rest_m.mat"), "total_nb_assemblies", "-v7.3")
-save(fullfile(savepath, "nb_neurons_rest_m.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_rest_m.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_rest_m.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_rest_m.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "neurons_of_interest_before_y.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_before_y.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_before_y.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_before_.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_after_m.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_after_m.mat"), "total_data", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
@@ -111,11 +113,10 @@ save(fullfile(savepath, "data_rest_m.mat"), "total_data", "-v7.3")
 
 %% create figure on how this evolves
 
-ica_neurons_of_interest = load(fullfile(savepath, "neurons_of_interest_rest_m.mat")); ica_neurons_of_interest=ica_neurons_of_interest.total_neurons_of_interest;
-ica_assemblies = load(fullfile(savepath, "assemblies_rest_m.mat")); ica_assemblies =
 intervals_to_combine = 3;
 population_similarities_start = zeros(2+1,size(total_assemblies,1));
 population_similarities_end = zeros(2+1,size(total_assemblies,1));
+all_cluster_matrices = cell(1,max(stimulus_data_m(:,1)));
 % loop over all mice
 for i = 1:max(stimulus_data_m(:,1))
     % get last interval
@@ -133,6 +134,7 @@ for i = 1:max(stimulus_data_m(:,1))
     xlabel("Time Bins (" + interval_size + " together)")
     ylabel("Neurons")
     title("Neurons in a cluster")
+    all_cluster_matrices{i} = cluster_matrix;
 
     % row_indices = [3,14,19,30];
     % for column_index = 1:size(cluster_matrix, 2)
@@ -185,4 +187,5 @@ for i = 1:max(stimulus_data_m(:,1))
     %     end
     % end
 end
+save(fullfile(savepath, "cluster_matrices_after_m.mat"), "all_cluster_matrices", "-v7.3")
 

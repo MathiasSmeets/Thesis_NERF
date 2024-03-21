@@ -1,5 +1,5 @@
 clear; clc; close all;
-
+% use this code for waiting
 %% get data
 
 if ispc
@@ -130,7 +130,7 @@ for i = 1:size(stimulus_data_m,1)
 
     % create clustermatrix
     cluster_matrix = zeros(size(cur_after_data,1), last_interval_index);
-    for k = 1:last_interval_index
+    for k = 1:size(total_assemblies,2)
         for l = 1:length(total_assemblies{i,k})
             cluster_matrix(total_neurons_of_interest{i,k}(total_assemblies{i,k}{l}),k) = 1;
         end

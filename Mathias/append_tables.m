@@ -25,7 +25,6 @@ for i = 2:3
     clearvars new_table
 end
 
-save(savepath + "frM_peak_total_np2.mat", "data", "-v7.3")
 
 % append 3 parts of horridge into one
 data = zeros(size(cur_table,1), 1 + size(cur_table.Fr_early{1,1},2)+size(cur_table.Fr_middle{1,1},2)+size(cur_table.Fr_late{1,1},2));

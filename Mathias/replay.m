@@ -248,7 +248,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+            cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
 
@@ -267,7 +267,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
             if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
-                adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+                adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
             end
         end
     end
@@ -279,7 +279,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     end
     for j = 1:last_interval_data(i)
         for k = 1:size(stimulus_data_m{i,j},2)-15
-            cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(stimulus_data_m{i,j}(cur_cluster,k:k+14),2)'*template_vector{i};
+            cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14),2))'*template_vector{i};
         end
     end
 end

@@ -38,6 +38,7 @@ if predicted_nbr_neurons_evs == size(M,2) && predicted_nbr_assemblies == 1
     assemblies{1} = neurons_to_keep;
     predicted_nbr_neurons = predicted_nbr_neurons_evs;
     activity = 0;
+    ica_vector = 0;
 
 elseif predicted_nbr_assemblies ~= 0
     

@@ -54,7 +54,7 @@ total_vector = cell(size(stimulus_data_m));
 %% calculate assembly for each interval
 
 % loop over each mouse
-for k = 1%:size(stimulus_data_m,1)
+for k = 1:size(stimulus_data_m,1)
     % loop over each interval of this mouse
     cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
     %cur_neurons_of_interest = 1:size(stimulus_data_m{k,1});
@@ -140,11 +140,11 @@ for i = setdiff(1:size(total_assemblies,1),2)
         j = j-1;
     end
     last_interval_index = j;
-    disp(last_interval_index)
+
     % create clustermatrix
     cluster_matrix = zeros(size(stimulus_data_m{i,1},1), last_interval_index);
     for k = 1:last_interval_index
-        for l = 1:(total_assemblies{i,k})
+        for l = 1:length(total_assemblies{i,k})
             cluster_matrix(total_neurons_of_interest{i,k}(total_assemblies{i,k}{l}),k) = 1;
         end
     end

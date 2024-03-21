@@ -54,7 +54,7 @@ total_vector = cell(size(stimulus_data_m));
 %% calculate assembly for each interval
 
 % loop over each mouse
-for k = 1:size(stimulus_data_m,1)
+for k = 1%:size(stimulus_data_m,1)
     % loop over each interval of this mouse
     cur_neurons_of_interest = get_neurons_of_interest(stimulus_data_m{k,1}, neurons_of_interest_m, inhibited_neurons_m, neuron_counter);
     %cur_neurons_of_interest = 1:size(stimulus_data_m{k,1});
@@ -132,7 +132,7 @@ population_similarities_start = zeros(2+1,size(total_assemblies,1));
 population_similarities_end = zeros(2+1,size(total_assemblies,1));
 all_cluster_matrices = cell(1,size(stimulus_data_m,1));
 % loop over all mice
-for i = 3:size(total_assemblies,1)
+for i = setdiff(1:size(total_assemblies,1),2)
     % get last interval
     j = size(total_data,2);
     while isempty(total_data{i,j}) && j > 1

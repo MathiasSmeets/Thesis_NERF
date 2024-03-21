@@ -17,17 +17,17 @@ path_to_neurons_of_interest = "takeokalabwip2023/Mathias/switch_data/neurons_of_
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data,"waiting_data_m.mat"));
+stimulus_data_m = load(fullfile(volume_base2, path_to_data,"waiting_data_y.mat"));
 stimulus_data_m = stimulus_data_m.waiting_data;
 %stimulus_data_y = load(fullfile(volume_base2, path_to_code,"data_after_stimulus_y.mat"));
 %stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_m.mat"));
+neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_y.mat"));
 neurons_of_interest_m = neurons_of_interest_m.output_m;
-inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_m.mat"));
+inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_y.mat"));
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
-sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_m.mat"));
+sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_y.mat"));
 sos_results_m = sos_results_m.sos_results_m;
 
 folder = fileparts(which("clusters_ica.m"));
@@ -102,12 +102,12 @@ for k = 1:size(stimulus_data_m,1)
 end
 
 savepath = "/scratch/mathiass-takeokalab/01/";
-save(fullfile(savepath, "neurons_of_interest_after_m.mat"), "total_neurons_of_interest", "-v7.3")
-save(fullfile(savepath, "nb_assemblies_after_m.mat"), "total_nb_assemblies", "-v7.3")
-save(fullfile(savepath, "nb_neurons_after_m.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_after_m.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_after_m.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_after_m.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "neurons_of_interest_after_y.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_after_y.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_after_y.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_after_y.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_after_y.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_after_y.mat"), "total_data", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;

@@ -12,7 +12,7 @@ cur_table = cur_table(:,[1,4,7:9,11,13,15]);
 clearvars frY_1
 
 % append tables
-for i = 2:11
+for i = 2:3
     new_table = load(fullfile(datapath, "frM_np2_" + i + ".mat"));
     new_table = struct2array(new_table);
 

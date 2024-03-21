@@ -281,14 +281,29 @@ end
 % using activity is a worse measure, as it is only one column, so using
 % this is actually a template of one column only
 % but now i tried with 15 ms bins which makes much more sense so let's see
+%%
+threshold = zeros(numel(cur_correlation_after),1);
+for i = 1:numel(cur_correlation_after)
+    threshold(i) = prctile(cur_correlation_after{i},99,2);
+end
 
-avg_cor_before = mean(cur_correlation_before,2);
-avg_cor_between=zeros(numel(cur_correlation_between),1);
-avg_cor_after=zeros(numel(cur_correlation_after),1);
+thresholded_before = cur_correlation_before;
+thresholded_between = cur_correlation_between;
+thresholded_after = cur_correlation_after;
+
+thresholded_before(thresholded_before<threshold) = 0;
+for i = 1:numel(thresholded_between)
+    thresholded_between{i}(thresholded_between{i}<threshold(i)) = 0;
+    thresholded_after{i}(thresholded_after{i}<threshold(i)) = 0;
+end
+
+avg_cor_before = mean(thresholded_before,2);
+avg_cor_between=zeros(numel(thresholded_between),1);
+avg_cor_after=zeros(numel(thresholded_after),1);
 avg_act_between=zeros(numel(cur_activity_between),1);
 for i = 1:numel(cur_correlation_between)
-    avg_cor_between(i) = mean(cur_correlation_between{i});
-    avg_cor_after(i) = mean(cur_correlation_after{i});
+    avg_cor_between(i) = mean(thresholded_between{i});
+    avg_cor_after(i) = mean(thresholded_after{i});
     avg_act_between(i) = mean(cur_activity_between{i});
 end
 avg_act_before = mean(abs(cur_activity_before),2);

@@ -110,7 +110,8 @@ end
 
 % in the second mouse of the control group, there is no cluster detected
 
-savepath = "X:\Mathias\switch_data\clusters";
+%savepath = "X:\Mathias\switch_data\clusters";
+savepath = "/scratch/mathiass-takeokalab/01/";
 save(fullfile(savepath, "neurons_of_interest_horridge_y.mat"), "total_neurons_of_interest", "-v7.3")
 save(fullfile(savepath, "nb_assemblies_horridge_y.mat"), "total_nb_assemblies", "-v7.3")
 save(fullfile(savepath, "nb_neurons_horridge_y.mat"), "total_nb_neurons", "-v7.3")

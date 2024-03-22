@@ -102,9 +102,9 @@ savepath = "/scratch/mathiass-takeokalab/01/";
 save(fullfile(savepath, "neurons_of_interest_before_np2.mat"), "total_neurons_of_interest", "-v7.3")
 save(fullfile(savepath, "nb_assemblies_before_np2.mat"), "total_nb_assemblies", "-v7.3")
 save(fullfile(savepath, "nb_neurons_before_np2.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_before_np2.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_before_np2.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_before_np2.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "assemblies_before_y.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_before_y.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_before_y.mat"), "total_data", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
@@ -188,5 +188,5 @@ for i = 1:max(stimulus_data_m(:,1))
     %     end
     % end
 end
-save(fullfile(savepath, "cluster_matrices_before_np2.mat"), "all_cluster_matrices", "-v7.3")
+save(fullfile(savepath, "cluster_matrices_before_y.mat"), "all_cluster_matrices", "-v7.3")
 

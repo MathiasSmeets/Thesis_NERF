@@ -59,9 +59,11 @@ intervals_together = 30;
 bins_together = 15;
 intervals_together_before = intervals_together*interval_size_before;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
+cur_template = template_smoothed{1};
+new_cluster_total = cell(size(template_smoothed));
 
 %% check for replay in before and after data
-cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
+cur_correlation_before = cell(size(stimulus_data_m,1),1);
 cur_correlation_after = cell(size(stimulus_data_m,1),1);
 cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell because different lengths
 cur_activity_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
@@ -94,36 +96,35 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     cur_cluster = template_cluster{i};
 
     % do randomization 10 times
+    new_cluster_total{i} = cell(1,10);
     for iteration = 1:10
-        % create random template
-        random_timepoints = randi([1,size(cur_raw_data,2)-size(cur_template)+1], [1,last_interval_data(i)]);
-        % get template by averaging activity from each timepoint
-        new_template = zeros(size(cur_template));
-        for cur_timepoint = 1:numel(random_timepoints)
-            new_template = new_template + cur_raw_data(cur_cluster,cur_timepoint:cur_timepoint+size(new_template,2)-1);
-        end
-        new_template = new_template / numel(random_timepoints);
-        error("stop")
-    end
-    error("stopp")
+        % randomize the cluster
+        % flatten
+        flat_cluster = cur_cluster(:);
+        shuffled_values = flat_cluster(randperm(numel(flat_cluster)));
+        new_cluster = reshape(shuffled_values, size(cur_template));
+        new_cluster_total{i}{iteration} = new_cluster;
 
-    for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
-        cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
-    end
-    cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(cur_template,2)+1);
-    for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
-    end
-    for j = 1:last_interval_data(i)
-        for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+        for j = 1:size(cur_before_data,2)-size(new_cluster,2)+1
+            cur_correlation_before{i}(iteration,j) = sum(new_cluster.*cur_before_data(new_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
         end
+        cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(new_cluster,2)+1);
+        for j = 1:size(cur_after_data,2)-size(new_cluster,2)+1
+            cur_correlation_after{i}(iteration,j) = sum(new_cluster.*cur_after_data(new_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
+        end
+        for j = 1:last_interval_data(i)
+            for k = 1:size(stimulus_data_m{i,j},2)-size(new_cluster,2)+1
+                cur_correlation_between{i}(iteration,(j-1)*size(stimulus_data_m{i,j},2)+k) = sum(new_cluster.*double(stimulus_data_m{i,j}(new_cluster,k:k+size(new_cluster,2)-1)),'all') / (size(new_cluster,1) * size(new_cluster,2));
+            end
+        end
+
     end
 end
 % using activity is a worse measure, as it is only one column, so using
 % this is actually a template of one column only
 % but now i tried with 15 ms bins which makes much more sense so let's see
 %%
+error("stopped after correlations")
 threshold = zeros(numel(cur_correlation_after),1);
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     threshold(i) = prctile(cur_correlation_after{i},99,2);

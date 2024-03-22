@@ -102,7 +102,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
         end
         new_template = new_template / numel(random_timepoints);
     end
-    
+    error("stop")
 
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
         cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));

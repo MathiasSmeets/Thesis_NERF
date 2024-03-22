@@ -291,6 +291,7 @@ threshold = zeros(numel(cur_correlation_after),1);
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     threshold(i) = prctile(cur_correlation_after{i},99,2);
 end
+save("/scratch/mathiass-takeokalab/01/threshold.mat","threshold")
 
 thresholded_before = cur_correlation_before;
 thresholded_between = cur_correlation_between;

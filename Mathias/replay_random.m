@@ -124,9 +124,10 @@ thresholded_after = cur_correlation_after;
 avg_before = zeros(numel(thresholded_before),1);
 avg_between = zeros(numel(thresholded_between),1);
 avg_after = zeros(numel(thresholded_after),1);
+load(fullfile(path_to_correlations,"threshold.mat"))
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
+    cur_threshold = threshold(i);
     for j = 1:10
-        cur_threshold = prctile(cur_correlation_after{i}(iteration,:),99,2);
         thresholded_before{i}(thresholded_before{i}(iteration,:)<cur_threshold) = 0;
         thresholded_between{i}(thresholded_between{i}(iteration,:)<cur_threshold) = 0;
         thresholded_after{i}(thresholded_after{i}(iteration,:)<cur_threshold) = 0;

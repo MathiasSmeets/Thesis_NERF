@@ -17,7 +17,7 @@ stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 stimulus_data_m = stimulus_data_m(1:9,:);
 
-raw_data_m = load(fullfile(volume_base2, "takeokalabwip2023/Mathias/switch_data/table_data", "horridge_data_m.mat"));
+raw_data_m = load(fullfile(volume_base2, "takeokalabwip2023/Mathias/switch_data/tabled_data", "horridge_data_m.mat"));
 raw_data_m = raw_data_m.data;
 raw_data_m(raw_data_m(:,1)>=10,:) = [];
 
@@ -86,6 +86,8 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     %cur_after_data = cur_after_data(:,2:end);
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
+    cur_raw_data = raw_data_m(raw_data_m(:,1) == i,:);
+    cur_raw_data = cur_raw_data(:,2:end);
 
     cur_template = template_smoothed{i};
     %cur_template = template{i};
@@ -94,15 +96,16 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     % do randomization 10 times
     for iteration = 1:10
         % create random template
-        random_timepoints = randi([1,size(raw_data_m,2)-size(cur_template)+1], [1,last_interval_data(i)]);
+        random_timepoints = randi([1,size(cur_raw_data,2)-size(cur_template)+1], [1,last_interval_data(i)]);
         % get template by averaging activity from each timepoint
         new_template = zeros(size(cur_template));
         for cur_timepoint = 1:numel(random_timepoints)
-            new_template = new_template + raw_data_m(cur_cluster,cur_timepoint:cur_timepoint+size(new_template,2)-1);
+            new_template = new_template + cur_raw_data(cur_cluster,cur_timepoint:cur_timepoint+size(new_template,2)-1);
         end
         new_template = new_template / numel(random_timepoints);
+        error("stop")
     end
-    error("stop")
+    error("stopp")
 
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
         cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));

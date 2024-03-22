@@ -17,10 +17,6 @@ stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 stimulus_data_m = stimulus_data_m(1:9,:);
 
-raw_data_m = load(fullfile(volume_base2, "takeokalabwip2023/Mathias/switch_data/tabled_data", "horridge_data_m.mat"));
-raw_data_m = raw_data_m.data;
-raw_data_m(raw_data_m(:,1)>=10,:) = [];
-
 output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
 output_m = output_m.output_m;
 
@@ -88,8 +84,6 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     %cur_after_data = cur_after_data(:,2:end);
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
-    cur_raw_data = raw_data_m(raw_data_m(:,1) == i,:);
-    cur_raw_data = cur_raw_data(:,2:end);
 
     cur_template = template_smoothed{i};
     %cur_template = template{i};
@@ -100,21 +94,21 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for iteration = 1:10
         % randomize the cluster
         % flatten
-        flat_cluster = cur_cluster(:);
+        flat_cluster = cur_template(:);
         shuffled_values = flat_cluster(randperm(numel(flat_cluster)));
         new_cluster = reshape(shuffled_values, size(cur_template));
         new_cluster_total{i}{iteration} = new_cluster;
 
         for j = 1:size(cur_before_data,2)-size(new_cluster,2)+1
-            cur_correlation_before{i}(iteration,j) = sum(new_cluster.*cur_before_data(new_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
+            cur_correlation_before{i}(iteration,j) = sum(new_cluster.*cur_before_data(cur_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
         end
         cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(new_cluster,2)+1);
         for j = 1:size(cur_after_data,2)-size(new_cluster,2)+1
-            cur_correlation_after{i}(iteration,j) = sum(new_cluster.*cur_after_data(new_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
+            cur_correlation_after{i}(iteration,j) = sum(new_cluster.*cur_after_data(cur_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
         end
         for j = 1:last_interval_data(i)
             for k = 1:size(stimulus_data_m{i,j},2)-size(new_cluster,2)+1
-                cur_correlation_between{i}(iteration,(j-1)*size(stimulus_data_m{i,j},2)+k) = sum(new_cluster.*double(stimulus_data_m{i,j}(new_cluster,k:k+size(new_cluster,2)-1)),'all') / (size(new_cluster,1) * size(new_cluster,2));
+                cur_correlation_between{i}(iteration,(j-1)*size(stimulus_data_m{i,j},2)+k) = sum(new_cluster.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(new_cluster,2)-1)),'all') / (size(new_cluster,1) * size(new_cluster,2));
             end
         end
 

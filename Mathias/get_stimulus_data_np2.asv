@@ -177,7 +177,7 @@ for i = 1:numel(fields)
     start_neuron_y = start_neuron_y + cur_nb_neurons_y;
 end
 %save(fullfile(save_path, "after_stimulus_data_m_horridge.mat"), "after_stimulus_data_m", "-v7.3")
-save(fullfile(save_path, "after_stimulus_data_y_horridge.mat"), "after_stimulus_data_y", "-v7.3")
+save(fullfile(save_path, "after_stimulus_data_np2_horridge.mat"), "after_stimulus_data_y", "-v7.3")
 clearvars after_stimulus_data_m_horridge data_m after_stimulus_data_y_horridge data_y
 
 %% now do the same for switch data
@@ -186,7 +186,7 @@ disp("second part")
 %switch_m = struct2array(switch_m);
 switch_y = load(fullfile(data_path, "switch_data_y.mat"));
 switch_y = struct2array(switch_y);
-switch_y = uint16(switch_y);
+%switch_y = uint16(switch_y);
 
 start_neuron_m = 1;
 start_neuron_y = 1;
@@ -234,7 +234,7 @@ end
 
 
 %save(fullfile(save_path, "after_stimulus_data_m_switch.mat"), "after_stimulus_switch_m", "-v7.3")
-save(fullfile(save_path, "after_stimulus_data_y_switch.mat"), "after_stimulus_switch_y", "-v7.3")
+save(fullfile(save_path, "after_stimulus_data_np2_switch.mat"), "after_stimulus_switch_y", "-v7.3")
 
 
 

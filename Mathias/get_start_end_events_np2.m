@@ -1,10 +1,12 @@
 function [EventSizeM, EventSizeY, max_m, max_y, waitingeventM, waitingeventY, switcheventM, switcheventY] = get_start_end_events_np2(event_main_Y)
 max_m = 0;
 max_y = 0;
+fields = fieldnames(event_main_Y);
 for i = 1:3
+    events = event_main_Y.(fields{i}).frM_stim.horridge{1,1};
     if i==1 %05/07/2022 //Ptf1a //waiting bin: 3842, 7382];
         lim_start=2;
-        lim_event = length(events(evtid).onsets);
+        lim_event = length(events);
         waiting_start = events(evtid).onsets(lim_start)+600;
         waiting_stop = events(evtid).onsets(lim_start)+2400;
         switch_start=1;

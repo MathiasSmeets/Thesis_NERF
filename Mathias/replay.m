@@ -362,9 +362,9 @@ scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_af
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_np2.png")
 
-save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3.mat","avg_adj_cur_correlation_before")
-save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3.mat","avg_adj_cur_correlation_between")
-save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3.mat","avg_adj_cur_correlation_after")
+save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3.mat","avg_cor_before")
+save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3.mat","avg_cor_between")
+save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3.mat","avg_cor_after")
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;

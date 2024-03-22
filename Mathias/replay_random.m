@@ -118,58 +118,48 @@ end
 % this is actually a template of one column only
 % but now i tried with 15 ms bins which makes much more sense so let's see
 %%
-error("stopped after correlations")
-threshold = zeros(numel(cur_correlation_after),1);
-for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    for j = 1:10
-        cur_threshold = prctile(cur_correlation_after{i}(iteration,:),99,2);
-    end
-end
-
 thresholded_before = cur_correlation_before;
 thresholded_between = cur_correlation_between;
 thresholded_after = cur_correlation_after;
-
-thresholded_before(thresholded_before<threshold) = 0;
+avg_before = zeros(numel(thresholded_before),1);
+avg_between = zeros(numel(thresholded_between),1);
+avg_after = zeros(numel(thresholded_after),1);
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    thresholded_between{i}(thresholded_between{i}<threshold(i)) = 0;
-    thresholded_after{i}(thresholded_after{i}<threshold(i)) = 0;
+    for j = 1:10
+        cur_threshold = prctile(cur_correlation_after{i}(iteration,:),99,2);
+        thresholded_before{i}(thresholded_before{i}(iteration,:)<cur_threshold) = 0;
+        thresholded_between{i}(thresholded_between{i}(iteration,:)<cur_threshold) = 0;
+        thresholded_after{i}(thresholded_after{i}(iteration,:)<cur_threshold) = 0;
+    end
+    avg_before(i) = mean(thresholded_before{i},'all');
+    avg_between(i) = mean(thresholded_between{i},'all');
+    avg_after(i) = mean(thresholded_after{i},'all');
 end
-
-avg_cor_before = mean(thresholded_before,2);
-avg_cor_between=zeros(numel(thresholded_between),1);
-avg_cor_after=zeros(numel(thresholded_after),1);
-avg_act_between=zeros(numel(cur_activity_between),1);
-for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    avg_cor_between(i) = mean(thresholded_between{i});
-    avg_cor_after(i) = mean(thresholded_after{i});
-    avg_act_between(i) = mean(cur_activity_between{i});
-end
-avg_act_before = mean(abs(cur_activity_before),2);
-avg_act_after = mean(abs(cur_activity_after),2);
 
 %% create boxplot figures
 
-figure;boxplot([avg_cor_before,avg_cor_between,avg_cor_after])
+figure;boxplot([avg_before,avg_between,avg_after])
 figure
-boxplot([avg_cor_before, avg_cor_between, avg_cor_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
+boxplot([avg_before, avg_between, avg_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
 hold on
-scatter(ones(size(avg_cor_before,1)),avg_cor_before, 'filled', 'blue')
-scatter(ones(size(avg_cor_between,1))*2,avg_cor_between, 'filled', 'blue')
-scatter(ones(size(avg_cor_after,1))*3,avg_cor_after, 'filled', 'blue')
-line([ones(size(avg_cor_before)), ones(size(avg_cor_between))*2]',[avg_cor_before, avg_cor_between]','Color','green')
-line([ones(size(avg_cor_between))*2, ones(size(avg_cor_after))*3]',[avg_cor_between, avg_cor_after]','Color','green')
+scatter(ones(size(avg_before,1)),avg_before, 'filled', 'blue')
+scatter(ones(size(avg_between,1))*2,avg_between, 'filled', 'blue')
+scatter(ones(size(avg_after,1))*3,avg_after, 'filled', 'blue')
+line([ones(size(avg_before)), ones(size(avg_between))*2]',[avg_before, avg_between]','Color','green')
+line([ones(size(avg_between))*2, ones(size(avg_after))*3]',[avg_between, avg_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_bba_random.png")
 
 figure
-boxplot([avg_cor_before, avg_cor_after], 'Labels', {'Baseline', 'Rest'})
+boxplot([avg_before, avg_after], 'Labels', {'Baseline', 'Rest'})
 hold on
-scatter(ones(size(avg_cor_before,1)),avg_cor_before, 'filled', 'blue')
-scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
-line([ones(size(avg_cor_before)), ones(size(avg_cor_after))*2]',[avg_cor_before, avg_cor_after]','Color','green')
+scatter(ones(size(avg_before,1)),avg_before, 'filled', 'blue')
+scatter(ones(size(avg_after,1))*2,avg_after, 'filled', 'blue')
+line([ones(size(avg_before)), ones(size(avg_after))*2]',[avg_before, avg_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_random.png")
 
-
+save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_random.mat","avg_before")
+save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_random.mat","avg_between")
+save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_random.mat","avg_after")
 %% test
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)
 % [p,h,stats] = signrank(avg_cor_before,avg_cor_after)

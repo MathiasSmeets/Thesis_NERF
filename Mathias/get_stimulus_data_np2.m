@@ -133,7 +133,7 @@ numbers = 1:3;
 %
 start_neuron_y = 1;
 %[EventSizeM, EventSizeY] = get_start_end_events();
-[~, EventSizeY, ~, maxy, ~, waitingeventY, ~, switcheventY] = get_start_end_events_np2();
+[~, EventSizeY, ~, maxy, ~, waitingeventY, ~, switcheventY] = get_start_end_events_np2(event_main_Y);
 % after_stimulus_data_m = cell(length(numbers), maxm); % go to get_max_onsets.m to determine this 5217
 after_stimulus_data_y = cell(length(numbers), maxy);
 

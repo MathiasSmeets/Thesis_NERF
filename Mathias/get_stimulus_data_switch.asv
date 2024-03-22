@@ -146,7 +146,7 @@ for i = 1:numel(fields)
     % cur_onsets_m = event_main_M.(fields{i}).frM_stim.horridge{1,1};
     cur_onsets_y = event_main_Y.(fields{i}).frM_stim.horridge{1,1};
     % cur_onsets_m = cur_onsets_m(EventSizeM(nb_mouse,1):EventSizeM(nb_mouse,2));
-    cur_onsets_y = cur_onsets_y(EventSizeY(nb_mouse,1):EventSizeY(nb_mouse,2));
+    cur_onsets_y = cur_onsets_y;%(EventSizeY(nb_mouse,1):EventSizeY(nb_mouse,2));
     % cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
     cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
 
@@ -202,7 +202,7 @@ for i = 1:numel(fields)
     %cur_onsets_m = event_main_M.(fields{i}).frM_stim.switch{1,1};
     cur_onsets_y = event_main_Y.(fields{i}).frM_stim.switch{1,1};
     %cur_onsets_m = cur_onsets_m;%(EventSizeM(nb_mouse,1):EventSizeM(nb_mouse,2));
-    cur_onsets_y = cur_onsets_y(switcheventY(nb_mouse,1):end);
+    cur_onsets_y = cur_onsets_y;%(EventSizeY(nb_mouse,1):EventSizeY(nb_mouse,2));
     %cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
     cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
 

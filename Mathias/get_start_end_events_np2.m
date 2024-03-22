@@ -1,4 +1,4 @@
-function [EventSizeM, EventSizeY, max_m, max_y, waitingeventM, waitingeventY, switcheventM, switcheventY] = get_start_end_events_np2()
+function [EventSizeM, EventSizeY, max_m, max_y, waitingeventM, waitingeventY, switcheventM, switcheventY] = get_start_end_events_np2(event_main_Y)
 max_m = 0;
 max_y = 0;
 for i = 1:3

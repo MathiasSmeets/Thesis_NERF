@@ -17,18 +17,18 @@ path_to_neurons_of_interest = "takeokalabwip2023/Mathias/switch_data/neurons_of_
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 %path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_stimulus_data_y_horridge.mat"));
+stimulus_data_m = load(fullfile(volume_base2, path_to_data,"after_stimulus_data_np2_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 %stimulus_data_y = load(fullfile(volume_base2, path_to_code,"data_after_stimulus_y.mat"));
 %stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_y.mat"));
+neurons_of_interest_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "neurons_of_interest_horridge_np2.mat"));
 neurons_of_interest_m = neurons_of_interest_m.output_m;
-inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_y.mat"));
+inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "inhibited_horridge_np2.mat"));
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
-sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_y.mat"));
-sos_results_m = sos_results_m.sos_results_y;
+sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_np2.mat"));
+sos_results_m = sos_results_m.sos_results_m;
 
 folder = fileparts(which("clusters_ica.m"));
 addpath(genpath(folder))
@@ -110,15 +110,15 @@ end
 
 % in the second mouse of the control group, there is no cluster detected
 
-%savepath = "X:\Mathias\switch_data\clusters";
-savepath = "/scratch/mathiass-takeokalab/01/";
-save(fullfile(savepath, "neurons_of_interest_horridge_y.mat"), "total_neurons_of_interest", "-v7.3")
-save(fullfile(savepath, "nb_assemblies_horridge_y.mat"), "total_nb_assemblies", "-v7.3")
-save(fullfile(savepath, "nb_neurons_horridge_y.mat"), "total_nb_neurons", "-v7.3")
-save(fullfile(savepath, "assemblies_horridge_y.mat"), "total_assemblies", "-v7.3")
-save(fullfile(savepath, "activity_horridge_y.mat"), "total_activity", "-v7.3")
-save(fullfile(savepath, "data_horridge_y.mat"), "total_data", "-v7.3")
-save(fullfile(savepath, "ica_vector_horridge_y.mat"), "total_vector", "-v7.3")
+savepath = "X:\Mathias\switch_data\clusters";
+%savepath = "/scratch/mathiass-takeokalab/01/";
+save(fullfile(savepath, "neurons_of_interest_horridge_np2.mat"), "total_neurons_of_interest", "-v7.3")
+save(fullfile(savepath, "nb_assemblies_horridge_np2.mat"), "total_nb_assemblies", "-v7.3")
+save(fullfile(savepath, "nb_neurons_horridge_np2.mat"), "total_nb_neurons", "-v7.3")
+save(fullfile(savepath, "assemblies_horridge_np2.mat"), "total_assemblies", "-v7.3")
+save(fullfile(savepath, "activity_horridge_np2.mat"), "total_activity", "-v7.3")
+save(fullfile(savepath, "data_horridge_np2.mat"), "total_data", "-v7.3")
+save(fullfile(savepath, "ica_vector_horridge_np2.mat"), "total_vector", "-v7.3")
 
 
 % activity = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\activity.mat"); activity = activity.total_activity;
@@ -133,7 +133,7 @@ population_similarities_start = zeros(2+1,size(total_assemblies,1));
 population_similarities_end = zeros(2+1,size(total_assemblies,1));
 all_cluster_matrices = cell(1,size(stimulus_data_m,1));
 % loop over all mice
-for i = setdiff(1:size(total_assemblies,1),2)
+for i = 1:3
     % get last interval
     j = size(total_data,2);
     while isempty(total_data{i,j}) && j > 1
@@ -206,4 +206,4 @@ for i = setdiff(1:size(total_assemblies,1),2)
     % % % % %     end
     % % % % % end
 end
-save(fullfile(savepath, "cluster_matrices_between_y.mat"), "all_cluster_matrices", "-v7.3")
+save(fullfile(savepath, "cluster_matrices_between_np2.mat"), "all_cluster_matrices", "-v7.3")

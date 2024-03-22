@@ -5,10 +5,10 @@ other_path = "X:\Mathias\switch_data\data_after_stimulus";
 % path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 % other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(other_path + "\after_stimulus_data_np2_horridge.mat");
+stimulus_data_m = load(other_path + "\after_stimulus_data_np2_switch.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_switch_y;
 stimulus_data_m = cellfun(@double, stimulus_data_m, 'UniformOutput', false);
-stimulus_data_y = load(other_path + "\after_stimulus_data_np2_horridge.mat");
+stimulus_data_y = load(other_path + "\after_stimulus_data_np2_switch.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_switch_y;
 stimulus_data_y = cellfun(@double, stimulus_data_y, 'UniformOutput', false);
 % stimulus_data_m = load(other_path + "\data_after_stimulus_m.mat");

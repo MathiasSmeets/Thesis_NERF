@@ -9,10 +9,10 @@ path_to_code = "X:\Mathias\switch_data\data_after_stimulus\";
 % stimulus_data_y = load(path_to_code + "data_after_stimulus_y.mat");
 % stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 
-stimulus_data_m = load(path_to_code + "after_stimulus_data_y_horridge.mat");
+stimulus_data_m = load(path_to_code + "after_stimulus_data_np2_horridge.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_m = cellfun(@double, stimulus_data_m, 'UniformOutput', false);
-stimulus_data_y = load(path_to_code + "after_stimulus_data_y_horridge.mat");
+stimulus_data_y = load(path_to_code + "after_stimulus_data_np2_horridge.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_data_y;
 stimulus_data_y = cellfun(@double, stimulus_data_y, 'UniformOutput', false);
 

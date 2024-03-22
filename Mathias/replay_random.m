@@ -124,7 +124,7 @@ thresholded_after = cur_correlation_after;
 avg_before = zeros(numel(thresholded_before),1);
 avg_between = zeros(numel(thresholded_between),1);
 avg_after = zeros(numel(thresholded_after),1);
-load(fullfile(path_to_correlations,"threshold.mat"))
+load(fullfile(volume_base2,path_to_correlations,"threshold.mat"))
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     cur_threshold = threshold(i);
     for j = 1:10
@@ -161,6 +161,15 @@ saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_random.png")
 save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_random.mat","avg_before")
 save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_random.mat","avg_between")
 save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_random.mat","avg_after")
+
+load("X:\Mathias\switch_data\correlations\correlation_after_smoothed_width3.mat")
+figure
+boxplot([avg_after, avg_cor_after])
+hold on
+scatter(ones(size(avg_after,1)),avg_after, 'filled', 'blue')
+scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
+line([ones(size(avg_after)), ones(size(avg_cor_after))*2]',[avg_after, avg_cor_after]','Color','green')
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_random_not_random.png")
 %% test
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)
 % [p,h,stats] = signrank(avg_cor_before,avg_cor_after)

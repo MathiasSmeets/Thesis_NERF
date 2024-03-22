@@ -192,7 +192,7 @@ switch_y = struct2array(switch_y);
 start_neuron_m = 1;
 start_neuron_y = 1;
 %after_stimulus_switch_m = cell(length(numbers), 1); %% to do
-after_stimulus_switch_y = cell(length(numbers), 1000);
+after_stimulus_switch_y = cell(length(numbers), maxy);
 
 
 for i = 1:numel(fields)

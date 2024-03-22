@@ -47,7 +47,7 @@ cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "clus
 
 mouse_to_exclude = 0;
 template_smoothed = load(fullfile(volume_base2, path_to_correlations, "template_smoothed_3_m.mat"));template_smoothed = template_smoothed.template_smoothed;
-template_cluster = load(fullfile(volume_base2, path_to_correlations, "template_cluster_m.mat"));template_cluster = template_cluster.teplate_cluster;
+template_cluster = load(fullfile(volume_base2, path_to_correlations, "template_cluster_m.mat"));template_cluster = template_cluster.template_cluster;
 %mouse_to_exclude = 2;
 %mouse_to_exclude = 4:9;
 

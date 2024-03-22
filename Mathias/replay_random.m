@@ -121,7 +121,9 @@ end
 error("stopped after correlations")
 threshold = zeros(numel(cur_correlation_after),1);
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    threshold(i) = prctile(cur_correlation_after{i},99,2);
+    for j = 1:10
+        cur_threshold = prctile(cur_correlation_after{i}(iteration,:),99,2);
+    end
 end
 
 thresholded_before = cur_correlation_before;
@@ -167,105 +169,13 @@ scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
 line([ones(size(avg_cor_before)), ones(size(avg_cor_after))*2]',[avg_cor_before, avg_cor_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_random.png")
 
-avg_adj_cur_correlation_before = mean(adj_cur_correlation_before,2);
-avg_adj_cur_correlation_between = zeros(numel(adj_cur_correlation_between),1);
-avg_adj_cur_correlation_after = zeros(numel(adj_cur_correlation_after),1);
-for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    avg_adj_cur_correlation_between(i) = mean(adj_cur_correlation_between{i});
-    avg_adj_cur_correlation_after(i) = mean(adj_cur_correlation_after{i});
-end
 
-figure;boxplot([avg_adj_cur_correlation_before,avg_adj_cur_correlation_between,avg_adj_cur_correlation_after])
-figure
-boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_between, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
-hold on
-scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
-scatter(ones(size(avg_adj_cur_correlation_between,1))*2,avg_adj_cur_correlation_between, 'filled', 'blue')
-scatter(ones(size(avg_adj_cur_correlation_after,1))*3,avg_adj_cur_correlation_after, 'filled', 'blue')
-line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_between))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_between]','Color','green')
-line([ones(size(avg_adj_cur_correlation_between))*2, ones(size(avg_adj_cur_correlation_after))*3]',[avg_adj_cur_correlation_between, avg_adj_cur_correlation_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_bba_random.png")
-
-figure
-boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Rest'})
-hold on
-scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
-scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
-line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_random.png")
-
-save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_random.mat","avg_adj_cur_correlation_before")
-save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_random.mat","avg_adj_cur_correlation_between")
-save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_random.mat","avg_adj_cur_correlation_after")
-%% determine 95% threshold based on before data ---->>> not working well
-% threshold = prctile(cur_correlation_before,99,2);
-% adjusted_cor_before = cur_correlation_before;
-% adjusted_cor_between = cur_correlation_between;
-% adjusted_cor_after= cur_correlation_after;
-% adjusted_cor_before(adjusted_cor_before<threshold) = 0;
-% for i = setdiff(1:size(stimulus_data_m,1),exclude)
-%     adjusted_cor_between{i}(adjusted_cor_between{i}<threshold(i)) = 0;
-% end
-% adjusted_cor_after(adjusted_cor_after<threshold) = 0;
-% 
-% avg_adj_cor_before = mean(adjusted_cor_before,2);
-% avg_adj_cor_between=zeros(numel(adjusted_cor_between),1);
-% for i = setdiff(1:size(stimulus_data_m,1),exclude)
-%     avg_adj_cor_between(i) = mean(adjusted_cor_between{i});
-% end
-% avg_adj_cor_after = mean(adjusted_cor_after,2);
-
-
-
-
-%% plot correlations
+%% test
 % wilcoxin signed-rank test (no gaussian assumptions +  paired data)
 % [p,h,stats] = signrank(avg_cor_before,avg_cor_after)
 
 % wilcoxon rank-sum test (no gaussian assumptions + no paired data)
 % [p,h,stats] = ranksum(avg_adj_cur_correlation_before,avg_adj_cur_correlation_after)
 
-% test for gaussianity: shapiro wilk, kolmogorov smimov, qqplot
 
-
-% for i = setdiff(1:size(stimulus_data_m,1),exclude)
-% figure
-% subplot(3,1,1);plot(cur_correlation_before(i,:))
-% subplot(3,1,2);plot(cur_correlation_between{i})
-% subplot(3,1,3);plot(cur_correlation_after{i})
-% saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation" + i + ".png")
-% figure
-% subplot(3,1,1);plot(adj_cur_correlation_before(i,:))
-% subplot(3,1,2);plot(adj_cur_correlation_between{i})
-% subplot(3,1,3);plot(adj_cur_correlation_after{i})
-% saveas(gcf,"/scratch/mathiass-takeokalab/01/correlation_adj" + i + ".png")
-% end
-
-%% more neurons in cluster afterwards?
-% 
-% load("X:\Mathias\switch_data\clusters\cluster_matrices_before_m.mat")
-% all_cluster_matrices_before = all_cluster_matrices;
-% load("X:\Mathias\switch_data\clusters\cluster_matrices_between_m.mat")
-% all_cluster_matrices_between = all_cluster_matrices;
-% load("X:\Mathias\switch_data\clusters\cluster_matrices_after_m.mat")
-% all_cluster_matrices_after = all_cluster_matrices;
-% 
-% avg_nb_cluster_before = zeros(numel(all_cluster_matrices_before),1);
-% avg_nb_cluster_between = zeros(numel(all_cluster_matrices_between),1);
-% avg_nb_cluster_after = zeros(numel(all_cluster_matrices_after),1);
-% for i = setdiff(1:size(stimulus_data_m,1),exclude)
-%     avg_nb_cluster_before(i) = sum(all_cluster_matrices_before{i},'all') / size(all_cluster_matrices_before{i},2);
-%     avg_nb_cluster_between(i) = sum(all_cluster_matrices_between{i},'all') / size(all_cluster_matrices_between{i},2);
-%     avg_nb_cluster_after(i) = sum(all_cluster_matrices_after{i},'all') / size(all_cluster_matrices_after{i},2);
-% end
-% figure
-% boxplot([avg_nb_cluster_before, avg_nb_cluster_between, avg_nb_cluster_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
-% hold on
-% scatter(ones(size(avg_nb_cluster_before,1)),avg_nb_cluster_before, 'filled', 'blue')
-% scatter(ones(size(avg_nb_cluster_between,1))*2,avg_nb_cluster_between, 'filled', 'blue')
-% scatter(ones(size(avg_nb_cluster_after,1))*3,avg_nb_cluster_after, 'filled', 'blue')
-% line([ones(size(avg_nb_cluster_before)), ones(size(avg_nb_cluster_between))*2]',[avg_nb_cluster_before, avg_nb_cluster_between]','Color','green')
-% line([ones(size(avg_nb_cluster_between))*2, ones(size(avg_nb_cluster_after))*3]',[avg_nb_cluster_between, avg_nb_cluster_after]','Color','green')
-% 
-% 
 

@@ -28,7 +28,7 @@ inhibited_neurons_m = load(fullfile(volume_base2, path_to_neurons_of_interest, "
 inhibited_neurons_m = inhibited_neurons_m.inhibited_m;
 
 sos_results_m = load(fullfile(volume_base2, "takeokalabwip2023","Mathias", "switch_data","sos_data", "sos_results_np2.mat"));
-sos_results_m = sos_results_m.sos_results_y;
+sos_results_m = sos_results_m.sos_results_m;
 
 folder = fileparts(which("clusters_ica.m"));
 addpath(genpath(folder))

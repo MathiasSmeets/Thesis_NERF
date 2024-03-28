@@ -303,6 +303,11 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     thresholded_after{i}(thresholded_after{i}<threshold(i)) = 0;
 end
 
+save("/scratch/mathiass-takeokalab/01/thresholded_before_m.mat","threshold_before")
+save("/scratch/mathiass-takeokalab/01/thresholded_between_m.mat","threshold_between")
+save("/scratch/mathiass-takeokalab/01/thresholded_after_m.mat","threshold_after")
+
+
 avg_cor_before = mean(thresholded_before,2);
 avg_cor_between=zeros(numel(thresholded_between),1);
 avg_cor_after=zeros(numel(thresholded_after),1);

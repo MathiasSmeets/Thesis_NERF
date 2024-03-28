@@ -12,12 +12,12 @@ path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_horridge.mat"));
+stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_m = stimulus_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
-output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
+output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_y.mat"));
 output_m = output_m.output_m;
 
 inhibited_m = load(fullfile(volume_base2, path_to_noi, "inhibited_horridge_y.mat"));
@@ -41,8 +41,8 @@ ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_y.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
 cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_between_y.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
 
-mouse_to_exclude = 0;
-%mouse_to_exclude = 2;
+%mouse_to_exclude = 0;
+mouse_to_exclude = 2;
 %mouse_to_exclude = 4:9;
 %% get template
 
@@ -297,7 +297,7 @@ end
 
 save("/scratch/mathiass-takeokalab/01/raw_before_y.mat","cur_correlation_before")
 save("/scratch/mathiass-takeokalab/01/raw_between_y.mat","cur_correlation_between")
-save("/scratch/mathiass-takeokalab/01/raw_after_y.mat","cur_correlation_before")
+save("/scratch/mathiass-takeokalab/01/raw_after_y.mat","cur_correlation_after")
 
 threshold = zeros(numel(cur_correlation_after),1);
 cur_correlation_after_without_zero = cur_correlation_after;
@@ -382,9 +382,9 @@ scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_af
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_y.png")
 
-save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_y.mat","avg_cor_before")
-save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_y.mat","avg_cor_between")
-save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_y.mat","avg_cor_after")
+save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_.mat","avg_cor_before")
+save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_m.mat","avg_cor_between")
+save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_m.mat","avg_cor_after")
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;

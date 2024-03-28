@@ -284,7 +284,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     counter = 1;
     for j = 1:last_interval_data(i)
         for k = 11:size(stimulus_data_m{i,j},2)-15
-            cur_activity_between{i}((counter) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
+            cur_activity_between{i}(counter) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
             counter = counter + 1;
         end
     end
@@ -372,7 +372,7 @@ hold on
 scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
 scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
 line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_np2.png")
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_y.png")
 
 save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_y.mat","avg_cor_before")
 save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_y.mat","avg_cor_between")

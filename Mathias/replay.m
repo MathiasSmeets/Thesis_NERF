@@ -189,8 +189,8 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
-    cur_template = cur_template/counter;
-    %cur_template = cur_template/sum(cur_template,'all');
+    %cur_template = cur_template/counter;
+    cur_template = cur_template/max(cur_template,[],'all');
     template{i} =  cur_template;
 
 

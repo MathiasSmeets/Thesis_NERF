@@ -69,7 +69,7 @@ elseif predicted_nbr_assemblies ~= 0
 
     %Find how many neurons are belonging to assemblies by clustering the
     %norm of the different neurons (norm of importance in all components
-    p_column = reshape(vecnorm(M,2,2),[],1);                                                                                                        %%% todo (is this wrong?): p_column = reshape(vecnorm(M,2,1),[],1);
+    p_column = reshape(vecnorm(M,2,2),[],1);
     [idx,~,~,~] = kmeans(p_column,2, 'Replicates', 10);%can be improved by taking into account that negative clusters will be together
 
     mean_2 = mean(p_column(idx == 2));

@@ -56,7 +56,7 @@ bins_together = 15;
 intervals_together_before = intervals_together*interval_size_before;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
 cur_template = template_smoothed{1};
-new_cluster_total = cell(size(template_smoothed));
+new_template_total = cell(size(template_smoothed));
 
 %% check for replay in before and after data
 cur_correlation_before = cell(size(stimulus_data_m,1),1);
@@ -90,30 +90,31 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     cur_cluster = template_cluster{i};
 
     % do randomization 10 times
-    new_cluster_total{i} = cell(1,10);
+    new_template_total{i} = cell(1,10);
     for iteration = 1:10
         % randomize the cluster
         % flatten
         flat_cluster = cur_template(:);
         shuffled_values = flat_cluster(randperm(numel(flat_cluster)));
-        new_cluster = reshape(shuffled_values, size(cur_template));
-        new_cluster_total{i}{iteration} = new_cluster;
+        new_template = reshape(shuffled_values, size(cur_template));
+        new_template_total{i}{iteration} = new_template;
 
-        for j = 1:size(cur_before_data,2)-size(new_cluster,2)+1
-            cur_correlation_before{i}(iteration,j) = sum(new_cluster.*cur_before_data(cur_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
+        for j = 1:size(cur_before_data,2)-size(new_template,2)+1
+            cur_correlation_before{i}(iteration,j) = sum(new_template.*cur_before_data(cur_cluster,j:j+size(new_template,2)-1),'all') / (size(new_template,1) * size(new_template,2));
         end
-        cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(new_cluster,2)+1);
-        for j = 1:size(cur_after_data,2)-size(new_cluster,2)+1
-            cur_correlation_after{i}(iteration,j) = sum(new_cluster.*cur_after_data(cur_cluster,j:j+size(new_cluster,2)-1),'all') / (size(new_cluster,1) * size(new_cluster,2));
+        cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(new_template,2)+1);
+        for j = 1:size(cur_after_data,2)-size(new_template,2)+1
+            cur_correlation_after{i}(iteration,j) = sum(new_template.*cur_after_data(cur_cluster,j:j+size(new_template,2)-1),'all') / (size(new_template,1) * size(new_template,2));
         end
         for j = 1:last_interval_data(i)
-            for k = 1:size(stimulus_data_m{i,j},2)-size(new_cluster,2)+1
-                cur_correlation_between{i}(iteration,(j-1)*size(stimulus_data_m{i,j},2)+k) = sum(new_cluster.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(new_cluster,2)-1)),'all') / (size(new_cluster,1) * size(new_cluster,2));
+            for k = 1:size(stimulus_data_m{i,j},2)-size(new_template,2)+1
+                cur_correlation_between{i}(iteration,(j-1)*size(stimulus_data_m{i,j},2)+k) = sum(new_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(new_template,2)-1)),'all') / (size(new_template,1) * size(new_template,2));
             end
         end
 
     end
 end
+save("/scratch/mathiass-takeokalab/01/template_random.mat","new_template_total")
 % using activity is a worse measure, as it is only one column, so using
 % this is actually a template of one column only
 % but now i tried with 15 ms bins which makes much more sense so let's see
@@ -162,9 +163,9 @@ save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_random.
 save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_random.mat","avg_between")
 save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_random.mat","avg_after")
 
-load("X:\Mathias\switch_data\correlations\correlation_after_smoothed_width3.mat")
+load(fullfile(volume_base2, path_to_correlations, "correlation_after_smoothed_width3.mat"))
 figure
-boxplot([avg_after, avg_cor_after])
+boxplot([avg_after, avg_cor_after], 'Labels',{'Random Template','Optimal Template'})
 hold on
 scatter(ones(size(avg_after,1)),avg_after, 'filled', 'blue')
 scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')

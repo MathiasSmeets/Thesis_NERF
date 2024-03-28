@@ -246,9 +246,11 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
         cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
     end
+    counter = 1;
     for j = 1:last_interval_data(i)
-        for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+        for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
+            cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+            counter = counter + 1;
         end
     end
 
@@ -264,10 +266,12 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
         end
     end
+    counter = 1;
     for j = 1:last_interval_data(i)
-        for k = 1:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
+        for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
             if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
-                adj_cur_correlation_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+                adj_cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+                counter = counter + 1;
             end
         end
     end
@@ -277,9 +281,11 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:size(cur_after_data,2)-15
         cur_activity_after(i,j) = sum(cur_after_data(cur_cluster,j:j+14),2)'*template_vector{i};
     end
+    counter = 1;
     for j = 1:last_interval_data(i)
-        for k = 1:size(stimulus_data_m{i,j},2)-15
-            cur_activity_between{i}((j-1)*size(stimulus_data_m{i,j},2)+k) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
+        for k = 11:size(stimulus_data_m{i,j},2)-15
+            cur_activity_between{i}((counter) = sum(double(stimulus_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
+            counter = counter + 1;
         end
     end
 end

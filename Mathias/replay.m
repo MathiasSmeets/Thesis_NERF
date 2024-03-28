@@ -294,9 +294,16 @@ end
 % this is actually a template of one column only
 % but now i tried with 15 ms bins which makes much more sense so let's see
 %%
+
+save("/scratch/mathiass-takeokalab/01/raw_before_m.mat","cur_correlation_before")
+save("/scratch/mathiass-takeokalab/01/raw_between_m.mat","cur_correlation_between")
+save("/scratch/mathiass-takeokalab/01/raw_after_m.mat","cur_correlation_before")
+
 threshold = zeros(numel(cur_correlation_after),1);
 for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    threshold(i) = prctile(cur_correlation_after{i},99,2);
+    cur_correlation_after_without_zero = cur_correlation_after;
+    cur_correlation_after_without_zero(cur_correlation_after_without_zero=0) = [];
+    threshold(i) = prctile(cur_correlation_after_without_zero{i},95,2);
 end
 save("/scratch/mathiass-takeokalab/01/threshold_m.mat","threshold")
 

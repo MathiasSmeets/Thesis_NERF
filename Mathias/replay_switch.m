@@ -71,9 +71,9 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
         counter = counter - 1;
         last_interval_data(i) = counter;
     end
-    counter = size(horridge_data_m,2);
+    counter = size(stimulus_data_m,2);
     last_interval_data_horridge(i) = counter;
-    while isempty(horridge_data_m{i,counter})
+    while isempty(stimulus_data_m{i,counter})
         counter = counter - 1;
         last_interval_data_horridge(i) = counter;
     end

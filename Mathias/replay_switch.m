@@ -264,8 +264,8 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     end
     counter = 1;
     for j = 1:last_interval_data(i)
-        for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
+        for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
+            cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
             counter = counter + 1;
         end
     end
@@ -320,7 +320,7 @@ end
 save("/scratch/mathiass-takeokalab/01/raw_before_m_switchbased.mat","cur_correlation_before")
 save("/scratch/mathiass-takeokalab/01/raw_between_m_switchbased.mat","cur_correlation_between")
 save("/scratch/mathiass-takeokalab/01/raw_after_m_switchbased.mat","cur_correlation_after")
-save("/scratch/mathiass-takeokalab/01/raw_horridge_m._switchbasedmat","cur_correlation_horridge")
+save("/scratch/mathiass-takeokalab/01/raw_horridge_m_switchbased.mat","cur_correlation_horridge")
 
 threshold = zeros(numel(cur_correlation_after),1);
 cur_correlation_after_without_zero = cur_correlation_after;

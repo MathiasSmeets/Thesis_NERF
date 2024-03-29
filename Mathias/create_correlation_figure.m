@@ -2,12 +2,6 @@ clear;clc;close all;
 
 %% learner mice
 
-for i=1:9
-    figure
-    cur_cor = movmean(correlation_after_m{i},100*46);
-    plot(cur_cor)
-end
-
 foot_position2 = load("X:\Mathias\switch_data\foot_position\switch\pair6\ZmasterD1P6.mat");foot_position2 = foot_position2.ZMaster(:,1); % 220819 --> 2
 foot_position3 = load("X:\Mathias\switch_data\foot_position\switch\pair7\ZmasterD1P7.mat");foot_position3 = foot_position3.ZMaster(:,1); % 220831 --> 3
 foot_position4 = load("X:\Mathias\switch_data\foot_position\switch\pair8\ZmasterD1P8.mat");foot_position4 = foot_position4.ZMaster(:,1); % 220821 --> 4
@@ -17,18 +11,22 @@ percentage2 = sum(foot_position2>threshold,"all")/numel(foot_position2);
 percentage3 = sum(foot_position3>threshold,"all")/numel(foot_position3);
 percentage4 = sum(foot_position4>threshold,"all")/numel(foot_position4);
 
-correlation_improvement2 = (mean(correlation_after_m{2}) - mean(correlation_before_m(2))) / mean(correlation_between_m{2});
-correlation_improvement3 = (mean(correlation_after_m{3}) - mean(correlation_before_m(3))) / mean(correlation_between_m{3});
-correlation_improvement4 = (mean(correlation_after_m{4}) - mean(correlation_before_m(4))) / mean(correlation_between_m{4});
+% correlation_improvement2 = (mean(correlation_after_m{2}) - mean(correlation_before_m(2))) / mean(correlation_between_m{2});
+% correlation_improvement3 = (mean(correlation_after_m{3}) - mean(correlation_before_m(3))) / mean(correlation_between_m{3});
+% correlation_improvement4 = (mean(correlation_after_m{4}) - mean(correlation_before_m(4))) / mean(correlation_between_m{4});
 
 %% testing
-load("X:\Mathias\01\01\template_m.mat");
-load("X:\Mathias\01\01\threshold_m.mat");
-load("X:\Mathias\01\01\thresholded_after_m.mat");
-load("X:\Mathias\01\01\raw_before_m.mat")
-load("X:\Mathias\01\01\raw_between_m.mat")
-load("X:\Mathias\01\01\raw_after_m.mat")
-load("X:\Mathias\01\01\raw_horridge_m.mat")
+switch_wanted = 1;
+if switch_wanted
+    added_string = "_switchbased";
+end
+load("X:\Mathias\01\01\template_m"+added_string+".mat");
+load("X:\Mathias\01\01\threshold_m"+added_string+".mat");
+load("X:\Mathias\01\01\thresholded_after_m"+added_string+".mat");
+load("X:\Mathias\01\01\raw_before_m"+added_string+".mat")
+load("X:\Mathias\01\01\raw_between_m"+added_string+".mat")
+load("X:\Mathias\01\01\raw_after_m"+added_string+".mat")
+load("X:\Mathias\01\01\raw_horridge_m"+added_string+".mat")
 
 figure
 threshold_max = zeros(9,1);

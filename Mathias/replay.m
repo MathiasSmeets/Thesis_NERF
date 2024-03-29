@@ -17,6 +17,10 @@ stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 stimulus_data_m = stimulus_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
+horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_switch.mat"));
+horridge_data_m = horridge_data_m.after_stimulus_switch_m;
+horridge_data_m = horridge_data_m(1:9,:);
+
 output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
 output_m = output_m.output_m;
 
@@ -52,6 +56,7 @@ intervals_together = 30;
 bins_together = 15;
 intervals_together_before = intervals_together*interval_size_before;
 last_interval_data = zeros(1,size(stimulus_data_m,1));
+last_interval_data_horridge = zeros(1,size(stimulus_data_m,1));
 template = cell(1,size(stimulus_data_m,1));
 template_smoothed = cell(1,size(stimulus_data_m,1));
 template_cluster = cell(1,size(stimulus_data_m,1));
@@ -65,6 +70,12 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     while isempty(stimulus_data_m{i,counter})
         counter = counter - 1;
         last_interval_data(i) = counter;
+    end
+    counter = size(horridge_data_m,2);
+    last_interval_data_horridge(i) = counter;
+    while isempty(horridge_data_m{i,counter})
+        counter = counter - 1;
+        last_interval_data_horridge(i) = counter;
     end
     cur_avg = zeros(size(stimulus_data_m{i,last_interval_data(i)}));
     %% template: avergae neurons in cluster that is most common
@@ -225,6 +236,7 @@ save('/scratch/mathiass-takeokalab/01/template_smoothed_3_m.mat', 'template_smoo
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_correlation_after = cell(size(stimulus_data_m,1),1);
 cur_correlation_between = cell(size(stimulus_data_m,1),1);% make a cell because different lengths
+cur_correlation_horridge = cell(size(horridge_data_m,1),1);
 cur_activity_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_activity_after = zeros(size(stimulus_data_m,1),size(after_data_m,2)-1-size(cur_template,2)+1);
 cur_activity_between = cell(size(stimulus_data_m,1),1);
@@ -257,28 +269,35 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             counter = counter + 1;
         end
     end
+    counter = 1;
+    for j = 1:last_interval_data_horridge(i)
+        for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
+            cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
+            counter = counter + 1;
+        end
+    end
 
     % check if at least 2 spikes in data, otherwise 0
-    for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
-        if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
-            adj_cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
-        end
-    end
-    adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(cur_template,2)+1);
-    for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
-            adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
-        end
-    end
-    counter = 1;
-    for j = 1:last_interval_data(i)
-        for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
-                adj_cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
-                counter = counter + 1;
-            end
-        end
-    end
+    % for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
+    %     if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
+    %         adj_cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+    %     end
+    % end
+    % adj_cur_correlation_after{i} = zeros(1,size(cur_after_data,2)-1-size(cur_template,2)+1);
+    % for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
+    %     if sum(sum(cur_after_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
+    %         adj_cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+    %     end
+    % end
+    % counter = 1;
+    % for j = 1:last_interval_data(i)
+    %     for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
+    %         if sum(sum(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2
+    %             adj_cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+    %             counter = counter + 1;
+    %         end
+    %     end
+    % end
     for j = 1:size(cur_before_data,2)-15
         cur_activity_before(i,j) = sum(cur_before_data(cur_cluster, j:j+14),2)'*template_vector{i};
     end
@@ -301,6 +320,7 @@ end
 save("/scratch/mathiass-takeokalab/01/raw_before_m.mat","cur_correlation_before")
 save("/scratch/mathiass-takeokalab/01/raw_between_m.mat","cur_correlation_between")
 save("/scratch/mathiass-takeokalab/01/raw_after_m.mat","cur_correlation_after")
+save("/scratch/mathiass-takeokalab/01/raw_horridge_m.mat","cur_correlation_horridge")
 
 threshold = zeros(numel(cur_correlation_after),1);
 cur_correlation_after_without_zero = cur_correlation_after;
@@ -358,32 +378,32 @@ scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
 line([ones(size(avg_cor_before)), ones(size(avg_cor_after))*2]',[avg_cor_before, avg_cor_after]','Color','green')
 saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_m.png")
 
-avg_adj_cur_correlation_before = mean(adj_cur_correlation_before,2);
-avg_adj_cur_correlation_between = zeros(numel(adj_cur_correlation_between),1);
-avg_adj_cur_correlation_after = zeros(numel(adj_cur_correlation_after),1);
-for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
-    avg_adj_cur_correlation_between(i) = mean(adj_cur_correlation_between{i});
-    avg_adj_cur_correlation_after(i) = mean(adj_cur_correlation_after{i});
-end
-
-figure;boxplot([avg_adj_cur_correlation_before,avg_adj_cur_correlation_between,avg_adj_cur_correlation_after])
-figure
-boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_between, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
-hold on
-scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
-scatter(ones(size(avg_adj_cur_correlation_between,1))*2,avg_adj_cur_correlation_between, 'filled', 'blue')
-scatter(ones(size(avg_adj_cur_correlation_after,1))*3,avg_adj_cur_correlation_after, 'filled', 'blue')
-line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_between))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_between]','Color','green')
-line([ones(size(avg_adj_cur_correlation_between))*2, ones(size(avg_adj_cur_correlation_after))*3]',[avg_adj_cur_correlation_between, avg_adj_cur_correlation_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_bba_m.png")
-
-figure
-boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Rest'})
-hold on
-scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
-scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
-line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_y.png")
+% avg_adj_cur_correlation_before = mean(adj_cur_correlation_before,2);
+% avg_adj_cur_correlation_between = zeros(numel(adj_cur_correlation_between),1);
+% avg_adj_cur_correlation_after = zeros(numel(adj_cur_correlation_after),1);
+% for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
+%     avg_adj_cur_correlation_between(i) = mean(adj_cur_correlation_between{i});
+%     avg_adj_cur_correlation_after(i) = mean(adj_cur_correlation_after{i});
+% end
+% 
+% figure;boxplot([avg_adj_cur_correlation_before,avg_adj_cur_correlation_between,avg_adj_cur_correlation_after])
+% figure
+% boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_between, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Experiment', 'Rest'})
+% hold on
+% scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
+% scatter(ones(size(avg_adj_cur_correlation_between,1))*2,avg_adj_cur_correlation_between, 'filled', 'blue')
+% scatter(ones(size(avg_adj_cur_correlation_after,1))*3,avg_adj_cur_correlation_after, 'filled', 'blue')
+% line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_between))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_between]','Color','green')
+% line([ones(size(avg_adj_cur_correlation_between))*2, ones(size(avg_adj_cur_correlation_after))*3]',[avg_adj_cur_correlation_between, avg_adj_cur_correlation_after]','Color','green')
+% saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_bba_m.png")
+% 
+% figure
+% boxplot([avg_adj_cur_correlation_before, avg_adj_cur_correlation_after], 'Labels', {'Baseline', 'Rest'})
+% hold on
+% scatter(ones(size(avg_adj_cur_correlation_before,1)),avg_adj_cur_correlation_before, 'filled', 'blue')
+% scatter(ones(size(avg_adj_cur_correlation_after,1))*2,avg_adj_cur_correlation_after, 'filled', 'blue')
+% line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
+% saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_y.png")
 
 save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_m.mat","avg_cor_before")
 save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_m.mat","avg_cor_between")

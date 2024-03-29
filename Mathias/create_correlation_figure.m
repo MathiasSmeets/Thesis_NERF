@@ -28,3 +28,45 @@ percentage4 = sum(foot_position4>threshold,"all")/numel(foot_position4);
 correlation_improvement2 = (mean(correlation_after_m{2}) - mean(correlation_before_m(2))) / mean(correlation_between_m{2});
 correlation_improvement3 = (mean(correlation_after_m{3}) - mean(correlation_before_m(3))) / mean(correlation_between_m{3});
 correlation_improvement4 = (mean(correlation_after_m{4}) - mean(correlation_before_m(4))) / mean(correlation_between_m{4});
+
+%% testing
+load("X:\Mathias\01\01\template_m.mat");
+load("X:\Mathias\01\01\threshold_m.mat");
+load("X:\Mathias\01\01\thresholded_after_m.mat");
+load("X:\Mathias\01\01\raw_after_m.mat")
+figure
+threshold_max = zeros(9,1);
+for i = 1:9
+subplot(3,3,i)
+plot(cur_correlation_after{i})
+cur_max = maxk(cur_correlation_after{i},5);
+threshold_max(i) = cur_max(end)*0.6;
+ylim([0 1.5])
+hold on
+plot(ones(size(cur_correlation_after{i}))*threshold(i),'Linewidth',3)
+plot(ones(size(cur_correlation_after{i}))*mean(threshold),'Linewidth',3)
+plot(ones(size(cur_correlation_after{i}))*threshold_max(i),'Linewidth',3)
+
+end
+%%
+alt_after = cur_correlation_after;
+percentage_in_cluster = zeros(9,2);
+alt_before = cell(9,1);
+for i = 1:9
+    alt_after{i}(alt_after{i}<threshold(i)) = [];
+    alt_before{i} = cur_correlation_before(i,:);
+    alt_before{i}(alt_before{i}<threshold(i)) = [];
+    percentage_in_cluster(i,1) = numel(alt_before{i})/numel(cur_correlation_before(i,:));
+    percentage_in_cluster(i,2) = numel(alt_after{i})/numel(cur_correlation_after{i});
+end
+
+figure
+boxplot([percentage_in_cluster(:,1), percentage_in_cluster(:,2)], 'Labels', {'Baseline', 'Rest'})
+hold on
+scatter(ones(size(percentage_in_cluster(:,1),1)),percentage_in_cluster(:,1), 'filled', 'blue')
+scatter(ones(size(percentage_in_cluster(:,2),1))*2,percentage_in_cluster(:,2), 'filled', 'blue')
+line([ones(size(percentage_in_cluster(:,1))), ones(size(percentage_in_cluster(:,2)))*2]',[percentage_in_cluster(:,1), percentage_in_cluster(:,2)]','Color','green')
+
+
+
+

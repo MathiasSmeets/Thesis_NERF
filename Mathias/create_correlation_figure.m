@@ -16,10 +16,13 @@ percentage4 = sum(foot_position4>threshold,"all")/numel(foot_position4);
 % correlation_improvement4 = (mean(correlation_after_m{4}) - mean(correlation_before_m(4))) / mean(correlation_between_m{4});
 
 %% testing
-switch_wanted = 1;
+switch_wanted = 0;
 if switch_wanted
     added_string = "_switchbased";
+else
+    added_string = "";
 end
+
 load("X:\Mathias\01\01\template_m"+added_string+".mat");
 load("X:\Mathias\01\01\threshold_m"+added_string+".mat");
 load("X:\Mathias\01\01\thresholded_after_m"+added_string+".mat");
@@ -35,11 +38,11 @@ subplot(3,3,i)
 plot(cur_correlation_after{i})
 cur_max = maxk(cur_correlation_after{i},5);
 threshold_max(i) = cur_max(end)*0.6;
-ylim([0 1.5])
+ylim([0 1.3])
 hold on
 plot(ones(size(cur_correlation_after{i}))*threshold(i),'Linewidth',3)
-plot(ones(size(cur_correlation_after{i}))*mean(threshold),'Linewidth',3)
-plot(ones(size(cur_correlation_after{i}))*threshold_max(i),'Linewidth',3)
+%plot(ones(size(cur_correlation_after{i}))*mean(threshold),'Linewidth',3)
+%plot(ones(size(cur_correlation_after{i}))*threshold_max(i),'Linewidth',3)
 
 end
 %%

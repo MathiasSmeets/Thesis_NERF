@@ -263,14 +263,14 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
         cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     counter = 1;
-    for j = 1:last_interval_data(i)
+    for j = 1:last_interval_data_horridge(i)
         for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
             cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
             counter = counter + 1;
         end
     end
     counter = 1;
-    for j = 1:last_interval_data_horridge(i)
+    for j = 1:last_interval_data(i)
         for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
             cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
             counter = counter + 1;

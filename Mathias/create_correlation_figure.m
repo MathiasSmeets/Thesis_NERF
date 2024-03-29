@@ -1,13 +1,5 @@
 clear;clc;close all;
 
-correlation_path = "X:\Mathias\switch_data\correlations";
-correlation_before_m = load(fullfile(correlation_path, "thresholded_before_m.mat"));correlation_before_m = correlation_before_m.thresholded_before;
-correlation_between_m = load(fullfile(correlation_path, "thresholded_between_m.mat"));correlation_between_m = correlation_between_m.thresholded_between;
-correlation_after_m = load(fullfile(correlation_path, "thresholded_after_m.mat"));correlation_after_m = correlation_after_m.thresholded_after;
-correlation_before_y = load(fullfile(correlation_path, "thresholded_before_y.mat"));correlation_before_y = correlation_before_y.thresholded_before;
-correlation_between_y = load(fullfile(correlation_path, "thresholded_between_y.mat"));correlation_between_y = correlation_between_y.thresholded_between;
-correlation_after_y = load(fullfile(correlation_path, "thresholded_after_y.mat"));correlation_after_y = correlation_after_y.thresholded_after;
-
 %% learner mice
 
 for i=1:9
@@ -33,7 +25,11 @@ correlation_improvement4 = (mean(correlation_after_m{4}) - mean(correlation_befo
 load("X:\Mathias\01\01\template_m.mat");
 load("X:\Mathias\01\01\threshold_m.mat");
 load("X:\Mathias\01\01\thresholded_after_m.mat");
+load("X:\Mathias\01\01\raw_before_m.mat")
+load("X:\Mathias\01\01\raw_between_m.mat")
 load("X:\Mathias\01\01\raw_after_m.mat")
+load("X:\Mathias\01\01\raw_horridge_m.mat")
+
 figure
 threshold_max = zeros(9,1);
 for i = 1:9
@@ -50,22 +46,35 @@ plot(ones(size(cur_correlation_after{i}))*threshold_max(i),'Linewidth',3)
 end
 %%
 alt_after = cur_correlation_after;
+alt_horridge = cur_correlation_horridge;
+alt_between =  cur_correlation_between;
 percentage_in_cluster = zeros(9,2);
 alt_before = cell(9,1);
 for i = 1:9
+    alt_between{i}(alt_between{i}<threshold(i)) = [];
+    alt_horridge{i}(alt_horridge{i}<threshold(i)) = [];
     alt_after{i}(alt_after{i}<threshold(i)) = [];
     alt_before{i} = cur_correlation_before(i,:);
     alt_before{i}(alt_before{i}<threshold(i)) = [];
     percentage_in_cluster(i,1) = numel(alt_before{i})/numel(cur_correlation_before(i,:));
-    percentage_in_cluster(i,2) = numel(alt_after{i})/numel(cur_correlation_after{i});
+    percentage_in_cluster(i,2) = numel(alt_between{i})/numel(cur_correlation_between{i});
+    percentage_in_cluster(i,3) = numel(alt_after{i})/numel(cur_correlation_after{i});
+    percentage_in_cluster(i,4) = numel(alt_horridge{i})/numel(cur_correlation_horridge{i});
 end
 
 figure
-boxplot([percentage_in_cluster(:,1), percentage_in_cluster(:,2)], 'Labels', {'Baseline', 'Rest'})
+boxplot([percentage_in_cluster(:,1), percentage_in_cluster(:,3)], 'Labels', {'Baseline', 'Rest'})
 hold on
 scatter(ones(size(percentage_in_cluster(:,1),1)),percentage_in_cluster(:,1), 'filled', 'blue')
-scatter(ones(size(percentage_in_cluster(:,2),1))*2,percentage_in_cluster(:,2), 'filled', 'blue')
-line([ones(size(percentage_in_cluster(:,1))), ones(size(percentage_in_cluster(:,2)))*2]',[percentage_in_cluster(:,1), percentage_in_cluster(:,2)]','Color','green')
+scatter(ones(size(percentage_in_cluster(:,3),1))*2,percentage_in_cluster(:,3), 'filled', 'blue')
+line([ones(size(percentage_in_cluster(:,1))), ones(size(percentage_in_cluster(:,3)))*2]',[percentage_in_cluster(:,1), percentage_in_cluster(:,3)]','Color','green')
+
+figure
+boxplot([percentage_in_cluster(:,2), percentage_in_cluster(:,4)], 'Labels', {'Conditioning', 'Horridge'})
+hold on
+scatter(ones(size(percentage_in_cluster(:,2),1)),percentage_in_cluster(:,2), 'filled', 'blue')
+scatter(ones(size(percentage_in_cluster(:,4),1))*2,percentage_in_cluster(:,4), 'filled', 'blue')
+line([ones(size(percentage_in_cluster(:,2))), ones(size(percentage_in_cluster(:,4)))*2]',[percentage_in_cluster(:,2), percentage_in_cluster(:,4)]','Color','green')
 
 
 

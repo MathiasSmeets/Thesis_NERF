@@ -43,7 +43,7 @@ ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_m.m
 
 ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_m.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
-cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_switch_m.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
+cluster_matrices_switch_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_switch_m.mat"));cluster_matrices_switch_m = cluster_matrices_switch_m.all_cluster_matrices;
 
 mouse_to_exclude = 0;
 %mouse_to_exclude = 2;
@@ -125,7 +125,7 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
 
     % if neurons are active in clusters similar to between, avoid these
     % similar = at least activity during experiment - 10%
-    neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
+    neuron_between_activities = sum(cluster_matrices_switch_m{i},2)/size(cluster_matrices_switch_m{i},2); % in percentage
     variable_threshold = 0.5*neuron_between_activities*last_interval_before;
     neurons_to_avoid = find(occurrences>variable_threshold');
 

@@ -27,6 +27,7 @@ for i = 1:size(stimulus_data_m,1)
     end
     figure
     imagesc(cluster_matrix)
+    all_cluster_matrices{i} = cluster_matrix;
     % xlabel("Time Bins (" + interval_step + " together)")
     % ylabel("Neurons")
     % title("Neurons in a cluster")

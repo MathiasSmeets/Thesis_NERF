@@ -37,10 +37,10 @@ for i = 1:9
 subplot(3,3,i)
 plot(cur_correlation_after{i})
 cur_max = maxk(cur_correlation_after{i},5);
-threshold_max(i) = cur_max(end)*0.6;
-ylim([0 0.03])
+%threshold_max(i) = cur_max(end)*0.6;
+ylim([0 0.5])
 hold on
-plot(ones(size(cur_correlation_after{i}))*threshold(i),'Linewidth',3)
+%plot(ones(size(cur_correlation_after{i}))*threshold(i),'Linewidth',3)
 %plot(ones(size(cur_correlation_after{i}))*mean(threshold),'Linewidth',3)
 %plot(ones(size(cur_correlation_after{i}))*threshold_max(i),'Linewidth',3)
 

@@ -176,6 +176,10 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m.mat","correlation_distribution_before")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m.mat","correlation_distribution_after")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m.mat","correlation_distribution_between")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m.mat","correlation_distribution_horridge")
 end
 
 save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m.mat","correlation_distribution_before")
@@ -192,7 +196,8 @@ cumulative_sum = cumsum(sorted_distribution(:, 2));
 
 % Find the index where cumulative sum exceeds 95% of total frequency
 total_frequency = sum(sorted_distribution(:, 2));
-percentile_index = find(cumulative_sum >= 0.999 * total_frequency, 1);
+percentile_index = find(cumulative_sum >= 0.99999 * total_frequency, 1);
 
 % Extract the value at the 95th percentile
 percentile_value = sorted_distribution(percentile_index, 1);
+sum(cur_correlation_after>=percentile_value)/size(cur_correlation_after,2);

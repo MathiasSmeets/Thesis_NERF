@@ -13,12 +13,13 @@ path_to_raw = "takeokalabwip2023/Mathias/switch_data/tabled_data";
 path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
+path_to_template = "takeokalabwip2023/Mathias/01/01";
 
 
 flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_m.mat"));
 flat_stimulus_data_m = flat_stimulus_data_m.data;
 flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_m.mat"));
-flat_hor_data_m = flat_hor_data_m.data;
+flat_hor_data_m = flat_hor_data_m.switch_data;
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
@@ -57,8 +58,8 @@ mouse_to_exclude = 0;
 %mouse_to_exclude = 2;
 %mouse_to_exclude = 4:9;
 
-load("X:\Mathias\01\01\template_smoothed_3_m.mat");
-load("X:\Mathias\01\01\template_cluster_m.mat");
+load(fullfile(path_to_template,"template_smoothed_3_m.mat"));
+load(fullfile(path_to_template,"template_cluster_m.mat");
 
 %% check for replay in before and after data
 last_interval_data = zeros(1,size(stimulus_data_m,1));

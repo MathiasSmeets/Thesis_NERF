@@ -113,11 +113,9 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:size(random_before,2)-size(cur_template,2)+1
         cur_correlation_before(j) = sum(cur_template.*random_before(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(cur_template,2)+1);
     for j = 1:size(random_after,2)-size(cur_template,2)+1
         cur_correlation_after(j) = sum(cur_template.*random_after(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-
     for j = 1:size(random_between,2)-size(cur_template,2)+1
         cur_correlation_between(j) = sum(cur_template.*random_between(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end

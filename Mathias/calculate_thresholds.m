@@ -59,7 +59,7 @@ mouse_to_exclude = 0;
 %mouse_to_exclude = 4:9;
 
 load(fullfile(path_to_template,"template_smoothed_3_m.mat"));
-load(fullfile(path_to_template,"template_cluster_m.mat");
+load(fullfile(path_to_template,"template_cluster_m.mat"));
 
 %% check for replay in before and after data
 last_interval_data = zeros(1,size(stimulus_data_m,1));

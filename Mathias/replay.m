@@ -200,12 +200,12 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
-    %cur_template = cur_template/counter;
-    cur_template = cur_template/sum(cur_template,'all');
+    cur_template = cur_template/counter;
+    %cur_template = cur_template/sum(cur_template,'all');
     %cur_template = cur_template/max(cur_template,[],'all');
-    for x = 1:size(cur_template,1)
-       cur_template(x,:) = cur_template(x,:) / sum(cur_template(x,:),"all");
-    end
+    % for x = 1:size(cur_template,1)
+    %    cur_template(x,:) = cur_template(x,:) / sum(cur_template(x,:),"all");
+    % end
     template{i} =  cur_template;
 
 
@@ -257,23 +257,23 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     cur_cluster = template_cluster{i};
 
     for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
-        cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+        cur_correlation_before(i,j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(cur_template,2)+1);
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+        cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     counter = 1;
     for j = 1:last_interval_data(i)
         for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+            cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
             counter = counter + 1;
         end
     end
     counter = 1;
     for j = 1:last_interval_data_horridge(i)
         for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all') / (size(cur_template,1) * size(cur_template,2));
+            cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
             counter = counter + 1;
         end
     end

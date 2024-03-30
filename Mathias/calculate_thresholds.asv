@@ -13,12 +13,13 @@ path_to_raw = "takeokalabwip2023/Mathias/switch_data/tabled_data";
 path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
+path_to_correlations = "takeokalabwip2023/Mathias/switch_data/correlations";
 
 
 flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_m.mat"));
 flat_stimulus_data_m = flat_stimulus_data_m.data;
 flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_m.mat"));
-flat_hor_data_m = flat_hor_data_m.data;
+flat_hor_data_m = flat_hor_data_m.switch_data;
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
@@ -57,8 +58,8 @@ mouse_to_exclude = 0;
 %mouse_to_exclude = 2;
 %mouse_to_exclude = 4:9;
 
-load("X:\Mathias\01\01\template_smoothed_3_m.mat");
-load("X:\Mathias\01\01\template_cluster_m.mat");
+load(fullfile(volume_base2,path_to_correlations,"template_smoothed_3_m.mat"));
+load(fullfile(volume_base2,path_to_correlations,"template_cluster_m.mat"));
 
 %% check for replay in before and after data
 last_interval_data = zeros(1,size(stimulus_data_m,1));
@@ -92,36 +93,40 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
         last_interval_data_horridge(i) = counter;
     end
         
+    cur_template = template_smoothed{i};
+    %cur_template = template{i};
+    cur_cluster = template_cluster{i};
+
     cur_correlation_before = zeros(1,size(cur_before_data,2)-size(cur_template,2)+1);
     cur_correlation_after = zeros(1,size(cur_after_data,2)-size(cur_template,2)+1);
     cur_correlation_between = zeros(1,size(cur_stim_data,2)-size(cur_template,2)+1);
     cur_correlation_horridge = zeros(1,size(cur_hor_data,2)-size(cur_template,2)+1);
 
-    cur_template = template_smoothed{i};
-    %cur_template = template{i};
-    cur_cluster = template_cluster{i};
-
+    correlation_distribution_before{i} = zeros(0,2);
+    correlation_distribution_after{i} = zeros(0,2);
+    correlation_distribution_between{i} = zeros(0,2);
+    correlation_distribution_horridge{i} = zeros(0,2);
     for random_iteration = 1:1000
         disp(random_iteration)
     % calculate random data
-    random_before = cur_before_data(cur_cluster,randperm(size(cur_before_data,2)));
-    random_after = cur_correlation_after(cur_cluster,randperm(size(cur_correlation_after,2)));
-    random_between = cur_correlation_between(cur_cluster,randperm(size(cur_correlation_between,2)));
-    random_horridge = cur_correlation_horridge(cur_cluster,randperm(size(cur_correlation_horridge,2)));
+    for row_in_cluster = 1:size(cur_cluster,1)
+    random_before(row_in_cluster,:) = cur_before_data(cur_cluster,randperm(size(cur_before_data,2)));
+    random_after = cur_after_data(cur_cluster,randperm(size(cur_correlation_after,2)));
+    random_between = cur_stim_data(cur_cluster,randperm(size(cur_correlation_between,2)));
+    random_horridge = cur_hor_data(cur_cluster,randperm(size(cur_correlation_horridge,2)));
+    end
     % calculate current correlation
-    for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
-        cur_correlation_before(j) = sum(cur_template.*cur_before_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+    for j = 1:size(random_before,2)-size(cur_template,2)+1
+        cur_correlation_before(j) = sum(cur_template.*random_before(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    cur_correlation_after{i} = zeros(1,size(after_data_m,2)-1-size(cur_template,2)+1);
-    for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
-        cur_correlation_after(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+    for j = 1:size(random_after,2)-size(cur_template,2)+1
+        cur_correlation_after(j) = sum(cur_template.*random_after(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-
-    for j = 1:size(cur_stim_data,2)-size(cur_template,2)+1
-        cur_correlation_between(j) = sum(cur_template.*cur_stim_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+    for j = 1:size(random_between,2)-size(cur_template,2)+1
+        cur_correlation_between(j) = sum(cur_template.*random_between(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    for j = 1:size(cur_hor_data,2)-size(cur_template,2)+1
-        cur_correlation_horridge(j) = sum(cur_template.*cur_hor_data(cur_cluster,j:j+size(cur_template,2)-1),'all') / (size(cur_template,1) * size(cur_template,2));
+    for j = 1:size(random_horridge,2)-size(cur_template,2)+1
+        cur_correlation_horridge(j) = sum(cur_template.*random_horridge(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     % put all unique values in array, along with its frequency counts
     [unique_values_before, ~, freq_idx_before] = unique(cur_correlation_before);
@@ -134,10 +139,6 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     counts_horridge = accumarray(freq_idx_horridge, 1);
     
     % put them in total correlation distributions
-    correlation_distribution_before{i} = zeros(0,2);
-    correlation_distribution_after{i} = zeros(0,2);
-    correlation_distribution_between{i} = zeros(0,2);
-    correlation_distribution_horridge{i} = zeros(0,2);
     for j = 1:numel(unique_values_before)
         idx = find(correlation_distribution_before{i}(:, 1) == unique_values_before(j), 1);
         if isempty(idx)
@@ -149,7 +150,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:numel(unique_values_after)
         idx = find(correlation_distribution_after{i}(:, 1) == unique_values_after(j), 1);
         if isempty(idx)
-            correlation_distribution_after{i}(end+1, :) = [unique_values_bafter(j), counts_after(j)];
+            correlation_distribution_after{i}(end+1, :) = [unique_values_after(j), counts_after(j)];
         else
             correlation_distribution_after{i}(idx, 2) = correlation_distribution_after{i}(idx, 2) + counts_after(j);
         end
@@ -174,8 +175,20 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
 end
 
 save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m.mat","correlation_distribution_before")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m.mat","correlation_distribution_after")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m.mat","correlation_distribution_between")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m.mat","correlation_distribution_horridge")
 
 
+% Sort the distribution by values
+sorted_distribution = sortrows(correlation_distribution_after{1}, 1);
+
+% Compute cumulative sum of frequencies
+cumulative_sum = cumsum(sorted_distribution(:, 2));
+
+% Find the index where cumulative sum exceeds 95% of total frequency
+total_frequency = sum(sorted_distribution(:, 2));
+percentile_index = find(cumulative_sum >= 0.999 * total_frequency, 1);
+
+% Extract the value at the 95th percentile
+percentile_value = sorted_distribution(percentile_index, 1);

@@ -111,13 +111,13 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
         % calculate random data
         random_before = zeros(size(cur_cluster,1),size(cur_before_data,2));
         random_after = zeros(size(cur_cluster,1),size(cur_after_data,2));
-        random_between = zeros(size(cur_cluster,1),size(cur_between_data,2));
+        random_between = zeros(size(cur_cluster,1),size(cur_stim_data,2));
         random_horridge = zeros(size(cur_cluster,1),size(cur_hor_data,2));
         for row_in_cluster = 1:size(cur_cluster,1)
             random_before(row_in_cluster,:) = cur_before_data(cur_cluster(row_in_cluster),randperm(size(cur_before_data,2)));
-            random_after(row_in_cluster,:) = cur_after_data(cur_cluster(row_in_cluster),randperm(size(cur_correlation_after,2)));
-            random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),randperm(size(cur_correlation_between,2)));
-            random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),randperm(size(cur_correlation_horridge,2)));
+            random_after(row_in_cluster,:) = cur_after_data(cur_cluster(row_in_cluster),randperm(size(cur_after_data,2)));
+            random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),randperm(size(cur_stim_data,2)));
+            random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),randperm(size(cur_hor_data,2)));
         end
         % calculate current correlation
         for j = 1:size(random_before,2)-size(cur_template,2)+1

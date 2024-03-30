@@ -93,14 +93,14 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
         last_interval_data_horridge(i) = counter;
     end
         
+    cur_template = template_smoothed{i};
+    %cur_template = template{i};
+    cur_cluster = template_cluster{i};
+
     cur_correlation_before = zeros(1,size(cur_before_data,2)-size(cur_template,2)+1);
     cur_correlation_after = zeros(1,size(cur_after_data,2)-size(cur_template,2)+1);
     cur_correlation_between = zeros(1,size(cur_stim_data,2)-size(cur_template,2)+1);
     cur_correlation_horridge = zeros(1,size(cur_hor_data,2)-size(cur_template,2)+1);
-
-    cur_template = template_smoothed{i};
-    %cur_template = template{i};
-    cur_cluster = template_cluster{i};
 
     for random_iteration = 1:1000
         disp(random_iteration)

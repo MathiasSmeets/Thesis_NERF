@@ -106,9 +106,9 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
         disp(random_iteration)
     % calculate random data
     random_before = cur_before_data(cur_cluster,randperm(size(cur_before_data,2)));
-    random_after = cur_correlation_after(cur_cluster,randperm(size(cur_correlation_after,2)));
-    random_between = cur_correlation_between(cur_cluster,randperm(size(cur_correlation_between,2)));
-    random_horridge = cur_correlation_horridge(cur_cluster,randperm(size(cur_correlation_horridge,2)));
+    random_after = cur_after_data(cur_cluster,randperm(size(cur_correlation_after,2)));
+    random_between = cur_stim_data(cur_cluster,randperm(size(cur_correlation_between,2)));
+    random_horridge = cur_hor_data(cur_cluster,randperm(size(cur_correlation_horridge,2)));
     % calculate current correlation
     for j = 1:size(random_before,2)-size(cur_template,2)+1
         cur_correlation_before(j) = sum(cur_template.*random_before(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
@@ -150,7 +150,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:numel(unique_values_after)
         idx = find(correlation_distribution_after{i}(:, 1) == unique_values_after(j), 1);
         if isempty(idx)
-            correlation_distribution_after{i}(end+1, :) = [unique_values_bafter(j), counts_after(j)];
+            correlation_distribution_after{i}(end+1, :) = [unique_values_after(j), counts_after(j)];
         else
             correlation_distribution_after{i}(idx, 2) = correlation_distribution_after{i}(idx, 2) + counts_after(j);
         end

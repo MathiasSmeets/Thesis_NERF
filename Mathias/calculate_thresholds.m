@@ -114,10 +114,14 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
         random_between = zeros(numel(cur_cluster),size(cur_stim_data,2));
         random_horridge = zeros(numel(cur_cluster),size(cur_hor_data,2));
         for row_in_cluster = 1:numel(cur_cluster)
-            random_before(row_in_cluster,:) = cur_before_data(cur_cluster(row_in_cluster),randperm(size(cur_before_data,2)));
-            random_after(row_in_cluster,:) = cur_after_data(cur_cluster(row_in_cluster),randperm(size(cur_after_data,2)));
-            random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),randperm(size(cur_stim_data,2)));
-            random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),randperm(size(cur_hor_data,2)));
+            rand_int_before = randperm(size(cur_before_data,2),1);
+            rand_int_after = randperm(size(cur_after_data,2),1);
+            rand_int_between = randperm(size(cur_stim_data,2),1);
+            rand_int_horridge = randperm(size(cur_hor_data,2),1);
+            random_before(row_in_cluster,:) = cur_before_data(cur_cluster(row_in_cluster),[rand_int_before:end,1:rand_int_before-1]);
+            random_after(row_in_cluster,:) = cur_after_data(cur_cluster(row_in_cluster),[rand_int_after:end,1:rand_int_after-1]);
+            random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),[rand_int_between:end,1:rand_int_between-1]);
+            random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),[rand_int_horridge:end,1:rand_int_horridge-1]);
         end
         % calculate current correlation
         for j = 1:size(random_before,2)-size(cur_template,2)+1
@@ -200,4 +204,4 @@ percentile_index = find(cumulative_sum >= 0.9999 * total_frequency, 1);
 
 % Extract the value at the 95th percentile
 percentile_value = sorted_distribution(percentile_index, 1);
-sum(cur_correlation_after>=percentile_value)/size(cur_correlation_after,2);
+sum(cur_correlation_after{1}>=percentile_value)/size(cur_correlation_after{1},2);

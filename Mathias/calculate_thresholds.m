@@ -180,16 +180,16 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m.mat","correlation_distribution_before")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m.mat","correlation_distribution_after")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m.mat","correlation_distribution_between")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m.mat","correlation_distribution_horridge")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m2.mat","correlation_distribution_before")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m2.mat","correlation_distribution_after")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m2.mat","correlation_distribution_between")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m2.mat","correlation_distribution_horridge")
 end
 
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m.mat","correlation_distribution_after")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m.mat","correlation_distribution_between")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m.mat","correlation_distribution_horridge")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m2.mat","correlation_distribution_before")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m2.mat","correlation_distribution_after")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m2.mat","correlation_distribution_between")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m2.mat","correlation_distribution_horridge")
 
 
 % Sort the distribution by values

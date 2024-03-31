@@ -109,17 +109,16 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for random_iteration = 1:1000
         disp(i + ": " +random_iteration)
         % calculate random data
-        random_before = zeros(size(cur_cluster,1),size(cur_before_data,2));
-        random_after = zeros(size(cur_cluster,1),size(cur_after_data,2));
-        random_between = zeros(size(cur_cluster,1),size(cur_stim_data,2));
-        random_horridge = zeros(size(cur_cluster,1),size(cur_hor_data,2));
-        for row_in_cluster = 1:size(cur_cluster,1)
+        random_before = zeros(numel(cur_cluster),size(cur_before_data,2));
+        random_after = zeros(numel(cur_cluster),size(cur_after_data,2));
+        random_between = zeros(numel(cur_cluster),size(cur_stim_data,2));
+        random_horridge = zeros(numel(cur_cluster),size(cur_hor_data,2));
+        for row_in_cluster = 1:numel(cur_cluster)
             random_before(row_in_cluster,:) = cur_before_data(cur_cluster(row_in_cluster),randperm(size(cur_before_data,2)));
             random_after(row_in_cluster,:) = cur_after_data(cur_cluster(row_in_cluster),randperm(size(cur_after_data,2)));
             random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),randperm(size(cur_stim_data,2)));
             random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),randperm(size(cur_hor_data,2)));
         end
-        error("nu checken of evenveel spikes in random als normaal")
         % calculate current correlation
         for j = 1:size(random_before,2)-size(cur_template,2)+1
             cur_correlation_before(j) = sum(cur_template.*random_before(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));

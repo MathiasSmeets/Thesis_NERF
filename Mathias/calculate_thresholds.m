@@ -119,6 +119,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),randperm(size(cur_stim_data,2)));
             random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),randperm(size(cur_hor_data,2)));
         end
+        error("nu checken of evenveel spikes in random als normaal")
         % calculate current correlation
         for j = 1:size(random_before,2)-size(cur_template,2)+1
             cur_correlation_before(j) = sum(cur_template.*random_before(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
@@ -196,7 +197,7 @@ cumulative_sum = cumsum(sorted_distribution(:, 2));
 
 % Find the index where cumulative sum exceeds 95% of total frequency
 total_frequency = sum(sorted_distribution(:, 2));
-percentile_index = find(cumulative_sum >= 0.99999 * total_frequency, 1);
+percentile_index = find(cumulative_sum >= 0.9999 * total_frequency, 1);
 
 % Extract the value at the 95th percentile
 percentile_value = sorted_distribution(percentile_index, 1);

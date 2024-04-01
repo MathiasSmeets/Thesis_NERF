@@ -289,10 +289,10 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     %     end
     % end
     for j = 1:size(cur_stim_data,2)-size(cur_template,2)+1
-        cur_correlation_between(j) = sum(cur_template.*cur_stim_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
+        cur_correlation_between{i}(j) = sum(cur_template.*cur_stim_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     for j = 1:size(cur_hor_data,2)-size(cur_template,2)+1
-        cur_correlation_horridge(j) = sum(cur_template.*cur_hor_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
+        cur_correlation_horridge{i}(j) = sum(cur_template.*cur_hor_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     % check if at least 2 spikes in data, otherwise 0
     % for j = 1:size(cur_before_data,2)-size(cur_template,2)+1

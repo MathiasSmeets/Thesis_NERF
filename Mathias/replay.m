@@ -19,7 +19,7 @@ stimulus_data_m = stimulus_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
 horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_switch.mat"));
-horridge_data_m = horridge_data_m.after_stimulus_switch_m;
+horridge_data_m = horridge_data_m.after_stimulus_switch_y;
 horridge_data_m = horridge_data_m(1:9,:);
 
 flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_y.mat"));

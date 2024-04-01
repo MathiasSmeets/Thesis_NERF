@@ -190,7 +190,7 @@ end
 save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_y3.mat","correlation_distribution_before")
 save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_y3.mat","correlation_distribution_after")
 save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_y3.mat","correlation_distribution_between")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_y2.mat","correlation_distribution_horridge")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_y3.mat","correlation_distribution_horridge")
 
 
 

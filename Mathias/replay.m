@@ -258,6 +258,11 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
 
+    cur_stim_data = flat_stimulus_data_m(flat_stimulus_data_m(:,1)==i,:);
+    cur_stim_data = cur_stim_data(:,2:end);
+    cur_hor_data = flat_hor_data_m(flat_hor_data_m(:,1)==i,:);
+    cur_hor_data = cur_hor_data(:,2:end);
+
     cur_template = template_smoothed{i};
     %cur_template = template{i};
     cur_cluster = template_cluster{i};
@@ -283,11 +288,11 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     %         counter = counter + 1;
     %     end
     % end
-    for j = 1:size(flat_stimulus_data_m,2)-size(cur_template,2)+1
-        cur_correlation_between(j) = sum(cur_template.*flat_stimulus_data_m(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
+    for j = 1:size(cur_stim_data,2)-size(cur_template,2)+1
+        cur_correlation_between(j) = sum(cur_template.*cur_stim_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    for j = 1:size(flat_hor_data_m,2)-size(cur_template,2)+1
-        cur_correlation_horridge(j) = sum(cur_template.*flat_hor_data_m(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
+    for j = 1:size(cur_hor_data,2)-size(cur_template,2)+1
+        cur_correlation_horridge(j) = sum(cur_template.*cur_hor_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
     % check if at least 2 spikes in data, otherwise 0
     % for j = 1:size(cur_before_data,2)-size(cur_template,2)+1

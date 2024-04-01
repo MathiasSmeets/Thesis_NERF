@@ -22,12 +22,12 @@ flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_y.mat"))
 flat_hor_data_m = flat_hor_data_m.switch_data;
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_horridge.mat"));
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_m = stimulus_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
 horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_switch.mat"));
-horridge_data_m = horridge_data_m.after_stimulus_switch_m;
+horridge_data_m = horridge_data_m.after_stimulus_switch_y;
 horridge_data_m = horridge_data_m(1:9,:);
 
 output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_y.mat"));

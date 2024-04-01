@@ -56,7 +56,7 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
     total_frequency_after = sum(sorted_distribution_after(:, 2));
     total_frequency_horridge = sum(sorted_distribution_horridge(:, 2));
     
-    percentage = 0.999;
+    percentage = 0.99;
     percentile_index_before = find(cumulative_sum_before >= percentage * total_frequency_before, 1);
     percentile_index_between = find(cumulative_sum_between >= percentage * total_frequency_between, 1);
     percentile_index_after = find(cumulative_sum_after >= percentage * total_frequency_after, 1);
@@ -70,7 +70,7 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
 
     % apply thresholds
     cur_before = raw_before(i,:);
-    cur_before(cur_before<threshold_before(i)) = 0;
+    cur_before(cur_before < threshold_before(i)) = 0;
     thresholded_before(i,:) = cur_before;
 
     thresholded_between{i} = raw_between{i};
@@ -84,16 +84,39 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
    
 
     % calculate averages
-    normalized_averages(i,1) = (sum(thresholded_before(i,:)) / threshold_before(i)) / numel(thresholded_before(i,:));
-    normalized_averages(i,2) = (sum(thresholded_between{i}) / threshold_between(i)) / numel(thresholded_between{i});
-    normalized_averages(i,3) = (sum(thresholded_after{i}) / threshold_after(i)) / numel(thresholded_after{i});
-    normalized_averages(i,4) = (sum(thresholded_horridge{i}) / threshold_horridge(i)) / numel(thresholded_horridge{i});
+    normalized_averages(i,1) = (sum(thresholded_before(i,:))) / numel(thresholded_before(i,:));
+    normalized_averages(i,2) = (sum(thresholded_between{i})) / numel(thresholded_between{i});
+    normalized_averages(i,3) = (sum(thresholded_after{i})) / numel(thresholded_after{i});
+    normalized_averages(i,4) = (sum(thresholded_horridge{i})) / numel(thresholded_horridge{i});
 
     numbers_above_threshold(i,1) = sum(thresholded_before(i,:)>0)/size(thresholded_before(i,:),2);
     numbers_above_threshold(i,2) = sum(thresholded_between{i}>0)/size(thresholded_between{i},2);
     numbers_above_threshold(i,3) = sum(thresholded_after{i}>0)/size(thresholded_after{i},2);
     numbers_above_threshold(i,4) = sum(thresholded_horridge{i}>0)/size(thresholded_horridge{i},2);
-
 end
+
+%% figures
+
+figure
+boxplot([normalized_averages(:,1),normalized_averages(:,2),normalized_averages(:,3), normalized_averages(:,4)], 'Labels', {'Baseline', 'Experiment', 'Rest', 'Horridge'})
+hold on
+scatter(ones(size(normalized_averages(:,1),1)),normalized_averages(:,1), 'filled', 'blue')
+scatter(ones(size(normalized_averages(:,2),1))*2,normalized_averages(:,2), 'filled', 'blue')
+scatter(ones(size(normalized_averages(:,3),1))*3,normalized_averages(:,3), 'filled', 'blue')
+scatter(ones(size(normalized_averages(:,4),1))*4,normalized_averages(:,4), 'filled', 'blue')
+line([ones(size(normalized_averages(:,1))), ones(size(normalized_averages(:,2)))*2]',[normalized_averages(:,1), normalized_averages(:,2)]','Color','green')
+line([ones(size(normalized_averages(:,2)))*2, ones(size(normalized_averages(:,3)))*3]',[normalized_averages(:,2), normalized_averages(:,3)]','Color','green')
+line([ones(size(normalized_averages(:,3)))*3, ones(size(normalized_averages(:,4)))*4]',[normalized_averages(:,3), normalized_averages(:,4)]','Color','green')
+
+
+figure
+boxplot([normalized_averages(:,1), normalized_averages(:,3)], 'Labels', {'Baseline', 'Rest'})
+hold on
+scatter(ones(size(normalized_averages(:,1),1)),normalized_averages(:,1), 'filled', 'blue')
+scatter(ones(size(normalized_averages(:,3),1))*2,normalized_averages(:,3), 'filled', 'blue')
+line([ones(size(normalized_averages(:,1))), ones(size(normalized_averages(:,3)))*2]',[normalized_averages(:,1), normalized_averages(:,3)]','Color','green')
+
+
+
 
 

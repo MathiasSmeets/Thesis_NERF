@@ -11,6 +11,7 @@ end
 path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
+path_to_raw = "takeokalabwip2023/Mathias/switch_data/tabled_data";
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
@@ -20,6 +21,11 @@ stimulus_data_m = stimulus_data_m(1:9,:);
 horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_switch.mat"));
 horridge_data_m = horridge_data_m.after_stimulus_switch_m;
 horridge_data_m = horridge_data_m(1:9,:);
+
+flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_m.mat"));
+flat_stimulus_data_m = flat_stimulus_data_m.data;
+flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_m.mat"));
+flat_hor_data_m = flat_hor_data_m.switch_data;
 
 output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
 output_m = output_m.output_m;
@@ -263,21 +269,26 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
         cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    counter = 1;
-    for j = 1:last_interval_data(i)
-        for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
-            counter = counter + 1;
-        end
+    % counter = 1;
+    % for j = 1:last_interval_data(i)
+    %     for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
+    %         cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
+    %         counter = counter + 1;
+    %     end
+    % end
+    % counter = 1;
+    % for j = 1:last_interval_data_horridge(i)
+    %     for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
+    %         cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
+    %         counter = counter + 1;
+    %     end
+    % end
+    for j = 1:size(flat_stimulus_data_m,2)-size(cur_template,2)+1
+        cur_correlation_between(j) = sum(cur_template.*flat_stimulus_data_m(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    counter = 1;
-    for j = 1:last_interval_data_horridge(i)
-        for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
-            counter = counter + 1;
-        end
+    for j = 1:size(flat_hor_data_m,2)-size(cur_template,2)+1
+        cur_correlation_horridge(j) = sum(cur_template.*flat_hor_data_m(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-
     % check if at least 2 spikes in data, otherwise 0
     % for j = 1:size(cur_before_data,2)-size(cur_template,2)+1
     %     if sum(sum(cur_before_data(cur_cluster,j:j+size(cur_template,2)-1), 2) > 0) >= 2 || numel(cur_cluster) == 2

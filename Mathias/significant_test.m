@@ -1,3 +1,4 @@
+clear;clc;close all;
 if ispc
     volume_base = '\\nerffs13';
     volume_base2 = '\\nerffs17';
@@ -35,6 +36,7 @@ thresholded_between = cell(size(raw_between));
 thresholded_after = cell(size(raw_after));
 thresholded_horridge = cell(size(raw_horridge));
 normalized_averages = zeros(numel(setdiff(1:size(raw_after,1),mouse_to_exclude)), 4);
+numbers_above_threshold = zeros(numel(setdiff(1:size(raw_after,1),mouse_to_exclude)), 4);
 for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
     % Sort the distribution by values
     sorted_distribution_before = sortrows(correlation_distribution_before{i}, 1);
@@ -53,17 +55,18 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
     total_frequency_between = sum(sorted_distribution_between(:, 2));
     total_frequency_after = sum(sorted_distribution_after(:, 2));
     total_frequency_horridge = sum(sorted_distribution_horridge(:, 2));
-
-    percentile_index_before = find(cumulative_sum_before >= 0.9999 * total_frequency_before, 1);
-    percentile_index_between = find(cumulative_sum_between >= 0.9999 * total_frequency_between, 1);
-    percentile_index_after = find(cumulative_sum_after >= 0.9999 * total_frequency_after, 1);
-    percentile_index_horridge = find(cumulative_sum_horridge >= 0.9999 * total_frequency_horridge, 1);
+    
+    percentage = 0.999;
+    percentile_index_before = find(cumulative_sum_before >= percentage * total_frequency_before, 1);
+    percentile_index_between = find(cumulative_sum_between >= percentage * total_frequency_between, 1);
+    percentile_index_after = find(cumulative_sum_after >= percentage * total_frequency_after, 1);
+    percentile_index_horridge = find(cumulative_sum_horridge >= percentage * total_frequency_horridge, 1);
 
     % Extract the value at the 99.99th percentile
-    threshold_before(i) = sorted_distribution(percentile_index_before, 1);
-    threshold_between(i) = sorted_distribution(percentile_index_between, 1);
-    threshold_after(i) = sorted_distribution(percentile_index_after, 1);
-    threshold_horridge(i) = sorted_distribution(percentile_index_horridge, 1);
+    threshold_before(i) = sorted_distribution_before(percentile_index_before, 1);
+    threshold_between(i) = sorted_distribution_between(percentile_index_between, 1);
+    threshold_after(i) = sorted_distribution_after(percentile_index_after, 1);
+    threshold_horridge(i) = sorted_distribution_horridge(percentile_index_horridge, 1);
 
     % apply thresholds
     cur_before = raw_before(i,:);
@@ -81,10 +84,16 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
    
 
     % calculate averages
-    normalized_averages(i,1) = mean(thresholded_before(i,:)) / threshold_before(i);
-    normalized_averages(i,2) = mean(thresholded_between{i}) / threshold_between(i);
-    normalized_averages(i,3) = mean(thresholded_after{i}) / threshold_after(i);
-    normalized_averages(i,4) = mean(thresholded_horridge(i,:)) / threshold_horridge(i);
+    normalized_averages(i,1) = (sum(thresholded_before(i,:)) / threshold_before(i)) / numel(thresholded_before(i,:));
+    normalized_averages(i,2) = (sum(thresholded_between{i}) / threshold_between(i)) / numel(thresholded_between{i});
+    normalized_averages(i,3) = (sum(thresholded_after{i}) / threshold_after(i)) / numel(thresholded_after{i});
+    normalized_averages(i,4) = (sum(thresholded_horridge{i}) / threshold_horridge(i)) / numel(thresholded_horridge{i});
+
+    numbers_above_threshold(i,1) = sum(thresholded_before(i,:)>0)/size(thresholded_before(i,:),2);
+    numbers_above_threshold(i,2) = sum(thresholded_between{i}>0)/size(thresholded_between{i},2);
+    numbers_above_threshold(i,3) = sum(thresholded_after{i}>0)/size(thresholded_after{i},2);
+    numbers_above_threshold(i,4) = sum(thresholded_horridge{i}>0)/size(thresholded_horridge{i},2);
+
 end
 
 

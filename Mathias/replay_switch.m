@@ -148,7 +148,7 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     actual_most_common_cluster = most_common_cluster{end};
     internal_counter = 0;
     % contains neuron to avoid
-    while numel(find(ismember(actual_most_common_cluster, neurons_to_avoid))) >= 1
+    while numel(find(ismember(actual_most_common_cluster, neurons_to_avoid))) >= 1 || numel(actual_most_common_cluster) == 1
         % if another has equal count
         if ~isequal(actual_most_common_cluster, most_common_cluster{1})
             internal_counter = internal_counter + 1;
@@ -206,9 +206,11 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
                         raw_data_index = (j-1)*intervals_together + ceil((locs(jj))/ceil(interval_size/bins_together));
                         position_in_data = mod(locs(jj)-1,ceil(interval_size/bins_together))*bins_together+1;
                         cur_raw_data = horridge_data_m{i,raw_data_index};
-                        cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size));
-                        cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
-                        counter = counter + 1;
+                        if ~isempty(cur_raw_data)
+                            cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size));
+                            cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
+                            counter = counter + 1;
+                        end
                     end
                 end
             end

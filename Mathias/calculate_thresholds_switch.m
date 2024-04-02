@@ -54,10 +54,7 @@ ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
 cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_between_m.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
 
-%mouse_to_exclude = 0;      % m
-mouse_to_exclude = 2;       % y
-%mouse_to_exclude = 4:9;    % np2
-%mouse_to_exclude = 1:6;
+mouse_to_exclude = 0;      % m
 
 load(fullfile(volume_base2,path_to_correlations,"template_smoothed_3_m_switchbased.mat"));
 load(fullfile(volume_base2,path_to_correlations,"template_cluster_m_switchbased.mat"));

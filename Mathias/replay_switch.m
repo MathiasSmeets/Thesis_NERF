@@ -12,38 +12,43 @@ path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
 
-horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_switch.mat"));
+horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_switch.mat"));
 horridge_data_m = horridge_data_m.after_stimulus_switch_m;
 horridge_data_m = horridge_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
+stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_horridge.mat"));
 stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
 stimulus_data_m = stimulus_data_m(1:9,:);
 
-output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
+flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_y.mat"));
+flat_stimulus_data_m = flat_stimulus_data_m.data;
+flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_y.mat"));
+flat_hor_data_m = flat_hor_data_m.switch_data;
+
+output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_y.mat"));
 output_m = output_m.output_m;
 
-inhibited_m = load(fullfile(volume_base2, path_to_noi, "inhibited_horridge_m.mat"));
+inhibited_m = load(fullfile(volume_base2, path_to_noi, "inhibited_horridge_y.mat"));
 inhibited_m = inhibited_m.inhibited_m;
 
-after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_m.mat"));
+after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_y.mat"));
 after_data_m = after_data_m.waiting_data;
 after_data_m = after_data_m(1:9,:);
 
-before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_m.mat"));
+before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_y.mat"));
 before_data_m = before_data_m.before_data;
 before_data_m(before_data_m(:,1)>=10,:) = [];
 
-ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_switch_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
-ica_data = load(fullfile(volume_base2,path_to_clusters, "data_switch_m.mat")); ica_data = ica_data.total_data;
-ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_of_interest_switch_m.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
-ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_switch_m.mat")); ica_activity = ica_activity.total_activity;
-ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_m.mat")); ica_vector = ica_vector.total_vector;
+ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_switch_y.mat")); ica_assemblies = ica_assemblies.total_assemblies;
+ica_data = load(fullfile(volume_base2,path_to_clusters, "data_switch_y.mat")); ica_data = ica_data.total_data;
+ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_of_interest_switch_y.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_switch_y.mat")); ica_activity = ica_activity.total_activity;
+ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_y.mat")); ica_vector = ica_vector.total_vector;
 
-ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_m.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
-ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
-cluster_matrices_switch_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_switch_m.mat"));cluster_matrices_switch_m = cluster_matrices_switch_m.all_cluster_matrices;
+ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_y.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
+ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_y.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
+cluster_matrices_switch_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_switch_y.mat"));cluster_matrices_switch_m = cluster_matrices_switch_m.all_cluster_matrices;
 
 mouse_to_exclude = 0;
 %mouse_to_exclude = 2;
@@ -229,9 +234,9 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     template_smoothed{i} = smoothed_template;
 end
 
-save('/scratch/mathiass-takeokalab/01/template_m_switchbased.mat', 'template')
-save('/scratch/mathiass-takeokalab/01/template_cluster_m_switchbased.mat', 'template_cluster')
-save('/scratch/mathiass-takeokalab/01/template_smoothed_3_m_switchbased.mat', 'template_smoothed')
+save('/scratch/mathiass-takeokalab/01/template_y_switchbased.mat', 'template')
+save('/scratch/mathiass-takeokalab/01/template_cluster_y_switchbased.mat', 'template_cluster')
+save('/scratch/mathiass-takeokalab/01/template_smoothed_3_y_switchbased.mat', 'template_smoothed')
 %% check for replay in before and after data
 cur_correlation_before = zeros(size(horridge_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);
 cur_correlation_after = cell(size(horridge_data_m,1),1);
@@ -251,6 +256,11 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     cur_after_data = after_data_m{i};
     cur_after_data = cell2mat(cur_after_data);
 
+    cur_stim_data = flat_stimulus_data_m(flat_stimulus_data_m(:,1)==i,:);
+    cur_stim_data = cur_stim_data(:,2:end);
+    cur_hor_data = flat_hor_data_m(flat_hor_data_m(:,1)==i,:);
+    cur_hor_data = cur_hor_data(:,2:end);
+
     cur_template = template_smoothed{i};
     %cur_template = template{i};
     cur_cluster = template_cluster{i};
@@ -262,19 +272,11 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     for j = 1:size(cur_after_data,2)-size(cur_template,2)+1
         cur_correlation_after{i}(j) = sum(cur_template.*cur_after_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    counter = 1;
-    for j = 1:last_interval_data_horridge(i)
-        for k = 11:size(stimulus_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_between{i}(counter) = sum(cur_template.*double(stimulus_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
-            counter = counter + 1;
-        end
+    for j = 1:size(cur_stim_data,2)-size(cur_template,2)+1
+        cur_correlation_between{i}(j) = sum(cur_template.*cur_stim_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
-    counter = 1;
-    for j = 1:last_interval_data(i)
-        for k = 11:size(horridge_data_m{i,j},2)-size(cur_template,2)+1
-            cur_correlation_horridge{i}(counter) = sum(cur_template.*double(horridge_data_m{i,j}(cur_cluster,k:k+size(cur_template,2)-1)),'all');% / (size(cur_template,1) * size(cur_template,2));
-            counter = counter + 1;
-        end
+    for j = 1:size(cur_hor_data,2)-size(cur_template,2)+1
+        cur_correlation_horridge{i}(j) = sum(cur_template.*cur_hor_data(cur_cluster,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
     end
 
     % check if at least 2 spikes in data, otherwise 0
@@ -317,10 +319,10 @@ end
 % but now i tried with 15 ms bins which makes much more sense so let's see
 %%
 
-save("/scratch/mathiass-takeokalab/01/raw_before_m_switchbased.mat","cur_correlation_before")
-save("/scratch/mathiass-takeokalab/01/raw_between_m_switchbased.mat","cur_correlation_between")
-save("/scratch/mathiass-takeokalab/01/raw_after_m_switchbased.mat","cur_correlation_after")
-save("/scratch/mathiass-takeokalab/01/raw_horridge_m_switchbased.mat","cur_correlation_horridge")
+save("/scratch/mathiass-takeokalab/01/raw_before_y_switchbased.mat","cur_correlation_before")
+save("/scratch/mathiass-takeokalab/01/raw_between_y_switchbased.mat","cur_correlation_between")
+save("/scratch/mathiass-takeokalab/01/raw_after_y_switchbased.mat","cur_correlation_after")
+save("/scratch/mathiass-takeokalab/01/raw_horridge_y_switchbased.mat","cur_correlation_horridge")
 
 threshold = zeros(numel(cur_correlation_after),1);
 cur_correlation_after_without_zero = cur_correlation_after;
@@ -328,7 +330,7 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     cur_correlation_after_without_zero{i}(cur_correlation_after_without_zero{i}==0) = [];
     threshold(i) = prctile(cur_correlation_after_without_zero{i},95,2) + 0.0000001;
 end
-save("/scratch/mathiass-takeokalab/01/threshold_m_switchbased.mat","threshold")
+save("/scratch/mathiass-takeokalab/01/threshold_y_switchbased.mat","threshold")
 
 thresholded_before = cur_correlation_before;
 thresholded_between = cur_correlation_between;
@@ -340,9 +342,9 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     thresholded_after{i}(thresholded_after{i}<threshold(i)) = 0;
 end
 
-save("/scratch/mathiass-takeokalab/01/thresholded_before_m_switchbased.mat","thresholded_before")
-save("/scratch/mathiass-takeokalab/01/thresholded_between_m_switchbased.mat","thresholded_between")
-save("/scratch/mathiass-takeokalab/01/thresholded_after_m_switchbased.mat","thresholded_after")
+save("/scratch/mathiass-takeokalab/01/thresholded_before_y_switchbased.mat","thresholded_before")
+save("/scratch/mathiass-takeokalab/01/thresholded_between_y_switchbased.mat","thresholded_between")
+save("/scratch/mathiass-takeokalab/01/thresholded_after_y_switchbased.mat","thresholded_after")
 
 
 avg_cor_before = mean(thresholded_before,2);
@@ -368,7 +370,7 @@ scatter(ones(size(avg_cor_between,1))*2,avg_cor_between, 'filled', 'blue')
 scatter(ones(size(avg_cor_after,1))*3,avg_cor_after, 'filled', 'blue')
 line([ones(size(avg_cor_before)), ones(size(avg_cor_between))*2]',[avg_cor_before, avg_cor_between]','Color','green')
 line([ones(size(avg_cor_between))*2, ones(size(avg_cor_after))*3]',[avg_cor_between, avg_cor_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_bba_m_switchbased.png")
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_bba_y_switchbased.png")
 
 figure
 boxplot([avg_cor_before, avg_cor_after], 'Labels', {'Baseline', 'Rest'})
@@ -376,7 +378,7 @@ hold on
 scatter(ones(size(avg_cor_before,1)),avg_cor_before, 'filled', 'blue')
 scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
 line([ones(size(avg_cor_before)), ones(size(avg_cor_after))*2]',[avg_cor_before, avg_cor_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_m_switchbased.png")
+saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_y_switchbased.png")
 
 % avg_adj_cur_correlation_before = mean(adj_cur_correlation_before,2);
 % avg_adj_cur_correlation_between = zeros(numel(adj_cur_correlation_between),1);
@@ -405,9 +407,9 @@ saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_m_switchbased.png")
 % line([ones(size(avg_adj_cur_correlation_before)), ones(size(avg_adj_cur_correlation_after))*2]',[avg_adj_cur_correlation_before, avg_adj_cur_correlation_after]','Color','green')
 % saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_adjusted_ba_y.png")
 
-save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_m_switchbased.mat","avg_cor_before")
-save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_m_switchbased.mat","avg_cor_between")
-save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_m_switchbased.mat","avg_cor_after")
+save("/scratch/mathiass-takeokalab/01/correlation_before_smoothed_width3_y_switchbased.mat","avg_cor_before")
+save("/scratch/mathiass-takeokalab/01/correlation_between_smoothed_width3_y_switchbased.mat","avg_cor_between")
+save("/scratch/mathiass-takeokalab/01/correlation_after_smoothed_width3_y_switchbased.mat","avg_cor_after")
 %% determine 95% threshold based on before data ---->>> not working well
 % threshold = prctile(cur_correlation_before,99,2);
 % adjusted_cor_before = cur_correlation_before;

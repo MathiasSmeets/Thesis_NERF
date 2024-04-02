@@ -11,19 +11,19 @@ end
 
 path_to_correlations = "takeokalabwip2023/Mathias/switch_data/correlations";
 
-raw_before = load(fullfile(volume_base2, path_to_correlations, "raw_before_m.mat")); raw_before = raw_before.cur_correlation_before;
-raw_between = load(fullfile(volume_base2, path_to_correlations, "raw_between_m.mat")); raw_between = raw_between.cur_correlation_between;
-raw_after = load(fullfile(volume_base2, path_to_correlations, "raw_after_m.mat")); raw_after = raw_after.cur_correlation_after;
-raw_horridge = load(fullfile(volume_base2, path_to_correlations, "raw_horridge_m.mat")); raw_horridge = raw_horridge.cur_correlation_horridge;
+raw_before = load(fullfile(volume_base2, path_to_correlations, "raw_before_y.mat")); raw_before = raw_before.cur_correlation_before;
+raw_between = load(fullfile(volume_base2, path_to_correlations, "raw_between_y.mat")); raw_between = raw_between.cur_correlation_between;
+raw_after = load(fullfile(volume_base2, path_to_correlations, "raw_after_y.mat")); raw_after = raw_after.cur_correlation_after;
+raw_horridge = load(fullfile(volume_base2, path_to_correlations, "raw_horridge_y.mat")); raw_horridge = raw_horridge.cur_correlation_horridge;
 
-correlation_distribution_before = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_before_m.mat")); correlation_distribution_before = correlation_distribution_before.correlation_distribution_before;
-correlation_distribution_between = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_between_m.mat")); correlation_distribution_between = correlation_distribution_between.correlation_distribution_between;
-correlation_distribution_after = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_after_m.mat")); correlation_distribution_after = correlation_distribution_after.correlation_distribution_after;
-correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_horridge_m.mat")); correlation_distribution_horridge = correlation_distribution_horridge.correlation_distribution_horridge;
+correlation_distribution_before = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_before_y.mat")); correlation_distribution_before = correlation_distribution_before.correlation_distribution_before;
+correlation_distribution_between = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_between_y.mat")); correlation_distribution_between = correlation_distribution_between.correlation_distribution_between;
+correlation_distribution_after = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_after_y.mat")); correlation_distribution_after = correlation_distribution_after.correlation_distribution_after;
+correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_horridge_y.mat")); correlation_distribution_horridge = correlation_distribution_horridge.correlation_distribution_horridge;
 
-mouse_to_exclude = 0;
-%mouse_to_exclude = 2;
-%mouse_to_exclude = 4:9;
+%mouse_to_exclude = 0; % m
+mouse_to_exclude = 2; % y
+%mouse_to_exclude = 4:9; % np2
 
 %%
 
@@ -95,26 +95,26 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
     numbers_above_threshold(i,4) = sum(thresholded_horridge{i}>0)/size(thresholded_horridge{i},2);
 end
 
-
+%% figures
 
 figure
-boxplot([normalized_averages(:,1),normalized_averages(:,2),normalized_averages(:,3), normalized_averages(:,4)], 'Labels', {'Baseline', 'Experiment', 'Rest', 'Horridge'})
+boxplot([normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4)], 'Labels', {'Baseline', 'Experiment', 'Rest', 'Horridge'})
 hold on
-scatter(ones(size(normalized_averages(:,1),1)),normalized_averages(:,1), 'filled', 'blue')
-scatter(ones(size(normalized_averages(:,2),1))*2,normalized_averages(:,2), 'filled', 'blue')
-scatter(ones(size(normalized_averages(:,3),1))*3,normalized_averages(:,3), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),1)),normalized_averages(:,1), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),1))*2,normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3),1))*3,normalized_averages(:,3), 'filled', 'blue')
 scatter(ones(size(normalized_averages(:,4),1))*4,normalized_averages(:,4), 'filled', 'blue')
 line([ones(size(normalized_averages(:,1))), ones(size(normalized_averages(:,2)))*2]',[normalized_averages(:,1), normalized_averages(:,2)]','Color','green')
-line([ones(size(normalized_averages(:,2)))*2, ones(size(normalized_averages(:,3)))*3]',[normalized_averages(:,2), avg_cor_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_bba_m.png")
+line([ones(size(normalized_averages(:,2)))*2, ones(size(normalized_averages(:,3)))*3]',[normalized_averages(:,2), normalized_averages(:,3)]','Color','green')
+line([ones(size(normalized_averages(:,3)))*3, ones(size(normalized_averages(:,4)))*4]',[normalized_averages(:,3), normalized_averages(:,4)]','Color','green')
+
 
 figure
-boxplot([avg_cor_before, avg_cor_after], 'Labels', {'Baseline', 'Rest'})
+boxplot([normalized_averages(:,1), normalized_averages(:,3)], 'Labels', {'Baseline', 'Rest'})
 hold on
-scatter(ones(size(avg_cor_before,1)),avg_cor_before, 'filled', 'blue')
-scatter(ones(size(avg_cor_after,1))*2,avg_cor_after, 'filled', 'blue')
-line([ones(size(avg_cor_before)), ones(size(avg_cor_after))*2]',[avg_cor_before, avg_cor_after]','Color','green')
-saveas(gcf,"/scratch/mathiass-takeokalab/01/boxplot_ba_m.png")
+scatter(ones(size(normalized_averages(:,1),1)),normalized_averages(:,1), 'filled', 'blue')
+scatter(ones(size(normalized_averages(:,3),1))*2,normalized_averages(:,3), 'filled', 'blue')
+line([ones(size(normalized_averages(:,1))), ones(size(normalized_averages(:,3)))*2]',[normalized_averages(:,1), normalized_averages(:,3)]','Color','green')
 
 
 

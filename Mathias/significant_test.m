@@ -21,9 +21,9 @@ correlation_distribution_between = load(fullfile(volume_base2, path_to_correlati
 correlation_distribution_after = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_after_m.mat")); correlation_distribution_after = correlation_distribution_after.correlation_distribution_after;
 correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_horridge_m.mat")); correlation_distribution_horridge = correlation_distribution_horridge.correlation_distribution_horridge;
 
-mouse_to_exclude = 0;
-%mouse_to_exclude = 2;
-%mouse_to_exclude = 4:9;
+mouse_to_exclude = 0; % m
+%mouse_to_exclude = 2; % y
+%mouse_to_exclude = 4:9; % np2
 
 %%
 
@@ -98,23 +98,22 @@ end
 %% figures
 
 figure
-boxplot([normalized_averages(:,1),normalized_averages(:,2),normalized_averages(:,3), normalized_averages(:,4)], 'Labels', {'Baseline', 'Experiment', 'Rest', 'Horridge'})
+boxplot([normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4)], 'Labels', {'Baseline', 'Experiment', 'Rest', 'Horridge'})
 hold on
-scatter(ones(size(normalized_averages(:,1),1)),normalized_averages(:,1), 'filled', 'blue')
-scatter(ones(size(normalized_averages(:,2),1))*2,normalized_averages(:,2), 'filled', 'blue')
-scatter(ones(size(normalized_averages(:,3),1))*3,normalized_averages(:,3), 'filled', 'blue')
-scatter(ones(size(normalized_averages(:,4),1))*4,normalized_averages(:,4), 'filled', 'blue')
-line([ones(size(normalized_averages(:,1))), ones(size(normalized_averages(:,2)))*2]',[normalized_averages(:,1), normalized_averages(:,2)]','Color','green')
-line([ones(size(normalized_averages(:,2)))*2, ones(size(normalized_averages(:,3)))*3]',[normalized_averages(:,2), normalized_averages(:,3)]','Color','green')
-line([ones(size(normalized_averages(:,3)))*3, ones(size(normalized_averages(:,4)))*4]',[normalized_averages(:,3), normalized_averages(:,4)]','Color','green')
-
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),1)),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),1))*2,normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3),1))*3,normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4),1))*4,normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4), 'filled', 'blue')
+line([ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1))), ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2)))*2]',[normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2)]','Color','green')
+line([ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2)))*2, ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)))*3]',[normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)]','Color','green')
+line([ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)))*3, ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4)))*4]',[normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4)]','Color','green')
 
 figure
-boxplot([normalized_averages(:,1), normalized_averages(:,3)], 'Labels', {'Baseline', 'Rest'})
+boxplot([normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)], 'Labels', {'Baseline', 'Rest'})
 hold on
-scatter(ones(size(normalized_averages(:,1),1)),normalized_averages(:,1), 'filled', 'blue')
-scatter(ones(size(normalized_averages(:,3),1))*2,normalized_averages(:,3), 'filled', 'blue')
-line([ones(size(normalized_averages(:,1))), ones(size(normalized_averages(:,3)))*2]',[normalized_averages(:,1), normalized_averages(:,3)]','Color','green')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),1)),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), 'filled', 'blue')
+scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3),1))*2,normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), 'filled', 'blue')
+line([ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1))), ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)))*2]',[normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)]','Color','green')
 
 
 

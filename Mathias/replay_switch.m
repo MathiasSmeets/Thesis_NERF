@@ -153,11 +153,17 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
             actual_most_common_cluster = most_common_cluster{end-internal_counter};
         % else go to next count
         else
-            value_counter = value_counter + 1;
-            cur_value = maxvalue(value_counter);
-            most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
-            actual_most_common_cluster = most_common_cluster{end};
-            internal_counter = 0;
+            value_counter = value_counter + 1;     
+            if value_counter <= numel(maxvalue)
+                cur_value = maxvalue(value_counter);
+                most_common_cluster = all_assemblies(all_assemblies_count==cur_value);
+                actual_most_common_cluster = most_common_cluster{end};
+                internal_counter = 0;
+            else
+                value_counter = 1;
+                cur_value = maxvalue(value_counter);
+                break
+            end
         end
         % if count is one and we went over all, just take the most common anyways
         if cur_value == 1 && isequal(actual_most_common_cluster, most_common_cluster{1})

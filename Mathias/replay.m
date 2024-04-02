@@ -236,7 +236,6 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     end
     template_smoothed{i} = smoothed_template;
 end
-error('test out how often cluster fire')
 save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
 save('/scratch/mathiass-takeokalab/01/template_cluster_m.mat', 'template_cluster')
 save('/scratch/mathiass-takeokalab/01/template_smoothed_3_m.mat', 'template_smoothed')

@@ -45,7 +45,7 @@ ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_switch
 ica_data = load(fullfile(volume_base2,path_to_clusters, "data_switch_y.mat")); ica_data = ica_data.total_data;
 ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_of_interest_switch_y.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
 ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_switch_y.mat")); ica_activity = ica_activity.total_activity;
-ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_y.mat")); ica_vector = ica_vector.total_vector;
+%ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_switch_y.mat")); ica_vector = ica_vector.total_vector;
 
 ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_y.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_y.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
@@ -89,22 +89,22 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     cur_last_interval = ceil(last_interval_data(i)/intervals_together);
     all_assemblies = {};
     all_assemblies_count = [];
-    all_vectors = {};
-    for j = 1:cur_last_interval
-        for k = 1:numel(ica_assemblies{i,j})
-            cur_assembly = ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k});
-            cur_vector = ica_vector{i,j}{k};
-            idx = find(cellfun(@(x) isequal(x, cur_assembly), all_assemblies));
-            if ~isempty(idx)
-                all_assemblies_count(idx) = all_assemblies_count(idx) + 1;
-                all_vectors{idx} = [all_vectors{idx}, cur_vector];
-            else
-                all_assemblies{end+1} = cur_assembly;
-                all_assemblies_count = [all_assemblies_count, 1];
-                all_vectors{end + 1} = cur_vector;
-            end
-        end
-    end
+    % all_vectors = {};
+    % for j = 1:cur_last_interval
+    %     for k = 1:numel(ica_assemblies{i,j})
+    %         cur_assembly = ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k});
+    %         cur_vector = ica_vector{i,j}{k};
+    %         idx = find(cellfun(@(x) isequal(x, cur_assembly), all_assemblies));
+    %         if ~isempty(idx)
+    %             all_assemblies_count(idx) = all_assemblies_count(idx) + 1;
+    %             all_vectors{idx} = [all_vectors{idx}, cur_vector];
+    %         else
+    %             all_assemblies{end+1} = cur_assembly;
+    %             all_assemblies_count = [all_assemblies_count, 1];
+    %             all_vectors{end + 1} = cur_vector;
+    %         end
+    %     end
+    % end
     % check if cluster that is found is not also most occurring in before data, if this is the case, take next one that does not contain any of these neurons
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);
@@ -184,7 +184,7 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     template_cluster_count{i} = cur_value;
     % in order to get vector, take average vector but fix sign ambiguity first
     maxindex = find(cellfun(@(x) isequal(x, actual_most_common_cluster), all_assemblies));
-    template_vector{i} = all_vectors{maxindex}(:,1);
+    %template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
     cur_template = zeros(numel(actual_most_common_cluster),bins_together);
@@ -301,19 +301,22 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     %         end
     %     end
     % end
-    for j = 1:size(cur_before_data,2)-15
-        cur_activity_before(i,j) = sum(cur_before_data(cur_cluster, j:j+14),2)'*template_vector{i};
-    end
-    for j = 1:size(cur_after_data,2)-15
-        cur_activity_after(i,j) = sum(cur_after_data(cur_cluster,j:j+14),2)'*template_vector{i};
-    end
-    counter = 1;
-    for j = 1:last_interval_data(i)
-        for k = 11:size(horridge_data_m{i,j},2)-15
-            cur_activity_between{i}(counter) = sum(double(horridge_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
-            counter = counter + 1;
-        end
-    end
+
+
+    %% vector not done for switch based y
+    % for j = 1:size(cur_before_data,2)-15
+    %     cur_activity_before(i,j) = sum(cur_before_data(cur_cluster, j:j+14),2)'*template_vector{i};
+    % end
+    % for j = 1:size(cur_after_data,2)-15
+    %     cur_activity_after(i,j) = sum(cur_after_data(cur_cluster,j:j+14),2)'*template_vector{i};
+    % end
+    % counter = 1;
+    % for j = 1:last_interval_data(i)
+    %     for k = 11:size(horridge_data_m{i,j},2)-15
+    %         cur_activity_between{i}(counter) = sum(double(horridge_data_m{i,j}(cur_cluster,k:k+14)),2)'*template_vector{i};
+    %         counter = counter + 1;
+    %     end
+    % end
 end
 % using activity is a worse measure, as it is only one column, so using
 % this is actually a template of one column only

@@ -1,9 +1,9 @@
 path1 = "X:\Mathias\switch_data\clusters";
 path2 = "X:\Mathias\switch_data\data_after_stimulus";
-stimulus_data_m = load(fullfile(path2, "after_stimulus_data_m_switch"));stimulus_data_m=stimulus_data_m.after_stimulus_switch_m;
-total_assemblies = load(fullfile(path1,"assemblies_switch_m.mat"));total_assemblies = total_assemblies.total_assemblies;
-total_neurons_of_interest = load(fullfile(path1, "neurons_of_interest_switch_m.mat"));total_neurons_of_interest = total_neurons_of_interest.total_neurons_of_interest;
-total_data = load(fullfile(path1, "data_switch_m.mat"));total_data = total_data.total_data;
+stimulus_data_m = load(fullfile(path2, "after_stimulus_data_y_switch"));stimulus_data_m=stimulus_data_m.after_stimulus_switch_y;
+total_assemblies = load(fullfile(path1,"assemblies_switch_y.mat"));total_assemblies = total_assemblies.total_assemblies;
+total_neurons_of_interest = load(fullfile(path1, "neurons_of_interest_switch_y.mat"));total_neurons_of_interest = total_neurons_of_interest.total_neurons_of_interest;
+total_data = load(fullfile(path1, "data_switch_y.mat"));total_data = total_data.total_data;
 
 interval_step = 30;
 population_similarities_start = zeros(2+1,size(total_assemblies,1));
@@ -33,3 +33,4 @@ for i = 1:size(stimulus_data_m,1)
     % title("Neurons in a cluster")
     % all_cluster_matrices{i} = cluster_matrix;
 end
+save(fullfile(path1, "cluster_matrices_switch_y"), "all_cluster_matrices")

@@ -86,7 +86,7 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     cur_avg = zeros(size(horridge_data_m{i,last_interval_data(i)}));
     %% template: avergae neurons in cluster that is most common
     % find cluster that is most common
-    cur_last_interval = ceil(last_interval_data(i)/intervals_together);
+    cur_last_interval = floor(last_interval_data(i)/intervals_together);
     all_assemblies = {};
     all_assemblies_count = [];
     %all_vectors = {};
@@ -198,13 +198,9 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
                         raw_data_index = (j-1)*intervals_together + ceil((locs(jj))/ceil(interval_size/bins_together));
                         position_in_data = mod(locs(jj)-1,ceil(interval_size/bins_together))*bins_together+1;
                         cur_raw_data = horridge_data_m{i,raw_data_index};
-                        if ~isempty(cur_raw_data)
-                            cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size));
-                            cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
-                            counter = counter + 1;
-                        else
-                            disp("danger")
-                        end
+                        cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size));
+                        cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
+                        counter = counter + 1;
                     end
                 end
             end

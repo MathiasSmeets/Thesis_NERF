@@ -11,14 +11,15 @@ end
 path_to_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
+path_to_raw = "takeokalabwip2023/Mathias/switch_data/tabled_data";
 
 horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_switch.mat"));
-horridge_data_m = horridge_data_m.after_stimulus_switch_m;
+horridge_data_m = horridge_data_m.after_stimulus_switch_y;
 horridge_data_m = horridge_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
 stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_horridge.mat"));
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_m = stimulus_data_m(1:9,:);
 
 flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_y.mat"));

@@ -89,22 +89,22 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
     cur_last_interval = ceil(last_interval_data(i)/intervals_together);
     all_assemblies = {};
     all_assemblies_count = [];
-    % all_vectors = {};
-    % for j = 1:cur_last_interval
-    %     for k = 1:numel(ica_assemblies{i,j})
-    %         cur_assembly = ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k});
-    %         cur_vector = ica_vector{i,j}{k};
-    %         idx = find(cellfun(@(x) isequal(x, cur_assembly), all_assemblies));
-    %         if ~isempty(idx)
-    %             all_assemblies_count(idx) = all_assemblies_count(idx) + 1;
-    %             all_vectors{idx} = [all_vectors{idx}, cur_vector];
-    %         else
-    %             all_assemblies{end+1} = cur_assembly;
-    %             all_assemblies_count = [all_assemblies_count, 1];
-    %             all_vectors{end + 1} = cur_vector;
-    %         end
-    %     end
-    % end
+    %all_vectors = {};
+    for j = 1:cur_last_interval
+        for k = 1:numel(ica_assemblies{i,j})
+            cur_assembly = ica_neurons_of_interest{i,j}(ica_assemblies{i,j}{k});
+            %cur_vector = ica_vector{i,j}{k};
+            idx = find(cellfun(@(x) isequal(x, cur_assembly), all_assemblies));
+            if ~isempty(idx)
+                all_assemblies_count(idx) = all_assemblies_count(idx) + 1;
+                %all_vectors{idx} = [all_vectors{idx}, cur_vector];
+            else
+                all_assemblies{end+1} = cur_assembly;
+                all_assemblies_count = [all_assemblies_count, 1];
+                %all_vectors{end + 1} = cur_vector;
+            end
+        end
+    end
     % check if cluster that is found is not also most occurring in before data, if this is the case, take next one that does not contain any of these neurons
     cur_before_data = before_data_m(before_data_m(:,1) == i,:);
     cur_before_data = cur_before_data(:,2:end);

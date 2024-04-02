@@ -137,7 +137,8 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
 
     %active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_10percent);
     %all_active_assemblies_before{i} = active_assemblies_before;
-    
+    all_all_assemblies_count{i} = all_assemblies_count;
+    all_all_assemblies{i} = all_assemblies;
     % 
     maxvalue = sort(all_assemblies_count,'descend');
     value_counter = 1;

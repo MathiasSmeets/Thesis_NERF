@@ -124,6 +124,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             random_between(row_in_cluster,:) = cur_stim_data(cur_cluster(row_in_cluster),[rand_int_between:end,1:rand_int_between-1]);
             random_horridge(row_in_cluster,:) = cur_hor_data(cur_cluster(row_in_cluster),[rand_int_horridge:end,1:rand_int_horridge-1]);
         end
+        error("test random numels vs raw numels")
         % calculate current correlation
         for j = 1:size(random_before,2)-size(cur_template,2)+1
             cur_correlation_before(j) = sum(cur_template.*random_before(:,j:j+size(cur_template,2)-1),'all');% / (size(cur_template,1) * size(cur_template,2));
@@ -181,16 +182,16 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_y3.mat","correlation_distribution_before")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_y3.mat","correlation_distribution_after")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_y3.mat","correlation_distribution_between")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_y3.mat","correlation_distribution_horridge")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_y4.mat","correlation_distribution_before")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_y4.mat","correlation_distribution_after")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_y4.mat","correlation_distribution_between")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_y4.mat","correlation_distribution_horridge")
 end
 
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_y3.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_y3.mat","correlation_distribution_after")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_y3.mat","correlation_distribution_between")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_y3.mat","correlation_distribution_horridge")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_y4.mat","correlation_distribution_before")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_y4.mat","correlation_distribution_after")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_y4.mat","correlation_distribution_between")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_y4.mat","correlation_distribution_horridge")
 
 
 

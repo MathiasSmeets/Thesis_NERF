@@ -1,4 +1,4 @@
-clear;clc;close all;
+%clear;clc;close all;
 if ispc
     volume_base = '\\nerffs13';
     volume_base2 = '\\nerffs17';
@@ -10,6 +10,7 @@ else  % cluster
 end
 
 path_to_correlations = "takeokalabwip2023/Mathias/switch_data/correlations";
+path_to_stimulus_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 
 raw_before = load(fullfile(volume_base2, path_to_correlations, "raw_before_m.mat")); raw_before = raw_before.cur_correlation_before;
 raw_between = load(fullfile(volume_base2, path_to_correlations, "raw_between_m.mat")); raw_between = raw_between.cur_correlation_between;
@@ -20,6 +21,8 @@ correlation_distribution_before = load(fullfile(volume_base2, path_to_correlatio
 correlation_distribution_between = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_between_m.mat")); correlation_distribution_between = correlation_distribution_between.correlation_distribution_between;
 correlation_distribution_after = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_after_m.mat")); correlation_distribution_after = correlation_distribution_after.correlation_distribution_after;
 correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_horridge_m.mat")); correlation_distribution_horridge = correlation_distribution_horridge.correlation_distribution_horridge;
+
+last_interval_data = load(fullfile(volume_base2, path_to_stimulus_data, "last_interval_data.mat")); last_interval_data = last_interval_data.last_interval_data;
 
 mouse_to_exclude = 0; % m
 %mouse_to_exclude = 2; % y
@@ -98,7 +101,7 @@ end
 %% figures
 
 figure
-boxplot([normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4)], 'Labels', {'Baseline', 'Experiment', 'Rest', 'Horridge'})
+boxplot([normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),4)], 'Labels', {'Baseline', 'Horridge', 'Rest', 'Switch'})
 hold on
 scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),1)),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), 'filled', 'blue')
 scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2),1))*2,normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),2), 'filled', 'blue')

@@ -199,7 +199,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
                         raw_data_index = (j-1)*intervals_together + ceil((locs(jj))/ceil(interval_size/bins_together));
                         position_in_data = mod(locs(jj)-1,ceil(interval_size/bins_together))*bins_together+1;
                         cur_raw_data = stimulus_data_m{i,raw_data_index};
-                        cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size));
+                        cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size_before));
                         cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
                         counter = counter + 1;
                     end
@@ -236,6 +236,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     end
     template_smoothed{i} = smoothed_template;
 end
+error("stop")
 save('/scratch/mathiass-takeokalab/01/template_m.mat', 'template')
 save('/scratch/mathiass-takeokalab/01/template_cluster_m.mat', 'template_cluster')
 save('/scratch/mathiass-takeokalab/01/template_smoothed_3_m.mat', 'template_smoothed')

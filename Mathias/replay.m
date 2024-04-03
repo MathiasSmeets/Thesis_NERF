@@ -13,43 +13,43 @@ path_to_clusters = "takeokalabwip2023/Mathias/switch_data/clusters";
 path_to_noi = "takeokalabwip2023/Mathias/switch_data/neurons_of_interest";
 path_to_raw = "takeokalabwip2023/Mathias/switch_data/tabled_data";
 
-stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_horridge.mat"));
-stimulus_data_m = stimulus_data_m.after_stimulus_data_m;
+stimulus_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_horridge.mat"));
+stimulus_data_m = stimulus_data_m.after_stimulus_data_y;
 stimulus_data_m = stimulus_data_m(1:9,:);
 %stimulus_data_m = stimulus_data_m(1:9,:);
 
-horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_m_switch.mat"));
-horridge_data_m = horridge_data_m.after_stimulus_switch_m;
+horridge_data_m = load(fullfile(volume_base2, path_to_data, "after_stimulus_data_y_switch.mat"));
+horridge_data_m = horridge_data_m.after_stimulus_switch_y;
 horridge_data_m = horridge_data_m(1:9,:);
 
-flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_m.mat"));
+flat_stimulus_data_m = load(fullfile(volume_base2, path_to_raw, "horridge_data_y.mat"));
 flat_stimulus_data_m = flat_stimulus_data_m.data;
-flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_m.mat"));
+flat_hor_data_m = load(fullfile(volume_base2, path_to_raw, "switch_data_y.mat"));
 flat_hor_data_m = flat_hor_data_m.switch_data;
 
-output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_m.mat"));
+output_m = load(fullfile(volume_base2, path_to_noi, "neurons_of_interest_horridge_y.mat"));
 output_m = output_m.output_m;
 
-inhibited_m = load(fullfile(volume_base2, path_to_noi, "inhibited_horridge_m.mat"));
+inhibited_m = load(fullfile(volume_base2, path_to_noi, "inhibited_horridge_y.mat"));
 inhibited_m = inhibited_m.inhibited_m;
 
-after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_m.mat"));
+after_data_m = load(fullfile(volume_base2, path_to_data, "waiting_data_y.mat"));
 after_data_m = after_data_m.waiting_data;
 after_data_m = after_data_m(1:9,:);
 
-before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_m.mat"));
+before_data_m = load(fullfile(volume_base2, path_to_data, "before_data_y.mat"));
 before_data_m = before_data_m.before_data;
 before_data_m(before_data_m(:,1)>=10,:) = [];
 
-ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_horridge_m.mat")); ica_assemblies = ica_assemblies.total_assemblies;
-ica_data = load(fullfile(volume_base2,path_to_clusters, "data_horridge_m.mat")); ica_data = ica_data.total_data;
-ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_of_interest_horridge_m.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
-ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_horridge_m.mat")); ica_activity = ica_activity.total_activity;
-ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_horridge_m.mat")); ica_vector = ica_vector.total_vector;
+ica_assemblies = load(fullfile(volume_base2,path_to_clusters, "assemblies_horridge_y.mat")); ica_assemblies = ica_assemblies.total_assemblies;
+ica_data = load(fullfile(volume_base2,path_to_clusters, "data_horridge_y.mat")); ica_data = ica_data.total_data;
+ica_neurons_of_interest = load(fullfile(volume_base2,path_to_clusters, "neurons_of_interest_horridge_y.mat")); ica_neurons_of_interest = ica_neurons_of_interest.total_neurons_of_interest;
+ica_activity = load(fullfile(volume_base2,path_to_clusters, "activity_horridge_y.mat")); ica_activity = ica_activity.total_activity;
+ica_vector = load(fullfile(volume_base2,path_to_clusters, "ica_vector_horridge_y.mat")); ica_vector = ica_vector.total_vector;
 
-ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_m.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
-ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
-cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_between_m.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
+ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "neurons_of_interest_before_y.mat"));ica_neurons_of_interest_before = ica_neurons_of_interest_before.total_neurons_of_interest;
+ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_y.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
+cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_between_y.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
 
 mouse_to_exclude = 0;      % m
 %mouse_to_exclude = 2;       % y

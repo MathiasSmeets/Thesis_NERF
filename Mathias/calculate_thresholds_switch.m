@@ -179,16 +179,16 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased.mat","correlation_distribution_before")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased.mat","correlation_distribution_after")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased.mat","correlation_distribution_between")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased.mat","correlation_distribution_horridge")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased5.mat","correlation_distribution_before")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased5.mat","correlation_distribution_after")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased5.mat","correlation_distribution_between")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased5.mat","correlation_distribution_horridge")
 end
 
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased.mat","correlation_distribution_after")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased.mat","correlation_distribution_between")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased.mat","correlation_distribution_horridge")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased5.mat","correlation_distribution_before")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased5.mat","correlation_distribution_after")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased5.mat","correlation_distribution_between")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased5.mat","correlation_distribution_horridge")
 
 
 

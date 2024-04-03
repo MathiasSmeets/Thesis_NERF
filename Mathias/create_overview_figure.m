@@ -116,17 +116,20 @@ saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_
 saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.svg")
 
 %% image 6
-
+cur_template = zeros(numel(assembly),15);
 for jj = 1:length(locs)
-    raw_data_index = (j-1)*30 + ceil((locs(jj))/ceil(60/4));
-    position_in_data = mod(locs(jj)-1,ceil(60/15))*15+1;
-    cur_raw_data = stimulus_data_m{mouse,raw_data_index};
-    cur_assembly_data = cur_raw_data(template_cluster{mouse}, position_in_data:min(position_in_data+15-1, 70));
+    raw_data_index = interval-1 + ceil((locs(jj))/ceil(60/15));
+    position_in_data = mod(locs(jj)-1,ceil(60/15))*15+1 + 10;
+    cur_raw_data = after_stimulus_data_m{mouse,raw_data_index};
+    cur_assembly_data = cur_raw_data(noi(assembly), position_in_data:min(position_in_data+15-1, 70));
+    figure
+    heatmap(cur_assembly_data,'CellLabelColor','none');grid('off')
     cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
     counter = counter + 1;
 end
 
-
+figure
+heatmap(cur_template/counter,'CellLabelColor','none')
 
 
 

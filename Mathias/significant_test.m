@@ -24,7 +24,7 @@ correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlat
 
 last_interval_data = load(fullfile(volume_base2, path_to_stimulus_data, "last_interval_data.mat")); last_interval_data = last_interval_data.last_interval_data;
 
-mouse_to_exclude = 6:9; % m
+mouse_to_exclude = 5:9; % m
 %mouse_to_exclude = 2; % y
 %mouse_to_exclude = 4:9; % np2
 

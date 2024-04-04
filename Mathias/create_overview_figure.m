@@ -112,8 +112,8 @@ ylabel("Activity")
 hold on
 scatter(locs, pks, "*", "LineWidth",2)
 
-saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.png")
-saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.svg")
+%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.png")
+%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.svg")
 
 %% image 6
 cur_template = zeros(numel(assembly),15);

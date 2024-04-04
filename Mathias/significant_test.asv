@@ -119,6 +119,6 @@ scatter(ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclu
 line([ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1))), ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)))*2]',[normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1), normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3)]','Color','green')
 
 
-p_value = signrank(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3));
+p_value = signrank()
 disp("p-value baseline-rest: "+p_value)
 

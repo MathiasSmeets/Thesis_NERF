@@ -122,16 +122,60 @@ for jj = 1:length(locs)
     position_in_data = mod(locs(jj)-1,ceil(60/15))*15+1 + 10;
     cur_raw_data = after_stimulus_data_m{mouse,raw_data_index};
     cur_assembly_data = cur_raw_data(noi(assembly), position_in_data:min(position_in_data+15-1, 70));
-    figure
-    heatmap(cur_assembly_data,'CellLabelColor','none');grid('off')
+    %figure
+    %heatmap(cur_assembly_data,'CellLabelColor','none');grid('off')
     cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
     counter = counter + 1;
 end
 
 figure
+cur_template = cur_template/counter;
 heatmap(cur_template/counter,'CellLabelColor','none')
 
+%% image 7
 
+
+% Gaussian kernel parameters
+kernel_size = 3; % Size of the kernel (odd number)
+sigma = 1; % Standard deviation of the Gaussian kernel
+
+% Create the Gaussian kernel
+kernel = gausswin(kernel_size, sigma);
+
+% Normalize the kernel
+kernel = kernel / sum(kernel);
+
+
+% Initialize a matrix to store smoothed data
+smoothed_template = zeros(size(cur_template));
+
+% Apply convolution to each row independently
+for j = 1:size(cur_template, 1)
+    smoothed_template(j, :) = conv(cur_template(j, :), kernel, 'same');
+end
+
+figure
+heatmap(smoothed_template, 'CellLabelColor','none'); grid('off')
+
+load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+after = data(83:105,[2:451,701:901]);
+clearvars data
+figure
+heatmap(after(noi(assembly),:)); grid('off')
+
+correlation = zeros(1,size(after,2)-size(smoothed_template,2)+1);
+for i = 1:size(after,2)-size(smoothed_template,2)+1
+    correlation(i) = sum(smoothed_template.*after(noi(assembly),i:i+size(smoothed_template,2)-1),'all');
+end
+figure
+plot(correlation,"LineWidth",2)
+threshold = 0.45;
+hold on
+plot(ones(size(correlation))*threshold,'red','LineWidth',2)
+
+correlation_adjusted = correlation;
+correlation_adjusted(correlation_adjusted<threshold) = 0;
+figure;plot(correlation_adjusted,'LineWidth',2)
 
 
 

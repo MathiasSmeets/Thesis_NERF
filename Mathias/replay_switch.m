@@ -204,7 +204,7 @@ for i = setdiff(1:size(horridge_data_m,1),mouse_to_exclude)
                     [pks, locs] = findpeaks(abs(ica_activity{i,j}(:,k)),"NPeaks",intervals_together,"MinPeakHeight",0.4*max(abs(ica_activity{i,j}(:,k))));
                     for jj = 1:length(locs)
                         raw_data_index = (j-1)*intervals_together + ceil((locs(jj))/ceil(interval_size/bins_together));
-                        position_in_data = mod(locs(jj)-1,ceil(interval_size/bins_together))*bins_together+1;
+                        position_in_data = mod(locs(jj)-1,ceil(interval_size/bins_together))*bins_together+1+10;
                         cur_raw_data = horridge_data_m{i,raw_data_index};
                         if ~isempty(cur_raw_data)
                             cur_assembly_data = cur_raw_data(template_cluster{i}, position_in_data:min(position_in_data+bins_together-1, interval_size));

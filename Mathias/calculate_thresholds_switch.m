@@ -54,7 +54,7 @@ ica_neurons_of_interest_before = load(fullfile(volume_base2, path_to_clusters, "
 ica_assemblies_before = load(fullfile(volume_base2, path_to_clusters, "assemblies_before_m.mat")); ica_assemblies_before = ica_assemblies_before.total_assemblies;
 cluster_matrices_between_m = load(fullfile(volume_base2, path_to_clusters, "cluster_matrices_between_m.mat"));cluster_matrices_between_m = cluster_matrices_between_m.all_cluster_matrices;
 
-mouse_to_exclude = 0;      % m
+mouse_to_exclude = 1:4;      % m
 
 load(fullfile(volume_base2,path_to_correlations,"template_smoothed_3_m_switchbased.mat"));
 load(fullfile(volume_base2,path_to_correlations,"template_cluster_m_switchbased.mat"));
@@ -179,16 +179,16 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
             end
         end
     end
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased.mat","correlation_distribution_before")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased.mat","correlation_distribution_after")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased.mat","correlation_distribution_between")
-    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased.mat","correlation_distribution_horridge")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased5.mat","correlation_distribution_before")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased5.mat","correlation_distribution_after")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased5.mat","correlation_distribution_between")
+    save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased5.mat","correlation_distribution_horridge")
 end
 
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased.mat","correlation_distribution_before")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased.mat","correlation_distribution_after")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased.mat","correlation_distribution_between")
-save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased.mat","correlation_distribution_horridge")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_before_m_switchbased5.mat","correlation_distribution_before")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_after_m_switchbased5.mat","correlation_distribution_after")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_between_m_switchbased5.mat","correlation_distribution_between")
+save("/scratch/mathiass-takeokalab/01/correlation_distribution_horridge_m_switchbased5.mat","correlation_distribution_horridge")
 
 
 

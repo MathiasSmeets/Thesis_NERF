@@ -74,9 +74,9 @@ cur_foot = load("X:\Mathias\switch_data\foot_position\20221128_switch.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(9) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 
-cur_foot = load("X:\Mathias\switch_data\foot_position\20220413_switch_c.mat");
-cur_foot = cur_foot.ZMaster(:,1);
-foot_positions_y(8) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+% cur_foot = load("X:\Mathias\switch_data\foot_position\20220413_switch_c.mat");
+% cur_foot = cur_foot.ZMaster(:,1);
+% foot_positions_y(8) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 
 
 %% calculations

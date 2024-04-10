@@ -2,7 +2,7 @@
 %Largely based on :
 % Lopes-dos-Santos, V., Ribeiro, S., &#38; Tort, A. B. L. (2013). Detecting cell assemblies in large neuronal populations. Journal of Neuroscience Methods, 220 (2), 149–166. https://doi.org/10.1016/J.JNEUMETH.2013.04.010
 
-function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,ica_vector] = ica_assembly_detection(M,plotter)
+function [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,ica_vector] = ica_assembly_detection_original(M,plotter)
 %given a matrix A containing the zscores of N neurons throughout M time bins,
 % this function will detect neuronal assemblies, and the neurons that are
 %part of the different assemblies.
@@ -84,11 +84,12 @@ elseif predicted_nbr_assemblies ~= 0
 
     %Find the most important neurons
     neurons_idxs = find(p_column >= thr)';
-    %[~,idx] = maxk(vecnorm(M,2,2),predicted_nbr_neurons_evs);
-    %neurons_idxs=sort(idx);
+    [~,idx] = maxk(vecnorm(M,2,2),predicted_nbr_neurons_evs);
+    neurons_idxs=sort(idx);
+    neurons_idxs = sort(neurons_idxs);
     predicted_nbr_neurons =length(neurons_idxs);%= max(size(find(E > lambda_max | E < lambda_min),1),length(neurons_idxs))%Either highest ica 'evs' or deviations from random distribution of pca evs
-    % [~,neurons_idxs] = maxk(p_column,predicted_nbr_neurons);
-    % neurons_idxs = sort(neurons_idxs);
+    %[~,neurons_idxs] = maxk(p_column,predicted_nbr_neurons);
+    
 
 
 

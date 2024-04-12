@@ -29,8 +29,8 @@ cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair8\ZmasterD1P8.m
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(4) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 
-cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair8\ZyokedD1P8.mat");
-cur_foot = cur_foot.ZYoked(:,1);
+cur_foot = load("X:\Mathias\switch_data\foot_position\20220922_switch_c.mat");
+cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_y(4) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 
 % mouse 5
@@ -81,7 +81,7 @@ foot_positions_m(9) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 
 %% calculations
 results_m = load("X:\Mathias\switch_data\correlations\results_m.mat"); results_m = results_m.normalized_averages;
-differences_m = (results_m(:,3)-results_m(:,1))./results_m(:,1);
+differences_m = (results_m(:,3)-results_m(:,1));%./results_m(:,1);
 
 figure
 scatter(differences_m(2:9), foot_positions_m(2:9), 'filled')
@@ -97,4 +97,25 @@ ss_res = sum((foot_positions_m(2:9) - fit_line).^2);
 r_squared = 1 - ss_res/ss_tot;
 
 plot(differences_m(2:9), fit_line)
+ylim([0 1])
+
+% y
+results_y = load("X:\Mathias\switch_data\correlations\results_y.mat"); results_y = results_y.normalized_averages;
+differences_y = (results_y(:,3)-results_y(:,1));%./results_y(:,1);
+
+figure
+scatter(differences_y(4:8), foot_positions_y(4:8), 'filled')
+hold on
+
+% fit line to the data
+p = polyfit(differences_y(4:8), foot_positions_y(4:8),1);
+fit_line = polyval(p,differences_y(4:8));
+
+% r-value
+ss_tot = sum((foot_positions_y(4:8) - mean(foot_positions_y(4:8))).^2);
+ss_res = sum((foot_positions_y(4:8) - fit_line).^2);
+r_squared = 1 - ss_res/ss_tot;
+
+plot(differences_y(4:8), fit_line)
+ylim([0 1])
 

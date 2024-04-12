@@ -1,0 +1,14 @@
+clear;clc;close all;
+
+clusters_m = load("X:\Mathias\switch_data\correlations\template_cluster_m.mat"); clusters_m = clusters_m.template_cluster;
+clusters_y = load("X:\Mathias\switch_data\correlations\template_cluster_y.mat"); clusters_y = clusters_y.template_cluster;
+
+n
+for i = 1:9
+
+end
+
+for i = setdiff(1:9,2)
+
+end
+

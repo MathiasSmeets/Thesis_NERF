@@ -98,7 +98,7 @@ elseif predicted_nbr_assemblies ~= 0
     %assembly so scale to the one that's most likely
     M_scaled = M(neurons_idxs,:);%./max(abs(M(neurons_idxs,:)),[],2);
 
-    if predicted_nbr_neurons > 1
+    %if predicted_nbr_neurons > 1
 
     %K-means clustering for thresholding in every column
     new_idx = zeros(predicted_nbr_neurons,predicted_nbr_assemblies);
@@ -156,13 +156,13 @@ elseif predicted_nbr_assemblies ~= 0
     end
     activity = icacomp;
     
-    else
-        predicted_nbr_assemblies = 0;
-        predicted_nbr_neurons = 0;
-        assemblies = 0;
-        activity= 0;
-        ica_vector = 0;
-    end
+    % else
+    %     predicted_nbr_assemblies = 0;
+    %     predicted_nbr_neurons = 0;
+    %     assemblies = 0;
+    %     activity= 0;
+    %     ica_vector = 0;
+    % end
     
 else
     predicted_nbr_neurons = 0;

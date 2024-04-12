@@ -33,7 +33,7 @@ folder = fileparts(which("calculate_performance_clustering.m"));
 addpath(genpath(folder))
 
 %%
-nb_iterations = 50;
+nb_iterations = 100;
 nb_intervals = 10;
 bins_together = 10;
 interval_length = 7;
@@ -86,7 +86,7 @@ for nb_assemblies = 1:1
         for i = 1:nb_iterations
             cur_cur_nb_bins_together = 15;
             cur_nb_intervals_together = 30;
-            [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, nb_intervals, cur_cur_nb_bins_together, nb_neurons_of_interest, 1, 1);
+            [synthetic_data, neurons_in_assembly, activations, synthetic_data_non_zscore] = generate_synthetic_data(stimulus_data_m, sos_results_m, nb_assemblies, nb_neurons, missing_neurons, cur_nb_intervals_together, cur_cur_nb_bins_together, nb_neurons_of_interest, 1, 1);
 
             % ica
             [ica_predicted_nbr_assemblies, ica_predicted_nbr_neurons, ica_assemblies, ica_activity, ~] = ica_assembly_detection(synthetic_data', 0);
@@ -95,7 +95,70 @@ for nb_assemblies = 1:1
             correct_nb = [correct_nb, nb_neurons];
             detected_nb = [detected_nb, ica_predicted_nbr_neurons];
             detected_nb_original = [detected_nb_original, ica_predicted_nbr_neurons_original];
+
+
         end
     end
 end
 
+figure;hold on
+actual = zeros(10,iterations_nb_neurons-1);
+original = zeros(10,iterations_nb_neurons-1);
+for i = 1:iterations_nb_neurons-1
+    for k = 0:10
+        actual(k+1,i) = numel(find(detected_nb((i-1)*nb_iterations+1:i*nb_iterations)==k));
+        original(k+1,i) = numel(find(detected_nb_original((i-1)*nb_iterations+1:i*nb_iterations)==k));
+    end
+end
+
+%%
+total_matrix = zeros(size(actual,1), size(actual,2)*2);
+for i = 1:size(actual,2)
+    total_matrix(:,1+(i-1)*2) = actual(:,i);
+    total_matrix(:,2+(i-1)*2) = original(:,i);
+end
+
+% Define the positions for the bars
+numBars = size(actual, 2); % Assuming both matrices have the same number of columns
+groupWidth = 0.8; % Width of each group
+barWidth = groupWidth / 2; % Width of each bar
+spaceWidth = groupWidth / 100; % Width of space between groups
+positions = 1:numBars; % Positions for bars
+positions1 = positions - barWidth/2 - spaceWidth;
+positions2 = positions + barWidth/2 + spaceWidth;
+actual_positions = sort([positions1, positions2]);
+
+% Create the grouped stacked bar plot
+figure;
+h=bar(actual_positions, total_matrix, 'stacked');
+hold on;
+
+% Customize the plot
+xlabel('Group');
+ylabel('Value');
+title('Grouped Stacked Bar Plot');
+legend('Matrix1', 'Matrix2');
+
+% get numbers inside bar
+% Compute bar segment centers
+xbarCnt = vertcat(h.XEndPoints); 
+ybarTop = vertcat(h.YEndPoints);
+ybarCnt = ybarTop - total_matrix/2; 
+
+yp = total_matrix / nb_iterations;
+% Create text strings
+txt = compose('%.1f%%',yp);
+
+% Add text 
+th = text(xbarCnt(:), ybarCnt(:), txt(:), ...
+    'HorizontalAlignment', 'center', ....
+    'VerticalAlignment', 'middle', ...
+    'Color', 'w',....
+    'FontSize', 8);
+
+legend({"0 neurons", "1 neurons", "2 neurons", "3 neurons", "4 neurons", "5 neurons", "6 neurons"},"Location","Eastoutside")
+
+h(4).FaceColor = [0.4660 0.6740 0.1880];
+h(5).FaceColor = [0.6350 0.0780 0.1840];
+h(6).FaceColor = [0.4940 0.1840 0.5560];
+h(7).FaceColor = [0 0 0];

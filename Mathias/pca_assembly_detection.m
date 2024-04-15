@@ -37,12 +37,13 @@ if predicted_nbr_assemblies ~= 0
     evs = (D((size(V,1) + 1-predicted_nbr_assemblies:end),(size(V,1) + 1-predicted_nbr_assemblies:end)));
 
 
-    reduced_data = neuron_vectors*neuron_vectors'*A';
-    M = pca(reduced_data');%A contains the importance of each neuron in the independent component (kind of new neuron vector) % "each row is one observed signal"
-    %M = M';
-    M = M(:, 1:predicted_nbr_assemblies);
+    % reduced_data = neuron_vectors*neuron_vectors'*A';
+    % M = pca(reduced_data');%A contains the importance of each neuron in the independent component (kind of new neuron vector) % "each row is one observed signal"
+    % %M = M';
+    % M = M(:, 1:predicted_nbr_assemblies);
+    % M_save = M;
+    M = neuron_vectors;
     M_save = M;
-
 
     %Important components have the same sign since data is all positive and
     %otherwise they would cancel each other out

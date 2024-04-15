@@ -3,6 +3,7 @@ clear;close all;clc;
 
 foot_positions_m = zeros(1,9);
 foot_positions_y = zeros(1,9);
+test_m = foot_positions_m;
 
 threshold = 3;
 
@@ -10,6 +11,9 @@ threshold = 3;
 cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair6\ZmasterD1P6.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(2) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+test_m(2) = mean(cur_foot);
+figure
+plot(cur_foot)
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair6\ZyokedD1P6.mat");
 cur_foot = cur_foot.ZYoked(:,1);
@@ -19,6 +23,9 @@ foot_positions_y(2) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair7\ZmasterD1P7.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(3) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+test_m(3) = mean(cur_foot);
+figure
+plot(cur_foot)
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair7\ZyokedD1P7.mat");
 cur_foot = cur_foot.ZYoked(:,1);
@@ -28,6 +35,9 @@ foot_positions_y(3) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\switch\pair8\ZmasterD1P8.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(4) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+test_m(4) = mean(cur_foot);
+figure
+plot(cur_foot)
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\20220922_switch_c.mat");
 cur_foot = cur_foot.ZMaster(:,1);
@@ -37,6 +47,9 @@ foot_positions_y(4) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\20220923_switch.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(5) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+figure
+plot(cur_foot)
+test_m(5) = mean(cur_foot);
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\20220927_switch_c.mat");
 cur_foot = cur_foot.ZMaster(:,1);
@@ -46,6 +59,9 @@ foot_positions_y(5) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\20221011_switch.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(6) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+figure
+plot(cur_foot)
+test_m(6) = mean(cur_foot);
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\20221006_switch_c.mat");
 cur_foot = cur_foot.ZMaster(:,1);
@@ -55,6 +71,9 @@ foot_positions_y(6) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\20221116_switch.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(7) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+figure
+plot(cur_foot)
+test_m(7) = mean(cur_foot);
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\20221018_switch_c.mat");
 cur_foot = cur_foot.ZMaster(:,1);
@@ -64,6 +83,9 @@ foot_positions_y(7) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\20221124_switch.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(8) = sum(cur_foot>threshold,"all")/numel(cur_foot);
+figure
+plot(cur_foot)
+test_m(8) = mean(cur_foot);
 
 cur_foot = load("X:\Mathias\switch_data\foot_position\20220906_switch_c.mat");
 cur_foot = cur_foot.ZMaster(:,1);
@@ -73,7 +95,9 @@ foot_positions_y(8) = sum(cur_foot>threshold,"all")/numel(cur_foot);
 cur_foot = load("X:\Mathias\switch_data\foot_position\20221128_switch.mat");
 cur_foot = cur_foot.ZMaster(:,1);
 foot_positions_m(9) = sum(cur_foot>threshold,"all")/numel(cur_foot);
-
+figure
+plot(cur_foot)
+test_m(9) = mean(cur_foot);
 % cur_foot = load("X:\Mathias\switch_data\foot_position\20220413_switch_c.mat");
 % cur_foot = cur_foot.ZMaster(:,1);
 % foot_positions_y(8) = sum(cur_foot>threshold,"all")/numel(cur_foot);

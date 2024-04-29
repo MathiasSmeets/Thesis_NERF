@@ -36,6 +36,28 @@ grid('off')
 saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_2.png")
 saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_2.svg")
 
+
+% create cpca figure
+
+delayed_data = zeros(size(after_stimulus_data_m{mouse,interval}(noi,:),1)*11,size(after_stimulus_data_m{mouse,interval}(noi,:),2));
+for i = 1:size(after_stimulus_data_m{mouse,interval}(noi,:))
+    delayed_data((i-1)*11+1,:) = [after_stimulus_data_m{mouse,interval}(noi(i),6:end), zeros(1,5)];
+    delayed_data((i-1)*11+2,:) = [after_stimulus_data_m{mouse,interval}(noi(i),5:end), zeros(1,4)];
+    delayed_data((i-1)*11+3,:) = [after_stimulus_data_m{mouse,interval}(noi(i),4:end), zeros(1,3)];
+    delayed_data((i-1)*11+4,:) = [after_stimulus_data_m{mouse,interval}(noi(i),3:end), zeros(1,2)];
+    delayed_data((i-1)*11+5,:) = [after_stimulus_data_m{mouse,interval}(noi(i),2:end), zeros(1,1)];
+    delayed_data((i-1)*11+6,:) = after_stimulus_data_m{mouse,interval}(noi(i),:);
+    delayed_data((i-1)*11+7,:) = [zeros(1,1),after_stimulus_data_m{mouse,interval}(noi(i),1:end-1)];
+    delayed_data((i-1)*11+8,:) = [zeros(1,2),after_stimulus_data_m{mouse,interval}(noi(i),1:end-2)];
+    delayed_data((i-1)*11+9,:) = [zeros(1,3),after_stimulus_data_m{mouse,interval}(noi(i),1:end-3)];
+    delayed_data((i-1)*11+10,:) = [zeros(1,4),after_stimulus_data_m{mouse,interval}(noi(i),1:end-4)];
+    delayed_data((i-1)*11+11,:) = [zeros(1,5),after_stimulus_data_m{mouse,interval}(noi(i),1:end-5)];
+end
+figure
+imagesc(delayed_data)
+colormap(flipud(gray))
+
+
 %% image 3: take multiple bins together 
 
 new_data = zeros(size(after_stimulus_data_m{mouse,interval}(noi,:),1),4);
@@ -61,6 +83,8 @@ for i = 1:size(new_data,1)
             new_data(i,counter) = sum(after_stimulus_data_m{mouse,j}(noi(i),11+(k-1)*15:10+k*15));
             counter = counter + 1;
         end
+        figure
+        heatmap(new_data())
     end
     counter = 1;
 end
@@ -103,7 +127,9 @@ saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_
 %% image 5b: activity
 
 load("X:\Mathias\switch_data\clusters\activity_horridge_m.mat")
+load("X:\Mathias\switch_data\clusters\data_horridge_m.mat")
 activity = total_activity{mouse,index}(1:intervals_to_plot);
+data = total_data{mouse,index}(:,1:intervals_to_plot);
 figure
 plot(abs(activity),'LineWidth',2)
 ylabel("Activity")
@@ -115,6 +141,9 @@ scatter(locs, pks, "*", "LineWidth",2)
 %saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.png")
 %saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.svg")
 
+%% get assembly vector
+assembly_vector = transpose(activity)/data;
+heatmap(abs(assembly_vector)','CellLabelColor','none')
 %% image 6
 cur_template = zeros(numel(assembly),15);
 for jj = 1:length(locs)
@@ -126,6 +155,10 @@ for jj = 1:length(locs)
     %heatmap(cur_assembly_data,'CellLabelColor','none');grid('off')
     cur_template(:,1:size(cur_assembly_data,2)) = cur_template(:,1:size(cur_assembly_data,2)) + double(cur_assembly_data);
     counter = counter + 1;
+
+    figure
+    imagesc(cur_assembly_data)
+    colormap(flipud(gray))
 end
 
 figure

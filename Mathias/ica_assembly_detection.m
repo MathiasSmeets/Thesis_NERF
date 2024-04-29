@@ -50,12 +50,19 @@ elseif predicted_nbr_assemblies ~= 0
 
     reduced_data = neuron_vectors*neuron_vectors'*A';
     [~, M, ~] = fastica(reduced_data,'pcaE',neuron_vectors,'pcaD',evs,'verbose','off');%A contains the importance of each neuron in the independent component (kind of new neuron vector) % "each row is one observed signal"
+    counter = 0;
+    while size(M,2) ~= predicted_nbr_assemblies
+        [~, M, ~] = fastica(reduced_data,'pcaE',neuron_vectors,'pcaD',evs,'verbose','off');
+        if counter > 100
+            error("stuck here")
+        end
+    end
     M_save = M;
 
 
     %Important components have the same sign since data is all positive and
     %otherwise they would cancel each other out
-    for i = 1:predicted_nbr_assemblies
+    for i = 1:min(size(M,2),predicted_nbr_assemblies)
         [~, idxs] = maxk(abs(M(:,i)),5);%values of 5 max's to check if these are positive or negative
         if sum(M(idxs,i))<0
             M(M(:,i)>0,i)=0;

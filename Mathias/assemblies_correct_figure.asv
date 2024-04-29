@@ -1,0 +1,99 @@
+clear;clc;close all;
+load("X:\Mathias\results_table_hyperparameters.mat")
+
+precision_pca = zeros(25,4);
+precision_ica = zeros(25,4);
+precision_nmf = zeros(25,4);
+precision_cpd = zeros(25,4);
+precision_cpca = zeros(25,4);
+precision_cica = zeros(25,4);
+recall_pca = zeros(25,4);
+recall_ica = zeros(25,4);
+recall_nmf = zeros(25,4);
+recall_cpd = zeros(25,4);
+recall_cpca = zeros(25,4);
+recall_cica = zeros(25,4);
+counter = 1;
+
+for cur_nb_bins_together = [1,5,10,15,20]
+    for cur_nb_intervals_together = [5,15,30,45,60]
+        %% TP
+        TP_ica_nb_2 = sum(results_table.TP_ICA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_ica_nb_3 = sum(results_table.TP_ICA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_ica_nb_4 = sum(results_table.TP_ICA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_ica_nb_5 = sum(results_table.TP_ICA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        TP_cpd_nb_2 = sum(results_table.TP_CPD(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_cpd_nb_3 = sum(results_table.TP_CPD(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_cpd_nb_4 = sum(results_table.TP_CPD(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_cpd_nb_5 = sum(results_table.TP_CPD(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        TP_nmf_nb_2 = sum(results_table.TP_NMF(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_nmf_nb_3 = sum(results_table.TP_NMF(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_nmf_nb_4 = sum(results_table.TP_NMF(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_nmf_nb_5 = sum(results_table.TP_NMF(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        TP_pca_nb_2 = sum(results_table.TP_PCA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_pca_nb_3 = sum(results_table.TP_PCA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_pca_nb_4 = sum(results_table.TP_PCA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        TP_pca_nb_5 = sum(results_table.TP_PCA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        TP_cpca_nb_2 = sum(results_table.TP_CPCA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together));
+        TP_cpca_nb_3 = sum(results_table.TP_CPCA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together));
+        TP_cpca_nb_4 = sum(results_table.TP_CPCA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together));
+        TP_cpca_nb_5 = sum(results_table.TP_CPCA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together));
+
+        TP_cica_nb_2 = sum(results_table.TP_CICA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together));
+        TP_cica_nb_3 = sum(results_table.TP_CICA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together));
+        TP_cica_nb_4 = sum(results_table.TP_CICA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together));
+        TP_cica_nb_5 = sum(results_table.TP_CICA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together));
+
+        %% FP
+        FP_ica_nb_2 = sum(results_table.FP_ICA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_ica_nb_3 = sum(results_table.FP_ICA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_ica_nb_4 = sum(results_table.FP_ICA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_ica_nb_5 = sum(results_table.FP_ICA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        FP_cpd_nb_2 = sum(results_table.FP_CPD(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_cpd_nb_3 = sum(results_table.FP_CPD(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_cpd_nb_4 = sum(results_table.FP_CPD(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_cpd_nb_5 = sum(results_table.FP_CPD(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        FP_nmf_nb_2 = sum(results_table.FP_NMF(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_nmf_nb_3 = sum(results_table.FP_NMF(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_nmf_nb_4 = sum(results_table.FP_NMF(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_nmf_nb_5 = sum(results_table.FP_NMF(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        FP_pca_nb_2 = sum(results_table.FP_PCA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_pca_nb_3 = sum(results_table.FP_PCA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_pca_nb_4 = sum(results_table.FP_PCA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+        FP_pca_nb_5 = sum(results_table.FP_PCA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together & results_table.NB_Bins == cur_nb_bins_together));
+
+        FP_cpca_nb_2 = sum(results_table.FP_CPCA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together));
+        FP_cpca_nb_3 = sum(results_table.FP_CPCA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together));
+        FP_cpca_nb_4 = sum(results_table.FP_CPCA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together));
+        FP_cpca_nb_5 = sum(results_table.FP_CPCA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together));
+
+        FP_cica_nb_2 = sum(results_table.FP_CICA(results_table.NB_Neurons == 2 & results_table.NB_Intervals == cur_nb_intervals_together));
+        FP_cica_nb_3 = sum(results_table.FP_CICA(results_table.NB_Neurons == 3 & results_table.NB_Intervals == cur_nb_intervals_together));
+        FP_cica_nb_4 = sum(results_table.FP_CICA(results_table.NB_Neurons == 4 & results_table.NB_Intervals == cur_nb_intervals_together));
+        FP_cica_nb_5 = sum(results_table.FP_CICA(results_table.NB_Neurons == 5 & results_table.NB_Intervals == cur_nb_intervals_together));
+
+
+        pca_detected = TP_pca_nb_2 + TP_pca_nb_3 + TP_pca_nb_4 + TP_pca_nb_5;
+        ica_detected = TP_ica_nb_2 + TP_ica_nb_3 + TP_ica_nb_4 + TP_ica_nb_5;
+        nmf_detected = TP_nmf_nb_2 + TP_nmf_nb_3 + TP_nmf_nb_4 + TP_nmf_nb_5;
+        cpd_detected = TP_cpd_nb_2 + TP_cpd_nb_3 + TP_cpd_nb_4 + TP_cpd_nb_5;
+        cpca_detected = TP_cpca_nb_2 + TP_cpca_nb_3 + TP_cpca_nb_4 + TP_cpca_nb_5;
+        cica_detected = TP_cica_nb_2 + TP_cica_nb_3 + TP_cica_nb_4 + TP_cica_nb_5;
+
+        pca_detected = TP_pca_nb_2 + TP_pca_nb_3 + TP_pca_nb_4 + TP_pca_nb_5 + FP_pca_nb_2 + FP_pca_nb_3 + TP_pca_nb_4 + TP_pca_nb_5;
+        ica_detected = TP_ica_nb_2 + TP_ica_nb_3 + TP_ica_nb_4 + TP_ica_nb_5 + FP_ica_nb_2 + FP_ica_nb_3 + TP_ica_nb_4 + TP_ica_nb_5;
+        nmf_detected = TP_nmf_nb_2 + TP_nmf_nb_3 + TP_nmf_nb_4 + TP_nmf_nb_5 + FP_nmf_nb_2 + FP_nmf_nb_3 + TP_nmf_nb_4 + TP_nmf_nb_5;
+        cpd_detected = TP_cpd_nb_2 + TP_cpd_nb_3 + TP_cpd_nb_4 + TP_cpd_nb_5 + FP_cpd_nb_2 + FP_cpd_nb_3 + TP_cpd_nb_4 + TP_cpd_nb_5;
+        cpca_detected = TP_cpca_nb_2 + TP_cpca_nb_3 + TP_cpca_nb_4 + TP_cpca_nb_5 + FP_cpca_nb_2 + P_cpca_nb_3 + TP_cpca_nb_4 + TP_cpca_nb_5;
+        cica_detected = TP_cica_nb_2 + TP_cica_nb_3 + TP_cica_nb_4 + TP_cica_nb_5 + FP_cica_nb_2 + TP_cica_nb_3 + TP_cica_nb_4 + TP_cica_nb_5;
+
+    end
+end
+

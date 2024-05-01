@@ -1,4 +1,4 @@
-clear;clc;close all;
+%clear;clc;close all;
 
 clusters_m = load("X:\Mathias\switch_data\correlations\template_cluster_m.mat"); clusters_m = clusters_m.template_cluster;
 clusters_y = load("X:\Mathias\switch_data\correlations\template_cluster_y.mat"); clusters_y = clusters_y.template_cluster;
@@ -20,9 +20,13 @@ for i = 1:9
     cur_others = numel(intersect(cur_neurons,other_m));
     %cur_inhibited = numel(intersect(cur_neurons,inhibited_m));
 
+    disp(i+":")
     disp("secondary: "+ cur_secondary)
+    if cur_secondary ~= 0
+        disp("# secondary neurons: " + (intersect(cur_neurons,secondary_m)-neuron_counter))
+    end
     disp("others: " + cur_others)
-
+    disp("___________")
     neuron_counter = neuron_counter + size(after_stimulus_data_m{i,1},1);
 end
 

@@ -3,7 +3,7 @@ clear;close all;clc;
 % missing:
 % learner: switch 1
 % control: switch 1 & 9
-% np2 all recordings
+% np2 no switch so not included here
 
 learner_indices = 2:9;
 control_indices = 3:8;

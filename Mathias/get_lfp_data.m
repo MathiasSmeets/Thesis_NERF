@@ -23,7 +23,7 @@ possiblePaths=['/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
 rest_start_times = [3665,3659,3655,3709,3921,3940,3040,3075,3207];
 rest_end_times = [8700,7270,7270,7382,7924,7563,6902,7212,7213];
 
-for i = setdiff(1:size(possiblePaths,1),[2,9])
+for i = setdiff(1:size(possiblePaths,1),[2,8,9])
     disp(i)
     myKsDir=possiblePaths(i, :);
 
@@ -36,8 +36,10 @@ for i = setdiff(1:size(possiblePaths,1),[2,9])
     %% Plot data to inspect
 
     Fs = 2500;
-    sampStarts = Fs*rest_start_times(i);
-    sampEnds = Fs*rest_end_times(i);
+    %sampStarts = Fs*rest_start_times(i);
+    %sampEnds = Fs*rest_end_times(i);
+    sampStarts = 1;
+    sampEnds = 10*60*Fs;
 
     d = dir(fullfile(myKsDir, '*.lf.bin'));
     nSamps = d.bytes/2/nChansInFile;
@@ -45,7 +47,7 @@ for i = setdiff(1:size(possiblePaths,1),[2,9])
     mmf = memmapfile(lfpFilename, 'Format', {'int16', [nChansInFile nSamps], 'x'});
 
     data = double(mmf.Data(1).x(:, (sampStarts:sampEnds)));
-    save("/scratch/mathiass-takeokalab/01/LF_"+i+"m.mat", "data", "-v7.3");
+    save("/scratch/mathiass-takeokalab/01/LF_baseline_"+i+"m.mat", "data", "-v7.3");
     clearvars data
     % filtered_data = zeros(length(freqBands),size(data,2),size(data,1));
     % for j = 1:length(freqBands)

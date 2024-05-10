@@ -111,7 +111,12 @@ for i = 1:iterations_nb_neurons-1
     end
 end
 
-%%
+figure
+boxplot([detected_nb_original(1:100)', detected_nb(1:100)',detected_nb_original(101:200)', detected_nb(101:200)',detected_nb_original(201:300)', detected_nb(201:300)',detected_nb_original(301:400)', detected_nb(301:400)'])
+
+figure
+boxplot([detected_nb_original(1:100)', detected_nb(1:100)',detected_nb_original(101:200)', detected_nb(101:200)',detected_nb_original(201:300)', detected_nb(201:300)',detected_nb_original(301:400)', detected_nb(301:400)'])
+%
 total_matrix = zeros(size(actual,1), size(actual,2)*2);
 for i = 1:size(actual,2)
     total_matrix(:,1+(i-1)*2) = actual(:,i);

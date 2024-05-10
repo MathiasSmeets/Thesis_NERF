@@ -1,11 +1,11 @@
-clear;close all;clc;
+%clear;close all;clc;
 
 % missing:
 % learner: switch 1
 % control: switch 1 & 9
 % np2 no switch so not included here
 
-learner_indices = 2:9;
+learner_indices = 1:9;
 control_indices = 3:8;
 
 trainer_m = zeros(1,9);
@@ -21,7 +21,9 @@ trainer_1m = load("X:\Mathias\switch_data\foot_positions\training\training_maste
 trainer_1m = trainer_1m.ZMaster(:,1);
 trainer_m(1) = sum(trainer_1m>threshold,"all")/numel(trainer_1m);
 
-%switch_1m = load("")
+switch_1m = load("X:\Mathias\switch_data\foot_positions\switch\switch_20220725.mat");
+switch_1m = switch_1m.FootPos(:,1);
+switch_m(1) = sum(switch_1m>threshold,"all")/numel(switch_1m);
 
 %% 20220819
 trainer_2m = load("X:\Mathias\switch_data\foot_positions\training\training_master\pair1\ZmasterD1P1.mat");
@@ -186,58 +188,81 @@ results_m = load("X:\Mathias\switch_data\correlations\results_m.mat"); results_m
 differences_m = (results_m(:,3)-results_m(:,1));%./results_m(:,1);
 
 figure
-scatter(differences_m(learner_indices), switch_m(learner_indices)-trainer_m(learner_indices), 'filled')
+scatter(switch_m(learner_indices)-trainer_m(learner_indices), differences_m(learner_indices), 'filled')
 hold on
 
 % fit line to the data
-p = polyfit(differences_m(learner_indices), switch_m(learner_indices)-trainer_m(learner_indices),1);
-fit_line = polyval(p,differences_m(learner_indices));
+p = polyfit(switch_m(learner_indices)-trainer_m(learner_indices), differences_m(learner_indices), 1);
+fit_line = polyval(p,switch_m(learner_indices)-trainer_m(learner_indices));
 
 % r-value
 ss_tot = sum((switch_m(learner_indices)-trainer_m(learner_indices) - mean(switch_m(learner_indices)-trainer_m(learner_indices))).^2);
 ss_res = sum((switch_m(learner_indices)-trainer_m(learner_indices) - fit_line').^2);
 r_squared = 1 - ss_res/ss_tot;
 
-plot(differences_m(learner_indices), fit_line)
+%plot(switch_m(learner_indices)-trainer_m(learner_indices), fit_line)
+rho = corr((switch_m(learner_indices)-trainer_m(learner_indices))', differences_m(learner_indices), 'Type', 'Spearman');
+r = rho; % Correlation coefficient
+n = 9; % Sample size
+% Fisher transformation
+z = 0.5 * log((1 + r) / (1 - r));
+% Standard error of Fisher z-transformed correlation coefficient
+SE_z = 1 / sqrt(n - 3);
+% Calculate z-value
+z_observed = z / SE_z;
+% Calculate p-value (two-tailed)
+p_value_cor = 2 * (1 - normcdf(abs(z_observed)));
+r = 0.5714; % Correlation coefficient
+n = 8; % Sample size
+% Fisher transformation
+z = 0.5 * log((1 + r) / (1 - r));
+% Standard error of Fisher z-transformed correlation coefficient
+SE_z = 1 / sqrt(n - 3);
+% Calculate z-value
+z_observed = z / SE_z;
+% Calculate p-value (two-tailed)
+p_value_cor = 2 * (1 - normcdf(abs(z_observed)));
 
-correlation_coefficient_m = corrcoef(transpose(switch_m(learner_indices)-trainer_m(learner_indices)),differences_m(learner_indices));
-disp("Correlation Learner: "+correlation_coefficient_m(1,2))
-% test for significance
-n = numel(learner_indices);
-t_statistic = correlation_coefficient_m(1,2) * sqrt((n - 2) / (1 - correlation_coefficient_m(1,2)^2));
-alpha = 0.05;
-critical_t = tinv(1 - alpha/2, n - 2);
-if abs(t_statistic) > critical_t
-    disp('The correlation coefficient is statistically significant.');
-else
-    disp('The correlation coefficient is not statistically significant.');
-end
+disp("Correlation Learner: " + rho)
+disp("P-value: "+p_value_cor)
 
-% y
-results_y = load("X:\Mathias\switch_data\correlations\results_y.mat"); results_y = results_y.normalized_averages;
-differences_y = (results_y(:,3)-results_y(:,1));%./results_y(:,1);
-
-figure
-scatter(differences_y(control_indices), switch_c(control_indices)-trainer_c(control_indices), 'filled')
-hold on
-
-% fit line to the data
-p = polyfit(differences_y(control_indices), switch_c(control_indices)-trainer_c(control_indices),1);
-fit_line = polyval(p,differences_y(control_indices));
-
-% r-value
-ss_tot = sum((switch_c(control_indices)-trainer_c(control_indices) - mean(switch_c(control_indices)-trainer_c(control_indices))).^2);
-ss_res = sum((switch_c(control_indices)-trainer_c(control_indices) - fit_line').^2);
-r_squared = 1 - ss_res/ss_tot;
-
-plot(differences_y(control_indices), fit_line)
-
-correlation_coefficient_c = corrcoef(transpose(switch_m(control_indices)-trainer_m(control_indices)),differences_y(control_indices));
-disp("Correlation Control: "+correlation_coefficient_c(1,2))
-
-% test for significance
-n = numel(control_indices);
-t_statistic = correlation_coefficient_m(1,2) * sqrt((n - 2) / (1 - correlation_coefficient_m(1,2)^2));
-p_value = 2 * (1 - tcdf(abs(t_statistic), n - 2));
-
-disp("P-value for correlation: " + p_value)
+% disp("Correlation Learner: "+correlation_coefficient_m(1,2))
+% % test for significance
+% n = numel(learner_indices);
+% t_statistic = correlation_coefficient_m(1,2) * sqrt((n - 2) / (1 - correlation_coefficient_m(1,2)^2));
+% alpha = 0.05;
+% critical_t = tinv(1 - alpha/2, n - 2);
+% if abs(t_statistic) > critical_t
+%     disp('The correlation coefficient is statistically significant.');
+% else
+%     disp('The correlation coefficient is not statistically significant.');
+% end
+% 
+% % y
+% results_y = load("X:\Mathias\switch_data\correlations\results_y.mat"); results_y = results_y.normalized_averages;
+% differences_y = (results_y(:,3)-results_y(:,1));%./results_y(:,1);
+% 
+% figure
+% scatter(differences_y(control_indices), switch_c(control_indices)-trainer_c(control_indices), 'filled')
+% hold on
+% 
+% % fit line to the data
+% p = polyfit(differences_y(control_indices), switch_c(control_indices)-trainer_c(control_indices),1);
+% fit_line = polyval(p,differences_y(control_indices));
+% 
+% % r-value
+% ss_tot = sum((switch_c(control_indices)-trainer_c(control_indices) - mean(switch_c(control_indices)-trainer_c(control_indices))).^2);
+% ss_res = sum((switch_c(control_indices)-trainer_c(control_indices) - fit_line').^2);
+% r_squared = 1 - ss_res/ss_tot;
+% 
+% plot(differences_y(control_indices), fit_line)
+% 
+% correlation_coefficient_c = corrcoef(transpose(switch_m(control_indices)-trainer_m(control_indices)),differences_y(control_indices));
+% disp("Correlation Control: "+correlation_coefficient_c(1,2))
+% 
+% % test for significance
+% n = numel(control_indices);
+% t_statistic = correlation_coefficient_m(1,2) * sqrt((n - 2) / (1 - correlation_coefficient_m(1,2)^2));
+% p_value = 2 * (1 - tcdf(abs(t_statistic), n - 2));
+% 
+% disp("P-value for correlation: " + p_value)

@@ -33,5 +33,5 @@ end
 
 secondary_y = cell2mat(output_y.(1){1,1});
 secondary_y = unique(secondary_y(:,1));
-othery_y = cell2mat(output_y.(2){1,1});
+other_y = cell2mat(output_y.(2){1,1});
 other_y = unique(other_y(:,1));

@@ -12,7 +12,7 @@ for i = setdiff(1:9,[2,8,9])
         cur_power = sum(cur_power,2);
         cur_average = mean(cur_power);
         cur_mad = mad(cur_power);
-        
+        disp(j)
         if 5*cur_mad + cur_average < (sum(data(j+1,:).^2))
             ripple(j+1) = 1;
             disp(j)

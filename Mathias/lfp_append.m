@@ -8,5 +8,5 @@ for i = setdiff(1:9,[2,8,9])
         load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_filtered_rec"+i+"_part"+j+"m.mat")
         data = [data;cur_filtered_data];
     end
-    save("/scratch/mathiass-takeokalab/01/LF_filtered_total"+i+"m.mat", "data", "-v7.3");
+    save("/scratch/mathiass-takeokalab/01/ripple_"+i, "data", "-v7.3");
 end

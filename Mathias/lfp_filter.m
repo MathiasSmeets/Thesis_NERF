@@ -8,6 +8,7 @@ for i = setdiff(1:9,[2,8,9])
     % do it in multiple parts
     filter = designfilt('bandpassiir','FilterOrder',20,'HalfPowerFrequency1',135,'HalfPowerFrequency2',255,'SampleRate',2500,'DesignMethod','butter');
     for j = 1:5
+        disp(i+": "+j)
         load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_"+i+"m.mat")
         size_data = size(data,2);
         cur_data = data(:,1+(j-1)*size_data:j*size_data);

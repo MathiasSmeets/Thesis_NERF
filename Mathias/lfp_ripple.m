@@ -15,6 +15,7 @@ for i = setdiff(1:9,[2,8,9])
         
         if 5*cur_mad + cur_average < (sum(data(j+1,:).^2))
             ripple(j+1) = 1;
+            disp(j)
         end
     end
     save("/scratch/mathiass-takeokalab/01/ripple_"+i+".mat", "ripple", "-v7.3");

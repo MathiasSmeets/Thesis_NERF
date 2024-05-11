@@ -5,8 +5,8 @@ window = 5*Fs;
 for i = setdiff(1:9,[2,8,9])
     disp(i)
     load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_filtered_total"+i+"m.mat")
-    ripple = zeros(size(data,2),1);
-    for j = 5*Fs:size(data,1)-1
+    ripple = zeros(size(data,1),1);
+    for j = 5*Fs+1:size(data,1)-1
         cur_data = data(j-window:j,:);
         cur_power = cur_data.^2;
         cur_power = sum(cur_power,2);
@@ -17,5 +17,5 @@ for i = setdiff(1:9,[2,8,9])
             ripple(j+1) = 1;
         end
     end
-    save()
+    save("/scratch/mathiass-takeokalab/01/ripple_"+i+".mat", "ripple", "-v7.3");
 end

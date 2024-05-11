@@ -6,7 +6,7 @@ frequencies = [135,255];
 for i = setdiff(1:9,[2,8,9])
     disp(i)
     % do it in multiple parts
-    filter = designfilt('bandpassiir','FilterOrder',20,'HalfPowerFrequency1',135,'HalfPowerFrequency2',255,'SampleRate',2500,'DesignMethod','butter');
+    filter = designfilt('bandpassiir','FilterOrder',20,'PassbandFrequency1',135,'PassbandFrequency2',255,'StopbandAttenuation1',60,'PassbandRipple',1,'StopbandAttenuation2',60,'SampleRate',2500,'DesignMethod','ellip');
     for j = 1:5
         disp(i+": "+j)
         load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_"+i+"m.mat")

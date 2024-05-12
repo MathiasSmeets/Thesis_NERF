@@ -1,6 +1,6 @@
 clear;clc;close all;
 Fs = 2500;
-window = 5*Fs;
+window = 5*Fs/25;
 
 for i = setdiff(1:9,[2,8,9])
     disp(i)

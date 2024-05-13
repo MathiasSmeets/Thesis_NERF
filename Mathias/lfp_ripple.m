@@ -5,7 +5,12 @@ window = 5*Fs/25;
 for i = setdiff(1:9,[2,8,9])
     disp(i)
     load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_filtered_total"+i+"m.mat")
-    data = downsample(data,25);
+    data = [];
+    for j = 1:5
+        disp("prep: " + j)
+        load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_filtered_rec"+i+"_part"+j+"m_ripple2.mat")
+        data = [data;cur_filtered_data];
+    end
     ripple = zeros(size(data,1),1);
     excluded = [];
     for j = 5*Fs/25+1:size(data,1)-1
@@ -21,5 +26,5 @@ for i = setdiff(1:9,[2,8,9])
             excluded = [excluded, j+1];
         end
     end
-    save("/scratch/mathiass-takeokalab/01/ripple_"+i+".mat", "ripple", "-v7.3");
+    save("/scratch/mathiass-takeokalab/01/ripple2_"+i+".mat", "ripple", "-v7.3");
 end

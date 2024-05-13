@@ -12,21 +12,21 @@ end
 path_to_correlations = "takeokalabwip2023/Mathias/switch_data/correlations";
 path_to_stimulus_data = "takeokalabwip2023/Mathias/switch_data/data_after_stimulus";
 
-raw_before = load(fullfile(volume_base2, path_to_correlations, "raw_before_np2.mat")); raw_before = raw_before.cur_correlation_before;
-raw_between = load(fullfile(volume_base2, path_to_correlations, "raw_between_np2.mat")); raw_between = raw_between.cur_correlation_between;
-raw_after = load(fullfile(volume_base2, path_to_correlations, "raw_after_np2.mat")); raw_after = raw_after.cur_correlation_after;
-raw_horridge = load(fullfile(volume_base2, path_to_correlations, "raw_horridge_np2.mat")); raw_horridge = raw_horridge.cur_correlation_horridge;
+raw_before = load(fullfile(volume_base2, path_to_correlations, "raw_before_m.mat")); raw_before = raw_before.cur_correlation_before;
+raw_between = load(fullfile(volume_base2, path_to_correlations, "raw_between_m.mat")); raw_between = raw_between.cur_correlation_between;
+raw_after = load(fullfile(volume_base2, path_to_correlations, "raw_after_m.mat")); raw_after = raw_after.cur_correlation_after;
+raw_horridge = load(fullfile(volume_base2, path_to_correlations, "raw_horridge_m.mat")); raw_horridge = raw_horridge.cur_correlation_horridge;
 
-correlation_distribution_before = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_before_np2.mat")); correlation_distribution_before = correlation_distribution_before.correlation_distribution_before;
-correlation_distribution_between = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_between_np2.mat")); correlation_distribution_between = correlation_distribution_between.correlation_distribution_between;
-correlation_distribution_after = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_after_np2.mat")); correlation_distribution_after = correlation_distribution_after.correlation_distribution_after;
-correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_horridge_np2.mat")); correlation_distribution_horridge = correlation_distribution_horridge.correlation_distribution_horridge;
+correlation_distribution_before = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_before_m.mat")); correlation_distribution_before = correlation_distribution_before.correlation_distribution_before;
+correlation_distribution_between = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_between_m.mat")); correlation_distribution_between = correlation_distribution_between.correlation_distribution_between;
+correlation_distribution_after = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_after_m.mat")); correlation_distribution_after = correlation_distribution_after.correlation_distribution_after;
+correlation_distribution_horridge = load(fullfile(volume_base2, path_to_correlations, "correlation_distribution_horridge_m.mat")); correlation_distribution_horridge = correlation_distribution_horridge.correlation_distribution_horridge;
 
 %last_interval_data = load(fullfile(volume_base2, path_to_stimulus_data, "last_interval_data.mat")); last_interval_data = last_interval_data.last_interval_data;
 
-%mouse_to_exclude = 0; % m
+mouse_to_exclude = 0; % m
 %mouse_to_exclude = 2; % y
-mouse_to_exclude = 4:9; % np2
+%mouse_to_exclude = 4:9; % np2
 
 stimulations = cell(1,9);
 cur_stim = load("X:\Mathias\switch_data\tables\frM_stim_switched_1.mat");stimulations{1} = cur_stim.frM_stim.horridge;
@@ -106,6 +106,8 @@ for i = setdiff(1:size(raw_after,1),mouse_to_exclude)
     numbers_above_threshold(i,2) = sum(thresholded_between{i}>0)/size(thresholded_between{i},2);
     numbers_above_threshold(i,3) = sum(thresholded_after{i}>0)/size(thresholded_after{i},2);
     numbers_above_threshold(i,4) = sum(thresholded_horridge{i}>0)/size(thresholded_horridge{i},2);
+
+    
     % figure
     % subplot(1,2,1)
     % lines = 1000*(stimulations{i}{1}-stimulations{i}{1}(1));
@@ -173,7 +175,7 @@ line([ones(size(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude
 p_value = signrank(normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),1),normalized_averages(setdiff(1:size(raw_after,1),mouse_to_exclude),3));
 %disp("p-value baseline-rest: "+p_value)
 
-save(fullfile(volume_base2, path_to_correlations, "results_np2.mat"), "normalized_averages")
+save(fullfile(volume_base2, path_to_correlations, "results_m.mat"), "normalized_averages")
 
 
 %% results without previous

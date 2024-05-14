@@ -29,7 +29,7 @@ for i = setdiff(1:9,[2,8,9])
     for j = 1:numel(replay)
         % j is in ms
         % translate this to the sampling of LPF (2.5kHz)
-        ripple_index = ceil(j/2.5);
+        ripple_index = ceil(j*1000 / 2500);
         if replay(j) && ripple(ripple_index)
             replay_ripple{i} = replay_ripple{i} + 1;
         elseif replay(j) && ~ripple(ripple_index)

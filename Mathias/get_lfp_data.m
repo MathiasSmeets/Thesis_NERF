@@ -8,7 +8,7 @@ freqBands = {[0.5 4], [4 8], [8 12], [12 35], [35 200]};
 nChansInFile = 385;  % neuropixels phase3a, from spikeGLX
 
 % - - - - - - - To study a unique recording
-possiblePaths=['/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220725/20220725_long_long_recording_g0';
+possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220725/20220725_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220819/20220819_long_long_recording2_g0';%Recording seems to be corrupted or so, only 606 seconds long
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220831/20220831_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220921/20220921_long_long_recording_g0';
@@ -17,7 +17,7 @@ possiblePaths=['/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221116/20221116_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221124/20221124_long_long_recording2_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221128/20221128_long_long_recording_g1';
-        ];
+        };
  
 
 rest_start_times = [3665,3659,3655,3709,3921,3940,3040,3075,3207];
@@ -25,7 +25,7 @@ rest_end_times = [8700,7270,7270,7382,7924,7563,6902,7212,7213];
 
 for i = [2,8,9]
     disp(i)
-    myKsDir=possiblePaths(i, :);
+    myKsDir=possiblePaths{i};
 
     
     %% 

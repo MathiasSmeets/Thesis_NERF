@@ -3,7 +3,7 @@ Fs = 2500;
 frequencies = [135,255];
 
 
-for i = setdiff(1:9,[2,8,9])
+for i = [2,8,9]%setdiff(1:9,[2,8,9])
     disp(i)
     % do it in multiple parts
     %filter = designfilt('bandpassiir','FilterOrder',20,'PassbandFrequency1',11,'PassbandFrequency2',16,'StopbandAttenuation1',60,'PassbandRipple',1,'StopbandAttenuation2',60,'SampleRate',2500,'DesignMethod','ellip');

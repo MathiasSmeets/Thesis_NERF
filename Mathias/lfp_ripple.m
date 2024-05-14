@@ -2,9 +2,9 @@ clear;clc;close all;
 Fs = 2500;
 window = 5*Fs/25;
 
-for i = setdiff(1:9,[2,8,9])
+for i = setdiff(4:9,[2,8,9])
     disp(i)
-    load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_filtered_total"+i+"m.mat")
+    %load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_filtered_total"+i+"m.mat")
     data = [];
     for j = 1:5
         disp("prep: " + j)

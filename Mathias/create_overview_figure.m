@@ -8,8 +8,8 @@ intervals_to_plot = 80;
 
 %% image 1: example
 
-load("X:\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
-load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
 
 
 figure
@@ -21,8 +21,8 @@ grid('off')
 
 %% image 2: neurons of interest
 
-load("X:\Mathias\switch_data\neurons_of_interest\neurons_of_interest_horridge_m.mat")
-load("X:\Mathias\switch_data\neurons_of_interest\inhibited_horridge_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\neurons_of_interest\neurons_of_interest_horridge_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\neurons_of_interest\inhibited_horridge_m.mat")
 %neuron_counter = size(after_stimulus_data_m{1,1},1)+size(after_stimulus_data_m{2,1},1)+size(after_stimulus_data_m{3,1},1)+1;
 neuron_counter = 1;
 for i = 1:mouse-1
@@ -39,23 +39,23 @@ grid('off')
 
 % create cpca figure
 
-delayed_data = zeros(size(after_stimulus_data_m{mouse,interval}(noi,:),1)*11,size(after_stimulus_data_m{mouse,interval}(noi,:),2));
-for i = 1:size(after_stimulus_data_m{mouse,interval}(noi,:))
-    delayed_data((i-1)*11+1,:) = [after_stimulus_data_m{mouse,interval}(noi(i),6:end), zeros(1,5)];
-    delayed_data((i-1)*11+2,:) = [after_stimulus_data_m{mouse,interval}(noi(i),5:end), zeros(1,4)];
-    delayed_data((i-1)*11+3,:) = [after_stimulus_data_m{mouse,interval}(noi(i),4:end), zeros(1,3)];
-    delayed_data((i-1)*11+4,:) = [after_stimulus_data_m{mouse,interval}(noi(i),3:end), zeros(1,2)];
-    delayed_data((i-1)*11+5,:) = [after_stimulus_data_m{mouse,interval}(noi(i),2:end), zeros(1,1)];
-    delayed_data((i-1)*11+6,:) = after_stimulus_data_m{mouse,interval}(noi(i),:);
-    delayed_data((i-1)*11+7,:) = [zeros(1,1),after_stimulus_data_m{mouse,interval}(noi(i),1:end-1)];
-    delayed_data((i-1)*11+8,:) = [zeros(1,2),after_stimulus_data_m{mouse,interval}(noi(i),1:end-2)];
-    delayed_data((i-1)*11+9,:) = [zeros(1,3),after_stimulus_data_m{mouse,interval}(noi(i),1:end-3)];
-    delayed_data((i-1)*11+10,:) = [zeros(1,4),after_stimulus_data_m{mouse,interval}(noi(i),1:end-4)];
-    delayed_data((i-1)*11+11,:) = [zeros(1,5),after_stimulus_data_m{mouse,interval}(noi(i),1:end-5)];
-end
-figure
-imagesc(delayed_data)
-colormap(flipud(gray))
+% delayed_data = zeros(size(after_stimulus_data_m{mouse,interval}(noi,:),1)*11,size(after_stimulus_data_m{mouse,interval}(noi,:),2));
+% for i = 1:size(after_stimulus_data_m{mouse,interval}(noi,:))
+%     delayed_data((i-1)*11+1,:) = [after_stimulus_data_m{mouse,interval}(noi(i),6:end), zeros(1,5)];
+%     delayed_data((i-1)*11+2,:) = [after_stimulus_data_m{mouse,interval}(noi(i),5:end), zeros(1,4)];
+%     delayed_data((i-1)*11+3,:) = [after_stimulus_data_m{mouse,interval}(noi(i),4:end), zeros(1,3)];
+%     delayed_data((i-1)*11+4,:) = [after_stimulus_data_m{mouse,interval}(noi(i),3:end), zeros(1,2)];
+%     delayed_data((i-1)*11+5,:) = [after_stimulus_data_m{mouse,interval}(noi(i),2:end), zeros(1,1)];
+%     delayed_data((i-1)*11+6,:) = after_stimulus_data_m{mouse,interval}(noi(i),:);
+%     delayed_data((i-1)*11+7,:) = [zeros(1,1),after_stimulus_data_m{mouse,interval}(noi(i),1:end-1)];
+%     delayed_data((i-1)*11+8,:) = [zeros(1,2),after_stimulus_data_m{mouse,interval}(noi(i),1:end-2)];
+%     delayed_data((i-1)*11+9,:) = [zeros(1,3),after_stimulus_data_m{mouse,interval}(noi(i),1:end-3)];
+%     delayed_data((i-1)*11+10,:) = [zeros(1,4),after_stimulus_data_m{mouse,interval}(noi(i),1:end-4)];
+%     delayed_data((i-1)*11+11,:) = [zeros(1,5),after_stimulus_data_m{mouse,interval}(noi(i),1:end-5)];
+% end
+% figure
+% imagesc(delayed_data)
+% colormap(flipud(gray))
 
 
 %% image 3: take multiple bins together 
@@ -88,22 +88,22 @@ for i = 1:size(new_data,1)
     end
     counter = 1;
 end
-figure
-hm=heatmap(new_data(:,1:intervals_to_plot),'CellLabelColor','none');
+%figure
+%hm=heatmap(new_data(:,1:intervals_to_plot),'CellLabelColor','none');
 % grid('off')
-origState = warning('query', 'MATLAB:structOnObject');
-cleanup = onCleanup(@()warning(origState));
-warning('off','MATLAB:structOnObject')
-S = struct(hm); % Undocumented
-ax = S.Axes;    % Undocumented
-clear('cleanup')
-% Remove grids
+%origState = warning('query', 'MATLAB:structOnObject');
+%cleanup = onCleanup(@()warning(origState));
+%warning('off','MATLAB:structOnObject')
+%S = struct(hm); % Undocumented
+%ax = S.Axes;    % Undocumented
+%clear('cleanup')
+%% Remove grids
 hm.GridVisible = 'off';
 % Place lines around selected columns and row
 % Assumes columns and rows are 1 unit in size!
-col = [0.5,4.5];    
-row = [0.5, 10.5];
-xline(ax, [col, col], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
+%col = [0.5,4.5];    
+%row = [0.5, 10.5];
+%xline(ax, [col, col], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
 %yline(ax, [row, row], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
 
 %saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_4.png")
@@ -112,7 +112,7 @@ xline(ax, [col, col], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
 
 %% image 5: clusters ica
 
-load("X:\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
 index = ceil(interval/30);
 assembly = total_assemblies{mouse,index}{1};
 
@@ -126,8 +126,8 @@ grid('off')
 
 %% image 5b: activity
 
-load("X:\Mathias\switch_data\clusters\activity_horridge_m.mat")
-load("X:\Mathias\switch_data\clusters\data_horridge_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\clusters\activity_horridge_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\clusters\data_horridge_m.mat")
 activity = total_activity{mouse,index}(1:intervals_to_plot);
 data = total_data{mouse,index}(:,1:intervals_to_plot);
 figure
@@ -190,7 +190,7 @@ end
 figure
 heatmap(smoothed_template, 'CellLabelColor','none'); grid('off')
 
-load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+load("\mnt\takeokalab\takeokalabwip2023\Mathias\switch_data\tabled_data\horridge_data_m.mat")
 after = data(83:105,[2:451,701:901]);
 clearvars data
 figure

@@ -7,7 +7,7 @@ replay_ripple = cell(1,9);
 replay_no_ripple = cell(1,9);
 no_replay_ripple = cell(1,9);
 no_replay_no_ripple = cell(1,9);
-mouse_to_exclude = 9;
+mouse_to_exclude = [];
 % compare probability replay occurring during ripple versus non-ripple
 probability_replay_ripple = zeros(1,9);
 probability_replay_no_ripple = zeros(1,9);

@@ -8,7 +8,7 @@ freqBands = {[0.5 4], [4 8], [8 12], [12 35], [35 200]};
 nChansInFile = 385;  % neuropixels phase3a, from spikeGLX
 
 % - - - - - - - To study a unique recording
-possiblePaths=['/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220725/20220725_long_long_recording_g0';
+possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220725/20220725_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220819/20220819_long_long_recording2_g0';%Recording seems to be corrupted or so, only 606 seconds long
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220831/20220831_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220921/20220921_long_long_recording_g0';
@@ -17,17 +17,29 @@ possiblePaths=['/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221116/20221116_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221124/20221124_long_long_recording2_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221128/20221128_long_long_recording_g1';
-        ];
+        };
  
 
 rest_start_times = [3665,3659,3655,3709,3921,3940,3040,3075,3207];
 rest_end_times = [8700,7270,7270,7382,7924,7563,6902,7212,7213];
 
-for i = setdiff(1:size(possiblePaths,1),[2,8,9])
+for i = [2,8,9]
     disp(i)
-    myKsDir=possiblePaths(i, :);
+    myKsDir=possiblePaths{i};
+    Fs = 2500;
 
-    
+    % if there are 2 recordings, the start and end times are shifted
+    if i == 2 || i == 8 || i == 9
+        if i == 2
+            other_path = '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220819/20220819_long_long_recording_g0';
+        elseif i == 8
+            other_path = '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221124/20221124_long_long_recording_g0';
+        elseif i == 9
+            other_path = '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221128/20221128_long_long_recording_g0';
+        end
+        other_nSap
+    end
+
     %% 
     % Keep in mind that we record NORMALLY (it can change based on the recording) like this :
     % 0 to 900 seconds : rest time - beginning of the experiment, called "the before phase"
@@ -35,7 +47,7 @@ for i = setdiff(1:size(possiblePaths,1),[2,8,9])
     % 1500 to 2400 seconds : rest time - called "the after phase"
     %% Plot data to inspect
 
-    Fs = 2500;
+
     %sampStarts = Fs*rest_start_times(i);
     %sampEnds = Fs*rest_end_times(i);
     sampStarts = rest_start_times*Fs;
@@ -47,7 +59,7 @@ for i = setdiff(1:size(possiblePaths,1),[2,8,9])
     mmf = memmapfile(lfpFilename, 'Format', {'int16', [nChansInFile nSamps], 'x'});
 
     data = double(mmf.Data(1).x(:, (sampStarts:sampEnds)));
-    save("/scratch/mathiass-takeokalab/01/LF_baseline_"+i+"m.mat", "data", "-v7.3");
+    save("/scratch/mathiass-takeokalab/01/LF_"+i+"m.mat", "data", "-v7.3");
     clearvars data
     % filtered_data = zeros(length(freqBands),size(data,2),size(data,1));
     % for j = 1:length(freqBands)

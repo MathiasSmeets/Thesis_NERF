@@ -26,8 +26,8 @@ rest_end_times = [8700,7270,7270,7382,7924,7563,6902,7212,7213];
 for i = [2,8,9]
     disp(i)
     myKsDir=possiblePaths{i};
+    Fs = 2500;
 
-    
     %% 
     % Keep in mind that we record NORMALLY (it can change based on the recording) like this :
     % 0 to 900 seconds : rest time - beginning of the experiment, called "the before phase"
@@ -35,11 +35,11 @@ for i = [2,8,9]
     % 1500 to 2400 seconds : rest time - called "the after phase"
     %% Plot data to inspect
 
-    Fs = 2500;
+
     %sampStarts = Fs*rest_start_times(i);
     %sampEnds = Fs*rest_end_times(i);
-    sampStarts = rest_start_times*Fs;
-    sampEnds = rest_end_times*Fs;
+    sampStarts = rest_start_times(i)*Fs;
+    sampEnds = rest_end_times(i)*Fs;
 
     d = dir(fullfile(myKsDir, '*.lf.bin'));
     nSamps = d.bytes/2/nChansInFile;

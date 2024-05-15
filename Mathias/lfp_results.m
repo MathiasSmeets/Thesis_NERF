@@ -7,7 +7,11 @@ replay_ripple = cell(1,9);
 replay_no_ripple = cell(1,9);
 no_replay_ripple = cell(1,9);
 no_replay_no_ripple = cell(1,9);
-for i = setdiff(1:9,[2,8,9])
+mouse_to_exclude = 9;
+% compare probability replay occurring during ripple versus non-ripple
+probability_replay_ripple = zeros(1,9);
+probability_replay_no_ripple = zeros(1,9);
+for i = setdiff(1:9,mouse_to_exclude)
     disp(i)
     load("X:/Mathias/switch_data/LF_signals/ripple2_"+i+".mat")%ripple
 
@@ -40,22 +44,17 @@ for i = setdiff(1:9,[2,8,9])
             no_replay_no_ripple{i} = no_replay_no_ripple{i} + 1;
         end
     end
-end
-% compare probability replay occurring during ripple versus non-ripple
-probability_replay_ripple = zeros(1,9);
-probability_replay_no_ripple = zeros(1,9);
-for i = setdiff(1:9,[2,8,9])
     probability_replay_ripple(i) = replay_ripple{i} / (numel(find(ripple))*10);
     probability_replay_no_ripple(i) = replay_no_ripple{i} / (numel(find(~ripple))*10);
 end
 
 figure
-boxplot([probability_replay_no_ripple(setdiff(1:9,[2,8,9]))',probability_replay_ripple(setdiff(1:9,[2,8,9]))'],'Labels',{'Not During Ripple','During Ripple'})
+boxplot([probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',probability_replay_ripple(setdiff(1:9,mouse_to_exclude))'],'Labels',{'Not During Ripple','During Ripple'})
 hold on
-scatter(ones(size(probability_replay_no_ripple(setdiff(1:9,[2,8,9]))',1)),probability_replay_no_ripple(setdiff(1:9,[2,8,9]))', 'filled', 'blue')
-scatter(ones(size(probability_replay_ripple(setdiff(1:9,[2,8,9]))',1))*2,probability_replay_ripple(setdiff(1:9,[2,8,9]))', 'filled', 'blue')
-line([ones(size(probability_replay_no_ripple(setdiff(1:9,[2,8,9]))',1),1), ones(size(probability_replay_ripple(setdiff(1:9,[2,8,9]))',1),1)*2]',[probability_replay_no_ripple(setdiff(1:9,[2,8,9]))', probability_replay_ripple(setdiff(1:9,[2,8,9]))']','Color','green')
-p_m = signrank(probability_replay_no_ripple(setdiff(1:9,[2,8,9]))', probability_replay_ripple(setdiff(1:9,[2,8,9]))');
+scatter(ones(size(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',1)),probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
+scatter(ones(size(probability_replay_ripple(setdiff(1:9,mouse_to_exclude))',1))*2,probability_replay_ripple(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
+line([ones(size(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',1),1), ones(size(probability_replay_ripple(setdiff(1:9,mouse_to_exclude))',1),1)*2]',[probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', probability_replay_ripple(setdiff(1:9,mouse_to_exclude))']','Color','green')
+p_m = signrank(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', probability_replay_ripple(setdiff(1:9,mouse_to_exclude))');
 ylabel('Probability Replay Occurring')
-
+disp("p-value: " + p_m)
 

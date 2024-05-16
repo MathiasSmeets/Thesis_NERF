@@ -2,7 +2,7 @@ clear;clc;close all;
 %load and store neuropixel lfp data
 load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_1m.mat");
 
-
+disp("downsampling start")
 seg = [];
 %%downsample frm 2500Hz to 500HZ
 reduction_factor = 5;
@@ -11,7 +11,7 @@ for i = 1:fix(size(data,2)/reduction_factor)
         seg(j,i) = mean(data(j,1+i*reduction_factor-reduction_factor:i*reduction_factor));
     end
 end
-
+disp("downsampling end")
 
 %smooth data
 Fs = 500;
@@ -39,7 +39,7 @@ PSD_over_time_Delta = [];
     PSD_over_time_more = [];
 for j = 1:size(seg,1)
 
-
+    disp(j+"/"+size(seg,1))
     for i = 1:size(seg,2)/(L_)
     
         

@@ -1,6 +1,6 @@
 clear;clc;close all;
 %load and store neuropixel lfp data
-data = load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_1m.mat");
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_1m.mat");
 
 
 seg = [];
@@ -87,15 +87,15 @@ for j = 1:size(seg,1)
     end
 end
 figure
-h = heatmap(PSD_over_time_Delta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 45])
+h = heatmap(PSD_over_time_Delta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 45]);
 
 figure
-h = heatmap(PSD_over_time_Theta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30])
+h = heatmap(PSD_over_time_Theta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 figure
-h = heatmap(PSD_over_time_Alpha(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30])
+h = heatmap(PSD_over_time_Alpha(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 figure
-h = heatmap(PSD_over_time_Beta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30])
+h = heatmap(PSD_over_time_Beta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 figure
-h = heatmap(PSD_over_time_Gamma(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30])
+h = heatmap(PSD_over_time_Gamma(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 figure
-h = heatmap(PSD_over_time_more(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30])
+h = heatmap(PSD_over_time_more(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);

@@ -1,7 +1,7 @@
 clear;clc;close all;
 %load and store neuropixel lfp data
 load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_2m.mat");
-data = data(:,40*60*2500:50*60*2500);
+data = data(:,30*60*2500:60*60*2500);
 disp("downsampling start")
 seg = [];
 %%downsample frm 2500Hz to 500HZ

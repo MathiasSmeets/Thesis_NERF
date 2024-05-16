@@ -30,7 +30,7 @@ possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221006/20221006_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221018/20221018_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220906/20220906_long_long_recording_g0';
-        '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220413/20220413_long_long_recording_g1';
+        '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220413/20220413_long_long_recording_g0';
         };
 % LEARNER
 % rest_start_times = [3665,3659,3655,3709,3921,3940,3040,3075,3207];

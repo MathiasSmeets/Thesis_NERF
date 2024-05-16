@@ -29,7 +29,7 @@ possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220927/20220927_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221006/20221006_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20221018/20221018_long_long_recording_g0';
-        '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220906/20220906_long_long_recording2_g0';
+        '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220906/20220906_long_long_recording_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220413/20220413_long_long_recording_g1';
         };
 % LEARNER
@@ -40,7 +40,7 @@ possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
 rest_start_times = [601,4438,3847,4148,6963,3915,3010,3687,1];
 rest_end_times = [7382,7443,7262,7803,10563,7623,6600,7561,10];
 
-for i = 1:9
+for i = 8:9
     disp(i)
     myKsDir=possiblePaths{i};
     Fs = 2500;

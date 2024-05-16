@@ -1,6 +1,6 @@
 clear;clc;close all;
 %load and store neuropixel lfp data
-load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_2m.mat");
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_8m.mat");
 %data = data(:,30*60*2500:60*60*2500);
 disp("downsampling start")
 seg = [];
@@ -102,5 +102,5 @@ h = heatmap(PSD_over_time_Gamma(:,:),'Colormap',spring, 'GridVisible','off','Col
 figure
 h = heatmap(PSD_over_time_more(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 figure
-h = heatmap(PSD_over_time_Delta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
+h = heatmap(PSD_over_time_Delta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 15]);
 saveas(gcf, "/scratch/mathiass-takeokalab/01/powerfigure.png")

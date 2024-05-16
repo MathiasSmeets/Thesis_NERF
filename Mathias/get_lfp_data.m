@@ -40,7 +40,7 @@ possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
 rest_start_times = [601,4438,3847,4148,6963,3915,3010,3687,1];
 rest_end_times = [7382,7443,7262,7803,10563,7623,6600,7561,10];
 
-for i = 8:9
+for i = 9
     disp(i)
     myKsDir=possiblePaths{i};
     Fs = 2500;

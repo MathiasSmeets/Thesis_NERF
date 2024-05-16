@@ -32,9 +32,13 @@ possiblePaths={'/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220906/20220906_long_long_recording2_g0';
         '/mnt/takeokalab/takeokalabwip2020/past lab members/Mattia/Spinal_Cord/Recordings/20220413/20220413_long_long_recording_g1';
         };
+% LEARNER
+% rest_start_times = [3665,3659,3655,3709,3921,3940,3040,3075,3207];
+% rest_end_times = [8700,7270,7270,7382,7924,7563,6902,7212,7213];
 
-rest_start_times = [3665,3659,3655,3709,3921,3940,3040,3075,3207];
-rest_end_times = [8700,7270,7270,7382,7924,7563,6902,7212,7213];
+% CONTROL
+rest_start_times = [601,4438,3847,4148,6963,3915,3010,3687,1];
+rest_end_times = [7382,7443,7262,7803,10563,7623,6600,7561,10];
 
 for i = 1:9
     disp(i)

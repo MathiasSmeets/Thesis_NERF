@@ -47,8 +47,8 @@ for i = setdiff(1:9,mouse_to_exclude)
         replay_counter = replay_counter + blocks(2,j)-blocks(1,j)+1;
     end
 
-    probability_ripple_during_replay(i) = ripple_during_replay{i} / numel(replay) / numel(find(ripple));
-    probability_noripple_during_replay(i) = noripple_during_replay{i} / numel(replay) / numel(find(~ripple));
+    probability_ripple_during_replay(i) = ripple_during_replay{i} / numel(find(ripple));
+    probability_noripple_during_replay(i) = noripple_during_replay{i} / numel(find(~ripple));
 
 
 
@@ -74,18 +74,9 @@ for i = setdiff(1:9,mouse_to_exclude)
         ripple_counter = ripple_counter + blocks_ripple(2,j)-blocks_ripple(1,j)+1;
     end
 
-    probability_replay_during_ripple(i) = (replay_during_ripple{i} / numel(find(ripple)));
-    probability_noreplay_during_ripple(i) = (noreplay_during_ripple{i} / numel(find(ripple)));
+    probability_replay_during_ripple(i) = replay_during_ripple{i} / numel(find(replay));
+    probability_noreplay_during_ripple(i) = noreplay_during_ripple{i} / numel(find(~replay));
 
-    probability_replay = numel(find(replay)) / numel(replay);
-    probability_ripple = numel(find(ripple)) / numel(ripple);
-    probability_noreplay = numel(find(~replay)) / numel(replay);
-    probability_noripple = numel(find(~ripple)) / numel(ripple);
-
-    P_replay_ripple(i) = (probability_ripple_during_replay(i) * probability_replay) / probability_ripple;
-    P_replay_no_ripple(i) = (probability_noripple_during_replay(i) * probability_replay) / probability_noripple;
-    P_ripple_replay(i) = (probability_replay_during_ripple(i) * probability_ripple) / probability_replay;
-    P_ripple_no_replay(i) = (probability_noreplay_during_ripple(i) * probability_ripple) / probability_noreplay;
 end
 
 figure
@@ -108,22 +99,4 @@ p_m = signrank(probability_noreplay_during_ripple(setdiff(1:9,mouse_to_exclude))
 ylabel('Probability Replay Occurring')
 disp("p-value: " + p_m)
 
-figure
-boxplot([P_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',P_replay_ripple(setdiff(1:9,mouse_to_exclude))'],'Labels',{'During No Ripple','During Ripple'})
-hold on
-scatter(ones(size(P_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',1)),P_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
-scatter(ones(size(P_replay_ripple(setdiff(1:9,mouse_to_exclude))',1))*2,P_replay_ripple(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
-line([ones(size(P_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',1),1), ones(size(P_replay_ripple(setdiff(1:9,mouse_to_exclude))',1),1)*2]',[P_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', P_replay_ripple(setdiff(1:9,mouse_to_exclude))']','Color','green')
-p_m = signrank(P_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', P_replay_ripple(setdiff(1:9,mouse_to_exclude))');
-ylabel('Probability Replay Occurring')
-disp("p-value: " + p_m)
 
-figure
-boxplot([P_ripple_no_replay(setdiff(1:9,mouse_to_exclude))',P_ripple_replay(setdiff(1:9,mouse_to_exclude))'],'Labels',{'During No Replay','During Replay'})
-hold on
-scatter(ones(size(P_ripple_no_replay(setdiff(1:9,mouse_to_exclude))',1)),P_ripple_no_replay(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
-scatter(ones(size(P_ripple_replay(setdiff(1:9,mouse_to_exclude))',1))*2,P_ripple_replay(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
-line([ones(size(P_ripple_no_replay(setdiff(1:9,mouse_to_exclude))',1),1), ones(size(P_ripple_replay(setdiff(1:9,mouse_to_exclude))',1),1)*2]',[P_ripple_no_replay(setdiff(1:9,mouse_to_exclude))', P_ripple_replay(setdiff(1:9,mouse_to_exclude))']','Color','green')
-p_m = signrank(P_ripple_no_replay(setdiff(1:9,mouse_to_exclude))', P_ripple_replay(setdiff(1:9,mouse_to_exclude))');
-ylabel('Probability Ripple Occurring')
-disp("p-value: " + p_m)

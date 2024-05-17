@@ -17,6 +17,6 @@ for i = 1%:9
         clearvars data
         cur_filtered_data = filtfilt(filter_ripple2,cur_data');
         clearvars cur_data
-        save("/scratch/mathiass-takeokalab/01/LF_filtered_rec"+i+"_part"+j+"m_low_frequency_05_4.mat", "cur_filtered_data", "-v7.3");
+        save("/scratch/mathiass-takeokalab/01/LF_filtered_rec"+i+"_part"+j+"y_low_frequency_05_4.mat", "cur_filtered_data", "-v7.3");
     end
 end

@@ -133,7 +133,7 @@ for i = 1:9
         cur_count = all_assemblies_count(x);
         cur_clusters = template_cluster{i};
         common_elements = intersect(cur_assembly, cur_clusters);
-        if cur_count > 0.1*last_interval_index% && numel(common_elements)>1
+        if cur_count > 0.03*last_interval_index && numel(common_elements)>1
             clusters_to_check{i}{counter} = cur_assembly;
             counter = counter + 1;
         end
@@ -161,7 +161,7 @@ end
 set(gca, 'XAxisLocation','top', 'YDir', 'reverse')
 xlim([0.5 9.5])
 ylim([0 2000])
-
+title('Learner Rest')
 
 
 
@@ -229,7 +229,7 @@ hold on
 for i = 1:9
     scatter(ones(size(depths_rest_y{i}))*i, depths_rest_y{i}, 'blue', 'filled')
 end
-
+title('Control Rest')
 set(gca, 'XAxisLocation','top', 'YDir', 'reverse')
 xlim([0.5 9.5])
 ylim([0 2000])
@@ -245,4 +245,33 @@ end
 
 hold on
 figure
-boxplot([array_m'; array_y'], [zeros(length(array_m'),1); ones(length(array_y'),1)], 'Labels', {'Learner', 'C'})
+boxplot([array_m'; array_y'], [zeros(length(array_m'),1); ones(length(array_y'),1)], 'Labels', {'Learner', 'Control'})
+
+
+
+%%
+
+array = cell2mat(depths);
+% Define the bin edges
+binEdges = 0:250:2000;
+% Count the number of values in each interval
+counts = histcounts(array, binEdges);
+% Define the y-axis values (midpoints of the intervals)
+y = binEdges(1:end-1) + diff(binEdges)/2;
+% Plot the data with switched axes
+figure;
+plot(counts, y, '-o');
+ylabel('Value Ranges');
+xlabel('Number of Values');
+title('Number of Values in Each Interval');
+yticks(binEdges); % This sets the y-axis ticks to the bin edges
+grid on;
+
+
+
+
+
+
+
+
+

@@ -49,7 +49,7 @@ for i = setdiff(1:9,mouse_to_exclude)
 end
 
 figure
-boxplot([probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',probability_replay_ripple(setdiff(1:9,mouse_to_exclude))'],'Labels',{'Not During Ripple','During Ripple'}, 'Positions', )
+boxplot([probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',probability_replay_ripple(setdiff(1:9,mouse_to_exclude))'],'Labels',{'Not During Ripple','During Ripple'})
 hold on
 scatter(ones(size(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',1)),probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
 scatter(ones(size(probability_replay_ripple(setdiff(1:9,mouse_to_exclude))',1))*2,probability_replay_ripple(setdiff(1:9,mouse_to_exclude))', 'filled', 'blue')
@@ -57,4 +57,26 @@ line([ones(size(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))',1),
 p_m = signrank(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', probability_replay_ripple(setdiff(1:9,mouse_to_exclude))');
 ylabel('Probability Replay Occurring')
 disp("p-value: " + p_m)
+
+
+%%
+function blocks = findBlocks(arr)
+    % Find the transitions
+    transitions = diff([0, arr, 0]);
+
+    % Find the starting indices of blocks of ones
+    starts = find(transitions == 1);
+
+    % Find the ending indices of blocks of ones
+    ends = find(transitions == -1) - 1;
+
+    % Combine the start and end indices into a 2xY array
+    blocks = [starts; ends];
+end
+
+% Example usage:
+arr = [0 1 1 0 0 1 1 1 0 1 0 0 0 1 1 0];
+blocks = findBlocks(arr);
+
+disp(blocks);
 

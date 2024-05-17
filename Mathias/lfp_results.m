@@ -58,3 +58,15 @@ p_m = signrank(probability_replay_no_ripple(setdiff(1:9,mouse_to_exclude))', pro
 ylabel('Probability Replay Occurring')
 disp("p-value: " + p_m)
 
+
+%%
+arr = [0 1 1 0 0 1 1 1 0 1 0 0 0 1 1 0];
+
+
+
+% Example usage:
+
+
+
+disp(blocks);
+

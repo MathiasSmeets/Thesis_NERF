@@ -9,7 +9,7 @@ for i = 1:9
     cur_clusters = template_cluster{i};
     depths{i} = depth_m{i}(cur_clusters);
 end
-
+depths_learner_horridge = depths;
 figure
 hold on
 for i = 1:9
@@ -69,7 +69,7 @@ for i = 1:9
     cur_clusters = template_cluster{i};
     depths{i} = depth_y{i}(cur_clusters);
 end
-
+depths_control_horridge = depths;
 figure
 hold on
 for i = 1:9
@@ -246,3 +246,41 @@ end
 hold on
 figure
 boxplot([array_m'; array_y'], [zeros(length(array_m'),1); ones(length(array_y'),1)], 'Labels', {'Learner', 'Control'})
+
+
+
+%%
+
+% array = cell2mat(depths_learner_horridge);
+% % Define the bin edges
+% binEdges = 50:200:1850;
+% % Count the number of values in each interval
+% counts = histcounts(array, binEdges);
+% % Define the y-axis values (midpoints of the intervals)
+% y = binEdges(1:end-1) + diff(binEdges)/2;
+% % Plot the data with switched axes
+% figure;
+% plot(counts, y, '-o');
+% ylabel('Value Ranges');
+% xlabel('Number of Values');
+% title('Number of Values in Each Interval');
+% yticks(binEdges); % This sets the y-axis ticks to the bin edges
+% hold on
+% array = cell2mat(depths_control_horridge);
+% % Define the bin edges
+% binEdges = 50:200:1850;
+% % Count the number of values in each interval
+% counts = histcounts(array, binEdges);
+% % Define the y-axis values (midpoints of the intervals)
+% y = binEdges(1:end-1) + diff(binEdges)/2;
+% % Plot the data with switched axes
+% plot(counts, y, '-o');
+% legend("Learner", "Control")
+
+
+
+
+
+
+
+

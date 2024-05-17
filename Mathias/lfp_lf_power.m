@@ -102,5 +102,5 @@ h = heatmap(PSD_over_time_Gamma(:,:),'Colormap',spring, 'GridVisible','off','Col
 figure
 h = heatmap(PSD_over_time_more(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 figure
-h = heatmap(PSD_over_time_Delta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 15]);
+h = heatmap(PSD_over_time_Delta(:,:),'Colormap',spring, 'GridVisible','off','ColorLimits',[0 30]);
 saveas(gcf, "/scratch/mathiass-takeokalab/01/powerfigure.png")

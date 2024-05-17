@@ -8,21 +8,21 @@ intervals_to_plot = 80;
 
 %% image 1: example
 
-load("X:\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
-load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/clusters/assemblies_horridge_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/data_after_stimulus/after_stimulus_data_m_horridge.mat")
 
 
 figure
 heatmap(after_stimulus_data_m{mouse,interval})
 grid('off')
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_1.png")
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_1.svg")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_1.png")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_1.svg")
 
 
 %% image 2: neurons of interest
 
-load("X:\Mathias\switch_data\neurons_of_interest\neurons_of_interest_horridge_m.mat")
-load("X:\Mathias\switch_data\neurons_of_interest\inhibited_horridge_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/neurons_of_interest/neurons_of_interest_horridge_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/neurons_of_interest/inhibited_horridge_m.mat")
 %neuron_counter = size(after_stimulus_data_m{1,1},1)+size(after_stimulus_data_m{2,1},1)+size(after_stimulus_data_m{3,1},1)+1;
 neuron_counter = 1;
 for i = 1:mouse-1
@@ -33,29 +33,29 @@ noi = get_neurons_of_interest(after_stimulus_data_m{mouse,interval}, output_m, i
 figure
 heatmap(after_stimulus_data_m{mouse,interval}(noi,:))
 grid('off')
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_2.png")
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_2.svg")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_2.png")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_2.svg")
 
 
 % create cpca figure
 
-delayed_data = zeros(size(after_stimulus_data_m{mouse,interval}(noi,:),1)*11,size(after_stimulus_data_m{mouse,interval}(noi,:),2));
-for i = 1:size(after_stimulus_data_m{mouse,interval}(noi,:))
-    delayed_data((i-1)*11+1,:) = [after_stimulus_data_m{mouse,interval}(noi(i),6:end), zeros(1,5)];
-    delayed_data((i-1)*11+2,:) = [after_stimulus_data_m{mouse,interval}(noi(i),5:end), zeros(1,4)];
-    delayed_data((i-1)*11+3,:) = [after_stimulus_data_m{mouse,interval}(noi(i),4:end), zeros(1,3)];
-    delayed_data((i-1)*11+4,:) = [after_stimulus_data_m{mouse,interval}(noi(i),3:end), zeros(1,2)];
-    delayed_data((i-1)*11+5,:) = [after_stimulus_data_m{mouse,interval}(noi(i),2:end), zeros(1,1)];
-    delayed_data((i-1)*11+6,:) = after_stimulus_data_m{mouse,interval}(noi(i),:);
-    delayed_data((i-1)*11+7,:) = [zeros(1,1),after_stimulus_data_m{mouse,interval}(noi(i),1:end-1)];
-    delayed_data((i-1)*11+8,:) = [zeros(1,2),after_stimulus_data_m{mouse,interval}(noi(i),1:end-2)];
-    delayed_data((i-1)*11+9,:) = [zeros(1,3),after_stimulus_data_m{mouse,interval}(noi(i),1:end-3)];
-    delayed_data((i-1)*11+10,:) = [zeros(1,4),after_stimulus_data_m{mouse,interval}(noi(i),1:end-4)];
-    delayed_data((i-1)*11+11,:) = [zeros(1,5),after_stimulus_data_m{mouse,interval}(noi(i),1:end-5)];
-end
-figure
-imagesc(delayed_data)
-colormap(flipud(gray))
+% delayed_data = zeros(size(after_stimulus_data_m{mouse,interval}(noi,:),1)*11,size(after_stimulus_data_m{mouse,interval}(noi,:),2));
+% for i = 1:size(after_stimulus_data_m{mouse,interval}(noi,:))
+%     delayed_data((i-1)*11+1,:) = [after_stimulus_data_m{mouse,interval}(noi(i),6:end), zeros(1,5)];
+%     delayed_data((i-1)*11+2,:) = [after_stimulus_data_m{mouse,interval}(noi(i),5:end), zeros(1,4)];
+%     delayed_data((i-1)*11+3,:) = [after_stimulus_data_m{mouse,interval}(noi(i),4:end), zeros(1,3)];
+%     delayed_data((i-1)*11+4,:) = [after_stimulus_data_m{mouse,interval}(noi(i),3:end), zeros(1,2)];
+%     delayed_data((i-1)*11+5,:) = [after_stimulus_data_m{mouse,interval}(noi(i),2:end), zeros(1,1)];
+%     delayed_data((i-1)*11+6,:) = after_stimulus_data_m{mouse,interval}(noi(i),:);
+%     delayed_data((i-1)*11+7,:) = [zeros(1,1),after_stimulus_data_m{mouse,interval}(noi(i),1:end-1)];
+%     delayed_data((i-1)*11+8,:) = [zeros(1,2),after_stimulus_data_m{mouse,interval}(noi(i),1:end-2)];
+%     delayed_data((i-1)*11+9,:) = [zeros(1,3),after_stimulus_data_m{mouse,interval}(noi(i),1:end-3)];
+%     delayed_data((i-1)*11+10,:) = [zeros(1,4),after_stimulus_data_m{mouse,interval}(noi(i),1:end-4)];
+%     delayed_data((i-1)*11+11,:) = [zeros(1,5),after_stimulus_data_m{mouse,interval}(noi(i),1:end-5)];
+% end
+% figure
+% imagesc(delayed_data)
+% colormap(flipud(gray))
 
 
 %% image 3: take multiple bins together 
@@ -70,8 +70,8 @@ figure
 h=heatmap(new_data,'CellLabelColor','none');
 grid('off')
 
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_3.png")
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_3.svg")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_3.png")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_3.svg")
 
 %% image mouse: multiple intervals combined
 
@@ -88,31 +88,31 @@ for i = 1:size(new_data,1)
     end
     counter = 1;
 end
-figure
-hm=heatmap(new_data(:,1:intervals_to_plot),'CellLabelColor','none');
+%figure
+%hm=heatmap(new_data(:,1:intervals_to_plot),'CellLabelColor','none');
 % grid('off')
-origState = warning('query', 'MATLAB:structOnObject');
-cleanup = onCleanup(@()warning(origState));
-warning('off','MATLAB:structOnObject')
-S = struct(hm); % Undocumented
-ax = S.Axes;    % Undocumented
-clear('cleanup')
-% Remove grids
+%origState = warning('query', 'MATLAB:structOnObject');
+%cleanup = onCleanup(@()warning(origState));
+%warning('off','MATLAB:structOnObject')
+%S = struct(hm); % Undocumented
+%ax = S.Axes;    % Undocumented
+%clear('cleanup')
+%% Remove grids
 hm.GridVisible = 'off';
 % Place lines around selected columns and row
 % Assumes columns and rows are 1 unit in size!
-col = [0.5,4.5];    
-row = [0.5, 10.5];
-xline(ax, [col, col], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
+%col = [0.5,4.5];    
+%row = [0.5, 10.5];
+%xline(ax, [col, col], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
 %yline(ax, [row, row], 'k-', 'LineWidth', 1.5); % see footnotes [1,2]
 
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_4.png")
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_4.svg")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_4.png")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_4.svg")
 
 
 %% image 5: clusters ica
 
-load("X:\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/clusters/assemblies_horridge_m.mat")
 index = ceil(interval/30);
 assembly = total_assemblies{mouse,index}{1};
 
@@ -121,13 +121,13 @@ figure
 heatmap(assembly_data(:,1:intervals_to_plot))
 grid('off')
 
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5.png")
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5.svg")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_5.png")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_5.svg")
 
 %% image 5b: activity
 
-load("X:\Mathias\switch_data\clusters\activity_horridge_m.mat")
-load("X:\Mathias\switch_data\clusters\data_horridge_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/clusters/activity_horridge_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/clusters/data_horridge_m.mat")
 activity = total_activity{mouse,index}(1:intervals_to_plot);
 data = total_data{mouse,index}(:,1:intervals_to_plot);
 figure
@@ -138,8 +138,8 @@ ylabel("Activity")
 hold on
 scatter(locs, pks, "*", "LineWidth",2)
 
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.png")
-%saveas(gcf, "C:\Users\Mathi\OneDrive\Documenten\Master_3\Thesis\images\overview_figure\fig_5b.svg")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_5b.png")
+%saveas(gcf, "C:/Users/Mathi/OneDrive/Documenten/Master_3/Thesis/images/overview_figure/fig_5b.svg")
 
 %% get assembly vector
 assembly_vector = transpose(activity)/data;
@@ -190,7 +190,7 @@ end
 figure
 heatmap(smoothed_template, 'CellLabelColor','none'); grid('off')
 
-load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/tabled_data/horridge_data_m.mat")
 after = data(83:105,[2:451,701:901]);
 clearvars data
 figure
@@ -209,6 +209,79 @@ plot(ones(size(correlation))*threshold,'red','LineWidth',2)
 correlation_adjusted = correlation;
 correlation_adjusted(correlation_adjusted<threshold) = 0;
 figure;plot(correlation_adjusted,'LineWidth',2)
+
+
+%%
+
+
+mouse=2;
+load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+load("X:\Mathias\switch_data\tables\frM_stim_switched_2.mat")
+data = data(data(:,1)==2,:);
+data = data(:,2:end);
+stimulations = frM_stim.horridge;
+stimulations = frM_stim.horridge{1};
+figure
+load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
+load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+data = data(data(:,1)==2,:);
+data = data(:,2:end);
+load("X:\Mathias\switch_data\neurons_of_interest\neurons_of_interest_horridge_m.mat")
+load("X:\Mathias\switch_data\neurons_of_interest\inhibited_horridge_m.mat")
+%neuron_counter = size(after_stimulus_data_m{1,1},1)+size(after_stimulus_data_m{2,1},1)+size(after_stimulus_data_m{3,1},1)+1;
+neuron_counter = 1;mouse=2;
+for i = 1:mouse-1
+neuron_counter = neuron_counter + size(after_stimulus_data_m{i,1},1);
+end
+noi = get_neurons_of_interest(after_stimulus_data_m{mouse,271}, output_m, inhibited_m, neuron_counter);
+% image 1: example
+load("X:\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
+load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
+stimulations = stimulations - stimulations(1);
+viewdata = data(noi,[round(stimulations(272)*1000-10):round(stimulations(272)*1000-10)+77,round(stimulations(273)*1000):round(stimulations(273)*1000)+96,round(stimulations(274)*1000):round(stimulations(274)*1000)+70]);
+viewdata(viewdata==2) = 1;
+figure;imagesc(viewdata);colormap(flipud(gray))
+
+
+% take bins together
+interestdata = data(noi,[round(stimulations(272)*1000):round(stimulations(272)*1000)+59,round(stimulations(273)*1000):round(stimulations(273)*1000)+59,round(stimulations(274)*1000):round(stimulations(274)*1000)+59]);
+new_data = zeros(12,12);
+for i = 1:size(new_data,1)
+    for j = 1:4
+        new_data(i,j) = sum(interestdata(i,1+(j-1)*15:j*15));
+    end
+    for j = 5:8
+        new_data(i,j) = sum(interestdata(i,1+(j-1)*15:j*15));
+    end
+    for j = 9:12
+        new_data(i,j) = sum(interestdata(i,1+(j-1)*15:j*15));
+    end
+end
+figure
+h=heatmap(new_data,'CellLabelColor','none');
+grid('off')
+
+
+
+% assembly vector
+load("X:\Mathias\switch_data\clusters\activity_horridge_m.mat")
+load("X:\Mathias\switch_data\clusters\data_horridge_m.mat")
+activity = total_activity{mouse,index}(1:intervals_to_plot);
+data = total_data{mouse,index}(:,1:intervals_to_plot);
+
+
+assembly_vector = transpose(activity)/data;
+figure;heatmap(abs(assembly_vector)','CellLabelColor','none')
+
+
+
+
+
+
+
+
+
+
 
 
 

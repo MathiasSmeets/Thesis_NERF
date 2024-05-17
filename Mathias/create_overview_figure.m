@@ -211,4 +211,79 @@ correlation_adjusted(correlation_adjusted<threshold) = 0;
 figure;plot(correlation_adjusted,'LineWidth',2)
 
 
+%%
+
+
+mouse=2;
+interval = 271;
+load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+load("X:\Mathias\switch_data\tables\frM_stim_switched_2.mat")
+data = data(data(:,1)==2,:);
+data = data(:,2:end);
+stimulations = frM_stim.horridge;
+stimulations = frM_stim.horridge{1};
+figure
+load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
+load("X:\Mathias\switch_data\tabled_data\horridge_data_m.mat")
+data = data(data(:,1)==2,:);
+data = data(:,2:end);
+load("X:\Mathias\switch_data\neurons_of_interest\neurons_of_interest_horridge_m.mat")
+load("X:\Mathias\switch_data\neurons_of_interest\inhibited_horridge_m.mat")
+%neuron_counter = size(after_stimulus_data_m{1,1},1)+size(after_stimulus_data_m{2,1},1)+size(after_stimulus_data_m{3,1},1)+1;
+neuron_counter = 1;mouse=2;
+for i = 1:mouse-1
+neuron_counter = neuron_counter + size(after_stimulus_data_m{i,1},1);
+end
+noi = get_neurons_of_interest(after_stimulus_data_m{mouse,271}, output_m, inhibited_m, neuron_counter);
+% image 1: example
+load("X:\Mathias\switch_data\clusters\assemblies_horridge_m.mat")
+load("X:\Mathias\switch_data\data_after_stimulus\after_stimulus_data_m_horridge.mat")
+stimulations = stimulations - stimulations(1);
+viewdata = data(noi,[round(stimulations(272)*1000-10):round(stimulations(272)*1000-10)+77,round(stimulations(273)*1000):round(stimulations(273)*1000)+96,round(stimulations(274)*1000):round(stimulations(274)*1000)+70]);
+viewdata(viewdata==2) = 1;
+figure;imagesc(viewdata);colormap(flipud(gray))
+
+
+% take bins together
+interestdata = data(noi,[round(stimulations(272)*1000):round(stimulations(272)*1000)+59,round(stimulations(273)*1000):round(stimulations(273)*1000)+59,round(stimulations(274)*1000):round(stimulations(274)*1000)+59]);
+new_data = zeros(12,12);
+for i = 1:size(new_data,1)
+    for j = 1:4
+        new_data(i,j) = sum(interestdata(i,1+(j-1)*15:j*15));
+    end
+    for j = 5:8
+        new_data(i,j) = sum(interestdata(i,1+(j-1)*15:j*15));
+    end
+    for j = 9:12
+        new_data(i,j) = sum(interestdata(i,1+(j-1)*15:j*15));
+    end
+end
+figure
+h=heatmap(new_data,'CellLabelColor','none');
+grid('off')
+
+
+
+% assembly vector
+load("X:\Mathias\switch_data\clusters\activity_horridge_m.mat")
+load("X:\Mathias\switch_data\clusters\data_horridge_m.mat")
+index = ceil(interval/30);
+activity = total_activity{mouse,index}(1:intervals_to_plot);
+data = total_data{mouse,index}(:,1:intervals_to_plot);
+
+
+assembly_vector = transpose(activity)/data;
+figure;heatmap(abs(assembly_vector)','CellLabelColor','none')
+
+
+
+
+
+
+
+
+
+
+
+
 

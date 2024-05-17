@@ -3,11 +3,11 @@ Fs = 2500;
 frequencies = [135,255];
 
 
-for i = 1%:9
+for i = 1:8
     disp(i)
     % do it in multiple parts
     %filter = designfilt('bandpassiir','FilterOrder',20,'PassbandFrequency1',11,'PassbandFrequency2',16,'StopbandAttenuation1',60,'PassbandRipple',1,'StopbandAttenuation2',60,'SampleRate',2500,'DesignMethod','ellip');
-    filter_ripple2 = designfilt('bandpassiir','FilterOrder',4,'HalfPowerFrequency1',0.5,'HalfPowerFrequency2',4,'SampleRate',2500,'DesignMethod','butter');
+    filter_ripple2 = designfilt('bandpassiir','FilterOrder',4,'HalfPowerFrequency1',100,'HalfPowerFrequency2',250,'SampleRate',2500,'DesignMethod','butter');
     %filter_spindle = designfilt('bandpassiir','FilterOrder',20,'HalfPowerFrequency1',11,'HalfPowerFrequency2',20,'SampleRate',2500,'DesignMethod','butter');
     for j = 1:5%1:5
         disp(i+": "+j)
@@ -17,6 +17,6 @@ for i = 1%:9
         clearvars data
         cur_filtered_data = filtfilt(filter_ripple2,cur_data');
         clearvars cur_data
-        save("/scratch/mathiass-takeokalab/01/LF_filtered_rec"+i+"_part"+j+"y_low_frequency_05_4.mat", "cur_filtered_data", "-v7.3");
+        save("/scratch/mathiass-takeokalab/01/LF_filtered_rec"+i+"_part"+j+"y_ripple2.mat", "cur_filtered_data", "-v7.3");
     end
 end

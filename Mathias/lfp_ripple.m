@@ -2,7 +2,7 @@ clear;clc;close all;
 Fs = 2500;
 window = 5*Fs/25;
 
-for i = 1:8
+for i = 4:8
     disp(i)
     %load("/mnt/takeokalab/takeokalabwip2023/Mathias/switch_data/LF_signals/LF_filtered_total"+i+"m.mat")
     data = [];

@@ -134,8 +134,8 @@ start_neuron_m = 1;
 start_neuron_y = 1;
 %[EventSizeM, EventSizeY] = get_start_end_events();
 [EventSizeM, EventSizeY, maxm, maxy, waitingeventM, waitingeventY, switcheventM, switcheventY] = get_start_end_events_switch();
-% after_stimulus_data_m = cell(length(numbers), maxm); % go to get_max_onsets.m to determine this 5217
-after_stimulus_data_y = cell(length(numbers), maxy);
+after_stimulus_data_m = cell(length(numbers), maxm); % go to get_max_onsets.m to determine this 5217
+%after_stimulus_data_y = cell(length(numbers), maxy);
 
 for i = 1:numel(fields)
     
@@ -143,38 +143,35 @@ for i = 1:numel(fields)
 
     %cur_onsets_m = event_main_M.(fields{i}).events.onsets;
     %cur_onsets_y = event_main_Y.(fields{i}).events.onsets;
-    % cur_onsets_m = event_main_M.(fields{i}).frM_stim.horridge{1,1};
-    cur_onsets_y = event_main_Y.(fields{i}).frM_stim.horridge{1,1};
+    cur_onsets_m = event_main_M.(fields{i}).frM_stim.horridge{1,1};
+    %cur_onsets_y = event_main_Y.(fields{i}).frM_stim.horridge{1,1};
     % cur_onsets_m = cur_onsets_m(EventSizeM(nb_mouse,1):EventSizeM(nb_mouse,2));
     %cur_onsets_y = cur_onsets_y(EventSizeY(nb_mouse,1):EventSizeY(nb_mouse,2));
-    % cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
-    cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
+    cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
+    %cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
 
     % Make array with 10ms before and 60ms after each stimulus
-    % cur_nb_neurons_m = sum(data_m(:,1) == nb_mouse);
-    cur_nb_neurons_y = sum(data_y(:,1) == nb_mouse);
+    cur_nb_neurons_m = sum(data_m(:,1) == nb_mouse);
+    %cur_nb_neurons_y = sum(data_y(:,1) == nb_mouse);
 
-    % for j = 2:length(cur_onsets_m)
-    %     if round(cur_onsets_m(j)*1000)+59 > 600000
-    %         after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);
-    %         %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
-    %     else
-    %         after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:round(cur_onsets_m(j)*1000)+59+2);
-    %         %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
-    %     end
-    % end
-    for j = 2:length(cur_onsoets_y)
-        if round(cur_onsets_y(j)*1000)+59 > 600000
-            after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
-            %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
-        else
-            after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
-            %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
+    for j = 2:length(cur_onsets_m)
+        % check if stimulation is at least 120ms after previous stimulation
+        if cur_onsets_m(j)-cur_onsets_m(j-1) > 0.12
+            after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-59+2:cur_onsets_m(j)*1000)+10+2);
         end
     end
+    % for j = 2:length(cur_onsoets_y)
+    %     if round(cur_onsets_y(j)*1000)+59 > 600000
+    %         after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
+    %         %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
+    %     else
+    %         after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
+    %         %after_stimulus_data_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
+    %     end
+    % end
     %data_y([start_neuron_y:start_neuron_y+cur_nb_neurons_y-1],:) = [];
-    % start_neuron_m = start_neuron_m + cur_nb_neurons_m;
-    start_neuron_y = start_neuron_y + cur_nb_neurons_y;
+    start_neuron_m = start_neuron_m + cur_nb_neurons_m;
+    % start_neuron_y = start_neuron_y + cur_nb_neurons_y;
 end
 %save(fullfile(save_path, "after_stimulus_data_m_horridge.mat"), "after_stimulus_data_m", "-v7.3")
 save(fullfile(save_path, "before_stimulus_data_m_horridge.mat"), "after_stimulus_data_m", "-v7.3")
@@ -182,16 +179,16 @@ clearvars after_stimulus_data_m_horridge data_m after_stimulus_data_y_horridge d
 
 %% now do the same for switch data
 disp("second part")
-%switch_m = load(fullfile(data_path, "switch_data_m.mat"));
-%switch_m = struct2array(switch_m);
-switch_y = load(fullfile(data_path, "switch_data_y.mat"));
-switch_y = struct2array(switch_y);
-switch_y = uint16(switch_y);
+switch_m = load(fullfile(data_path, "switch_data_m.mat"));
+switch_m = struct2array(switch_m);
+% switch_y = load(fullfile(data_path, "switch_data_y.mat"));
+% switch_y = struct2array(switch_y);
+% switch_y = uint16(switch_y);
 
 start_neuron_m = 1;
 start_neuron_y = 1;
-%after_stimulus_switch_m = cell(length(numbers), 1); %% to do
-after_stimulus_switch_y = cell(length(numbers), 1000);
+after_stimulus_switch_m = cell(length(numbers), 1); %% to do
+% after_stimulus_switch_y = cell(length(numbers), 1000);
 
 
 for i = 1:numel(fields)
@@ -199,42 +196,45 @@ for i = 1:numel(fields)
 
     %cur_onsets_m = event_main_M.(fields{i}).events.onsets;
     %cur_onsets_y = event_main_Y.(fields{i}).events.onsets;
-    %cur_onsets_m = event_main_M.(fields{i}).frM_stim.switch{1,1};
-    cur_onsets_y = event_main_Y.(fields{i}).frM_stim.switch{1,1};
+    cur_onsets_m = event_main_M.(fields{i}).frM_stim.switch{1,1};
+    % cur_onsets_y = event_main_Y.(fields{i}).frM_stim.switch{1,1};
     %cur_onsets_m = cur_onsets_m;%(EventSizeM(nb_mouse,1):EventSizeM(nb_mouse,2));
     %cur_onsets_y = cur_onsets_y(switcheventY(nb_mouse,1):end);
-    %cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
-    cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
+    cur_onsets_m = cur_onsets_m - cur_onsets_m(1,1);
+    % cur_onsets_y = cur_onsets_y - cur_onsets_y(1,1);
 
     % Make array with 10ms before and 60ms after each stimulus
-    %cur_nb_neurons_m = sum(switch_m(:,1) == nb_mouse);
-    cur_nb_neurons_y = sum(switch_y(:,1) == nb_mouse);
+    cur_nb_neurons_m = sum(switch_m(:,1) == nb_mouse);
+    % cur_nb_neurons_y = sum(switch_y(:,1) == nb_mouse);
 
-    % for j = 2:length(cur_onsets_m)
-    %     if round(cur_onsets_m(j)*1000)+59 > 600000
-    %         after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);
-    %         after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
+    for j = 2:length(cur_onsets_m)
+        if cur_onsets_m(j)-cur_onsets_m(j-1) > 0.12
+            after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-59+2:round(cur_onsets_m(j)*1000)+10+2);
+        end
+        % if round(cur_onsets_m(j)*1000)+59 > 600000
+        %     after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);
+        %     after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
+        % else
+        %     after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:round(cur_onsets_m(j)*1000)+59+2);
+        %     after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
+        % end
+    end
+    % for j = 2:length(cur_onsets_y)
+    %     if round(cur_onsets_y(j)*1000)+59 > 600000
+    %         after_stimulus_switch_y{i,j-1} = switch_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
+    %         %after_stimulus_switch_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
     %     else
-    %         after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:round(cur_onsets_m(j)*1000)+59+2);
-    %         after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
+    %         after_stimulus_switch_y{i,j-1} = switch_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
+    %         %after_stimulus_switch_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
     %     end
     % end
-    for j = 2:length(cur_onsets_y)
-        if round(cur_onsets_y(j)*1000)+59 > 600000
-            after_stimulus_switch_y{i,j-1} = switch_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);
-            %after_stimulus_switch_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
-        else
-            after_stimulus_switch_y{i,j-1} = switch_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:round(cur_onsets_y(j)*1000)+59+2);
-            %after_stimulus_switch_y{i,j-1}(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1, round(cur_onsets_y(j)*1000)+1:round(cur_onsets_y(j)*1000)+1) = 0;
-        end
-    end
-    %start_neuron_m = start_neuron_m + cur_nb_neurons_m;
-    start_neuron_y = start_neuron_y + cur_nb_neurons_y;
+    start_neuron_m = start_neuron_m + cur_nb_neurons_m;
+    % start_neuron_y = start_neuron_y + cur_nb_neurons_y;
 end
 
 
-%save(fullfile(save_path, "after_stimulus_data_m_switch.mat"), "after_stimulus_switch_m", "-v7.3")
-save(fullfile(save_path, "after_stimulus_data_y_switch.mat"), "after_stimulus_switch_y", "-v7.3")
+save(fullfile(save_path, "before_stimulus_data_m_switch.mat"), "after_stimulus_switch_m", "-v7.3")
+% save(fullfile(save_path, "after_stimulus_data_y_switch.mat"), "after_stimulus_switch_y", "-v7.3")
 
 
 

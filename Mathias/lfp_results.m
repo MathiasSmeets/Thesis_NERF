@@ -27,27 +27,39 @@ for i = setdiff(1:9,mouse_to_exclude_m)
     replay_m = (after_m>threshold_m);
 
     
-    replay_ripple_m{i} = 0;
-    replay_no_ripple_m{i} = 0;
-    no_replay_ripple_m{i} = 0;
-    no_replay_no_ripple_m{i} = 0;
+    % replay_ripple_m{i} = 0;
+    % replay_no_ripple_m{i} = 0;
+    % no_replay_ripple_m{i} = 0;
+    % no_replay_no_ripple_m{i} = 0;
 
+    power_during_replay = [];
+    power_during_no_replay = [];
     for j = 1:numel(replay_m)
         % j is in ms
         % translate this to the sampling of LPF (2.5kHz)
-        ripple_index_m = ceil(j/2.5);
-        if replay_m(j) && ripple_m(ripple_index_m)
-            replay_ripple_m{i} = replay_ripple_m{i} + 1;
-        elseif replay_m(j) && ~ripple_m(ripple_index_m)
-            replay_no_ripple_m{i} = replay_no_ripple_m{i} + 1;
-        elseif ~replay_m(j) && ripple_m(ripple_index_m)
-            no_replay_ripple_m{i} = no_replay_ripple_m{i} + 1;
-        elseif ~replay_m(j) && ~ripple_m(ripple_index_m)
-            no_replay_no_ripple_m{i} = no_replay_no_ripple_m{i} + 1;
+        % ripple_index_m = ceil(j/2.5);
+        % if replay_m(j) && ripple_m(ripple_index_m)
+        %     replay_ripple_m{i} = replay_ripple_m{i} + 1;
+        % elseif replay_m(j) && ~ripple_m(ripple_index_m)
+        %     replay_no_ripple_m{i} = replay_no_ripple_m{i} + 1;
+        % elseif ~replay_m(j) && ripple_m(ripple_index_m)
+        %     no_replay_ripple_m{i} = no_replay_ripple_m{i} + 1;
+        % elseif ~replay_m(j) && ~ripple_m(ripple_index_m)
+        %     no_replay_no_ripple_m{i} = no_replay_no_ripple_m{i} + 1;
+        % end
+        if replay_m(j)
+            if mod(j,2) == 0
+                power_during_replay = [power_during_replay, ]
+            else
+
+            end
+            power_during_replay = [power_during_replay]
+        else
+
         end
     end
-    probability_replay_ripple_m(i) = replay_ripple_m{i} / (numel(find(ripple_m))*10);
-    probability_replay_no_ripple_m(i) = replay_no_ripple_m{i} / (numel(find(~ripple_m))*10);
+    % probability_replay_ripple_m(i) = replay_ripple_m{i} / (numel(find(ripple_m))*10);
+    % probability_replay_no_ripple_m(i) = replay_no_ripple_m{i} / (numel(find(~ripple_m))*10);
 end
 
 %% control

@@ -110,8 +110,8 @@ end
 %     cur_neuron_nb_y_hfs = cur_neuron_nb_y_hfs + size(stimulus_data_high_fs_y{i,1},1);
 % end
 
-neuron_spikes_m(:,9:11) = 0;
-neuron_spikes_y(:,9:11) = 0;
+neuron_spikes_m(:,59:61) = 0;
+neuron_spikes_y(:,59:61) = 0;
 % neuron_spikes_m_hfs(:,91:110) = 0;
 % neuron_spikes_y_hfs(:,91:110) = 0;
 

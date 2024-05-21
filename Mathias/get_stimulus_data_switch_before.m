@@ -157,7 +157,7 @@ for i = 1:numel(fields)
     for j = 2:length(cur_onsets_m)
         % check if stimulation is at least 120ms after previous stimulation
         if cur_onsets_m(j)-cur_onsets_m(j-1) > 0.12
-            after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-59+2:cur_onsets_m(j)*1000)+10+2);
+            after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-59+2:round(cur_onsets_m(j)*1000)+10+2);
         end
     end
     % for j = 2:length(cur_onsoets_y)

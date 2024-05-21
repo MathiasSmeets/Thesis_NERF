@@ -208,8 +208,10 @@ for i = 1:numel(fields)
     % cur_nb_neurons_y = sum(switch_y(:,1) == nb_mouse);
 
     for j = 2:length(cur_onsets_m)
-        if cur_onsets_m(j)-cur_onsets_m(j-1) > 0.12
-            after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-59+2:round(cur_onsets_m(j)*1000)+10+2);
+        if cur_onsets_m(j)*1000 < 600000
+            if cur_onsets_m(j)-cur_onsets_m(j-1) > 0.12
+                after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-59+2:round(cur_onsets_m(j)*1000)+10+2);
+            end
         end
         % if round(cur_onsets_m(j)*1000)+59 > 600000
         %     after_stimulus_switch_m{i,j-1} = switch_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);

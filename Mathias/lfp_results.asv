@@ -15,11 +15,11 @@ probability_replay_ripple_m = zeros(1,9);
 probability_replay_no_ripple_m = zeros(1,9);
 for i = setdiff(1:9,mouse_to_exclude_m)
     disp(i)
-    % ripple_m = load("X:/Mathias/switch_data/LF_signals/ripple2_"+i+"m.mat"); ripple_m = ripple_m.ripple;
-    power_m = load("X:/Mathias/switch_data/LF_signals/power_"+i+"m.mat"); power_m = power_m.power;
-    % se = strel('line', 5, 90);
-    % ripple_m = imdilate(ripple_m, se);
-    % ripple_m = imerode(ripple_m, se);
+    ripple_m = load("X:/Mathias/switch_data/LF_signals/ripple2_"+i+"m.mat"); ripple_m = ripple_m.ripple;
+
+    se = strel('line', 5, 90);
+    ripple_m = imdilate(ripple_m, se);
+    ripple_m = imerode(ripple_m, se);
 
     after_m = raw_after_m{i};
     threshold_m = threshold_after_m(i);
@@ -32,8 +32,8 @@ for i = setdiff(1:9,mouse_to_exclude_m)
     % no_replay_ripple_m{i} = 0;
     % no_replay_no_ripple_m{i} = 0;
 
-    power_during_replay_m = [];
-    power_during_no_replay_m = [];
+    power_during_replay = [];
+    power_during_no_replay = [];
     for j = 1:numel(replay_m)
         % j is in ms
         % translate this to the sampling of LPF (2.5kHz)
@@ -54,20 +54,17 @@ for i = setdiff(1:9,mouse_to_exclude_m)
             % 3 --> 3*2.5 = 7.5 =   [6, 7, 8]
             % 4 --> 4*2.5 = 10 =    [9, 10]
             % ...
+
             if mod(j,2) == 1
-                power_during_replay_m = [power_during_replay_m, power_m(ceil(j*2.5)-2), power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
+                power_during_replay = [power_during_replay, power(ceil(j*2.5)-2), power(ceil(j*2.5)-1), power(ceil(j*2.5))];
             else
-                power_during_replay_m = [power_during_replay_m, power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
+                power_during_replay = [power_during_replay, power(ceil(j*2.5)-1), power(ceil(j*2.5))];
             end
+
         else
-            if mod(j,2) == 1
-                power_during_no_replay_m = [power_during_no_replay_m, power_m(ceil(j*2.5)-2), power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
-            else
-                power_during_no_replay_m = [power_during_no_replay_m, power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
-            end
+
         end
     end
-    average_power_during_replay_m = mean(power_during_replay_m)
     % probability_replay_ripple_m(i) = replay_ripple_m{i} / (numel(find(ripple_m))*10);
     % probability_replay_no_ripple_m(i) = replay_no_ripple_m{i} / (numel(find(~ripple_m))*10);
 end

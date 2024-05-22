@@ -5,7 +5,7 @@
 % control: switch 1 & 9
 % np2 no switch so not included here
 
-learner_indices = 1:9;
+learner_indices = 1:8;
 control_indices = 3:8;
 
 trainer_m = zeros(1,9);

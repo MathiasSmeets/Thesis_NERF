@@ -244,7 +244,7 @@ figure;imagesc(viewdata);colormap(flipud(gray))
 
 
 % take bins together
-interestdata = data(noi,[round(stimulations(272)*1000):round(stimulations(272)*1000)+59,round(stimulations(273)*1000):round(stimulations(273)*1000)+59,round(stimulations(274)*1000):round(stimulations(274)*1000)+59,round(stimulations(277)*1000):round(stimulations(277)*1000)+59]);
+interestdata = data(noi,[round(stimulations(272)*1000):round(stimulations(272)*1000)+59,round(stimulations(273)*1000):round(stimulations(273)*1000)+59,round(stimulations(274)*1000):round(stimulations(274)*1000)+59,round(stimulations(274)*1000):round(stimulations(275)*1000)+59]);
 new_data = zeros(12,16);
 for i = 1:size(new_data,1)
     for j = 1:4
@@ -277,10 +277,9 @@ data = total_data{mouse,index}(:,1:intervals_to_plot);
 
 
 assembly_vector = transpose(activity)/data;
-assembly_vector(:,[1,2,3,4,12]) = assembly_vector(:,[3,4,12,1,2]);
 figure;heatmap(abs(assembly_vector)','CellLabelColor','none')
 
-figure;plot(abs(assembly_vector*new_data))
+figure;plot()
 
 
 

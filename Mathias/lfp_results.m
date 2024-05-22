@@ -4,15 +4,17 @@ clear;clc;close all; %% OLD FUNCTION, GO TO lfp_results_adjusted.m FOR UP TO DAT
 raw_after_m = load("X:\Mathias\switch_data\correlations\raw_after_m.mat"); raw_after_m = raw_after_m.cur_correlation_after;
 threshold_after_m = load("X:\Mathias\switch_data\correlations\threshold_after_m.mat"); threshold_after_m = threshold_after_m.threshold_after;
 
-replay_ripple_m = cell(1,9);
-replay_no_ripple_m = cell(1,9);
-no_replay_ripple_m = cell(1,9);
-no_replay_no_ripple_m = cell(1,9);
+% replay_ripple_m = cell(1,9);
+% replay_no_ripple_m = cell(1,9);
+% no_replay_ripple_m = cell(1,9);
+% no_replay_no_ripple_m = cell(1,9);
 mouse_to_exclude_m = []; % m
-mouse_to_exclude_m = [2,9]; % y
+mouse_to_exclude_y = [2,9]; % y
 % compare probability replay occurring during ripple versus non-ripple
-probability_replay_ripple_m = zeros(1,9);
-probability_replay_no_ripple_m = zeros(1,9);
+% probability_replay_ripple_m = zeros(1,9);
+% probability_replay_no_ripple_m = zeros(1,9);
+average_power_during_replay_m = zeros(1,9);
+average_power_during_no_replay_m = zeros(1,9);
 for i = setdiff(1:9,mouse_to_exclude_m)
     disp(i)
     % ripple_m = load("X:/Mathias/switch_data/LF_signals/ripple2_"+i+"m.mat"); ripple_m = ripple_m.ripple;
@@ -32,8 +34,10 @@ for i = setdiff(1:9,mouse_to_exclude_m)
     % no_replay_ripple_m{i} = 0;
     % no_replay_no_ripple_m{i} = 0;
 
-    power_during_replay_m = [];
-    power_during_no_replay_m = [];
+    power_during_replay_m = zeros(floor(numel(replay_m)*2.5),1);
+    power_during_no_replay_m = zeros(floor(numel(replay_m)*2.5),1);
+    replay_counter = 0;
+    no_replay_counter = 0;
     for j = 1:numel(replay_m)
         % j is in ms
         % translate this to the sampling of LPF (2.5kHz)
@@ -55,19 +59,33 @@ for i = setdiff(1:9,mouse_to_exclude_m)
             % 4 --> 4*2.5 = 10 =    [9, 10]
             % ...
             if mod(j,2) == 1
-                power_during_replay_m = [power_during_replay_m, power_m(ceil(j*2.5)-2), power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
+                power_during_replay_m(replay_counter+1) = power_m(ceil(j*2.5)-2);
+                power_during_replay_m(replay_counter+2) = power_m(ceil(j*2.5)-1);
+                power_during_replay_m(replay_counter+3) = power_m(ceil(j*2.5));
+                replay_counter = replay_counter+3;
             else
-                power_during_replay_m = [power_during_replay_m, power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
+                power_during_replay_m(replay_counter+1) = power_m(ceil(j*2.5)-2);
+                power_during_replay_m(replay_counter+2) = power_m(ceil(j*2.5)-1);
+                replay_counter = replay_counter+2;
             end
         else
             if mod(j,2) == 1
-                power_during_no_replay_m = [power_during_no_replay_m, power_m(ceil(j*2.5)-2), power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
+                power_during_no_replay_m(no_replay_counter+1) = power_m(ceil(j*2.5)-2);
+                power_during_no_replay_m(no_replay_counter+2) = power_m(ceil(j*2.5)-1);
+                power_during_no_replay_m(no_replay_counter+2) = power_m(ceil(j*2.5)-1);
+                no_replay_counter = no_replay_counter+3;
             else
-                power_during_no_replay_m = [power_during_no_replay_m, power_m(ceil(j*2.5)-1), power_m(ceil(j*2.5))];
+                power_during_no_replay_m(no_replay_counter+1) = power_m(ceil(j*2.5)-2);
+                power_during_no_replay_m(no_replay_counter+2) = power_m(ceil(j*2.5)-1);
+                no_replay_counter = no_replay_counter+2;
             end
         end
     end
-    average_power_during_replay_m = mean(power_during_replay_m)
+    power_during_replay_m = power_during_replay_m(1:replay_counter);
+    power_during_no_replay_m = power_during_no_replay_m(1:no_replay_counter);
+    average_power_during_replay_m(i) = mean(power_during_replay_m)/385;
+    average_power_during_no_replay_m(i) = mean(power_during_no_replay_m)/385;
+    
     % probability_replay_ripple_m(i) = replay_ripple_m{i} / (numel(find(ripple_m))*10);
     % probability_replay_no_ripple_m(i) = replay_no_ripple_m{i} / (numel(find(~ripple_m))*10);
 end
@@ -130,9 +148,9 @@ hold on
 scatter(ones(size(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1)),probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', 'filled', 'blue')
 scatter(ones(size(probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1))*2,probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))', 'filled', 'blue')
 line([ones(size(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1),1), ones(size(probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1),1)*2]',[probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))']','Color','green')
-p_y = signrank(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))');
+p_m = signrank(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))');
 ylabel('Probability Replay Occurring')
 disp("p-value learner: " + p_m)
-disp("p-value control: " + p_y)
+disp("p-value control: " + p_m)
 disp("OLD FUNCTION, GO TO lfp_results_adjusted.m FOR UP TO DATE FUNCTION")
 

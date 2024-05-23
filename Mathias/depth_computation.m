@@ -1,24 +1,28 @@
 clear;close all; clc
 
-
+%% compute depth of neurons
 recording_database_updated_20200805_JCfreshStart_1;
-depth_np2 = cell(1,9);
+depth_m = cell(1,9);
+channel_m = cell(1,9);
 
-for j = 1:3
-    frM = load("X:\Mathias\switch_data\tables\frM_np2_"+j+".mat");frM = frM.frM;
-    depths_M = zeros(size(frM,1),1);
-for i = 1:size(frM,1)
-    if isnan(frM.Id_spont(i))
-        load(fullfile(sort_masters_horridge{frM.Recording(i)},'chanMap.mat'));
-        clu = frM.Id_horr(i);
-        idepth = get_cluster_depth(sort_masters_horridge{frM.Recording(i)}, clu);
-    else
-        load(fullfile(sort_masters_before{frM.Recording(i)},'chanMap.mat'));
-        clu = frM.Id_spont(i);
-        idepth = get_cluster_depth(sort_masters_before{frM.Recording(i)}, clu);
+for j = 1:9
+    frY = load("X:\Mathias\switch_data\tables\frY_switched_"+j+".mat");frY = frY.frM;
+    depths_M = zeros(size(frY,1),1);
+    channels_M = zeros(size(depths_M));
+    for i = 1:size(frY,1)
+        if isnan(frY.Id_spont(i))
+            load(fullfile(sort_yokes_horridge{frY.Recording(i)},'chanMap.mat'));
+            clu = frY.Id_horr(i);
+            idepth = get_cluster_depth(sort_yokes_horridge{frY.Recording(i)}, clu);
+        else
+            load(fullfile(sort_yokes_before{frY.Recording(i)},'chanMap.mat'));
+            clu = frY.Id_spont(i);
+            idepth = get_cluster_depth(sort_yokes_before{frY.Recording(i)}, clu);
+        end
+        depths_M(i) = abs(idepth.depth' - ycoords(masters_depth(frY.Recording(i))));
+        channels_M(i) = idepth.channel;
     end
-    depths_M(i) = abs(idepth.depth' - ycoords(masters_depth(frM.Recording(i))));
-end
-depth_np2{j} = depths_M';
-clearvars frM
+    depth_m{j} = depths_M';
+    channel_m{j} = channels_M';
+    clearvars frY
 end

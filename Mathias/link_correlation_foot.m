@@ -246,6 +246,9 @@ z_observed = z / SE_z;
 % Calculate p-value (two-tailed)
 p_value_cor = 2 * (1 - normcdf(abs(z_observed)));
 
+ylim([-0.002 0.006])
+xlim([-0.6 0.6])
+
 disp("Correlation Control: " + rho)
 disp("P-value: "+p_value_cor)
 

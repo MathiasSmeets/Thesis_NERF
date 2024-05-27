@@ -271,7 +271,7 @@ yticks(binEdges); % This sets the y-axis ticks to the bin edges
 hold on
 array = cell2mat(depths_control_horridge);
 % Define the bin edges
-binEdges = 50:200:1850;
+binEdges = 0:250:2000;
 % Count the number of values in each interval
 counts = histcounts(array, binEdges);
 % Define the y-axis values (midpoints of the intervals)

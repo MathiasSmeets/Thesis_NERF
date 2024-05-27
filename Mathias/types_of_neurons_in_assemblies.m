@@ -30,8 +30,25 @@ for i = 1:9
     neuron_counter = neuron_counter + size(after_stimulus_data_m{i,1},1);
 end
 
+disp("_____________________________________________________________________")
 
 secondary_y = cell2mat(output_y.(1){1,1});
 secondary_y = unique(secondary_y(:,1));
 other_y = cell2mat(output_y.(2){1,1});
 other_y = unique(other_y(:,1));
+neuron_counter = 0;
+for i = 1:9
+    cur_neurons = clusters_y{i} + neuron_counter;
+    cur_secondary = numel(intersect(cur_neurons,secondary_y));
+    cur_others = numel(intersect(cur_neurons,other_y));
+    %cur_inhibited = numel(intersect(cur_neurons,inhibited_m));
+
+    disp(i+":")
+    disp("secondary: "+ cur_secondary)
+    if cur_secondary ~= 0
+        disp("# secondary neurons: " + (intersect(cur_neurons,secondary_y)-neuron_counter))
+    end
+    disp("others: " + cur_others)
+    disp("___________")
+    neuron_counter = neuron_counter + size(after_stimulus_data_y{i,1},1);
+end

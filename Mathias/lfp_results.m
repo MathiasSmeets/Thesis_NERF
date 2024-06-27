@@ -141,16 +141,23 @@ for i = setdiff(1:9,mouse_to_exclude_y)
 end
 
 %% figures
-
+figure
+boxplot([probability_replay_no_ripple_m(setdiff(1:9,mouse_to_exclude_m))',probability_replay_ripple_m(setdiff(1:9,mouse_to_exclude_m))'],'Labels',{'Not During Ripple','During Ripple'})
+hold on
+scatter(ones(size(probability_replay_no_ripple_m(setdiff(1:9,mouse_to_exclude_m))',1)),probability_replay_no_ripple_m(setdiff(1:9,mouse_to_exclude_m))', 'filled', 'blue')
+scatter(ones(size(probability_replay_ripple_m(setdiff(1:9,mouse_to_exclude_m))',1))*2,probability_replay_ripple_m(setdiff(1:9,mouse_to_exclude_m))', 'filled', 'blue')
+line([ones(size(probability_replay_no_ripple_m(setdiff(1:9,mouse_to_exclude_m))',1),1), ones(size(probability_replay_ripple_m(setdiff(1:9,mouse_to_exclude_m))',1),1)*2]',[probability_replay_no_ripple_m(setdiff(1:9,mouse_to_exclude_m))', probability_replay_ripple_m(setdiff(1:9,mouse_to_exclude_m))']','Color','green')
+p_m = signrank(probability_replay_no_ripple_m(setdiff(1:9,mouse_to_exclude_m))', probability_replay_ripple_m(setdiff(1:9,mouse_to_exclude_m))');
+ylabel('Probability Replay Occurring')
 figure
 boxplot([probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))',probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))'],'Labels',{'Not During Ripple','During Ripple'})
 hold on
 scatter(ones(size(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1)),probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', 'filled', 'blue')
 scatter(ones(size(probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1))*2,probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))', 'filled', 'blue')
 line([ones(size(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1),1), ones(size(probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))',1),1)*2]',[probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))']','Color','green')
-p_m = signrank(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))');
+p_y = signrank(probability_replay_no_ripple_y(setdiff(1:9,mouse_to_exclude_y))', probability_replay_ripple_y(setdiff(1:9,mouse_to_exclude_y))');
 ylabel('Probability Replay Occurring')
 disp("p-value learner: " + p_m)
-disp("p-value control: " + p_m)
+disp("p-value control: " + p_y)
 disp("OLD FUNCTION, GO TO lfp_results_adjusted.m FOR UP TO DATE FUNCTION")
 

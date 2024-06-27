@@ -133,6 +133,7 @@ numbers = 1:11;
 start_neuron_m = 1;
 start_neuron_y = 1;
 %[EventSizeM, EventSizeY] = get_start_end_events();
+% this function is redudant, as this is already done previously
 [EventSizeM, EventSizeY, maxm, maxy, waitingeventM, waitingeventY, switcheventM, switcheventY] = get_start_end_events_switch();
 % after_stimulus_data_m = cell(length(numbers), maxm); % go to get_max_onsets.m to determine this 5217
 after_stimulus_data_y = cell(length(numbers), maxy);
@@ -154,6 +155,8 @@ for i = 1:numel(fields)
     % cur_nb_neurons_m = sum(data_m(:,1) == nb_mouse);
     cur_nb_neurons_y = sum(data_y(:,1) == nb_mouse);
 
+    % SELECT THIS PART IF YOU WANT TO DO LEARNER !!!!!!!!!!!!!!
+
     % for j = 2:length(cur_onsets_m)
     %     if round(cur_onsets_m(j)*1000)+59 > 600000
     %         after_stimulus_data_m{i,j-1} = data_m(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1,round(cur_onsets_m(j)*1000)-10+2:end);
@@ -163,6 +166,8 @@ for i = 1:numel(fields)
     %         %after_stimulus_data_m{i,j-1}(start_neuron_m:start_neuron_m + cur_nb_neurons_m - 1, round(cur_onsets_m(j)*1000)+1:round(cur_onsets_m(j)*1000)+1) = 0;
     %     end
     % end
+
+    % put everything in cell array (10 ms before and 60 ms after each cue)
     for j = 2:length(cur_onsoets_y)
         if round(cur_onsets_y(j)*1000)+59 > 600000
             after_stimulus_data_y{i,j-1} = data_y(start_neuron_y:start_neuron_y + cur_nb_neurons_y - 1,round(cur_onsets_y(j)*1000)-10+2:end);

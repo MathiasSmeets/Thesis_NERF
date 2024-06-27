@@ -130,9 +130,8 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     end
 
     % if neurons are active in clusters similar to between, avoid these
-    % similar = at least activity during experiment - 10%
     neuron_between_activities = sum(cluster_matrices_between_m{i},2)/size(cluster_matrices_between_m{i},2); % in percentage
-    variable_threshold = 0.5*neuron_between_activities*last_interval_before;
+    variable_threshold = 0.5*neuron_between_activities*last_interval_before; % threshold set at 50%
     neurons_to_avoid = find(occurrences>variable_threshold');
 
     %active_assemblies_before = all_assemblies_before(all_assemblies_count_before>threshold_10percent);
@@ -188,6 +187,7 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
     template_vector{i} = all_vectors{maxindex}(:,1);
 
     %% go to each time this cluster is active, find peaks in activity and get candidate templates
+    % average activity each time cluster is active
     cur_template = zeros(numel(actual_most_common_cluster),bins_together);
     counter = 0;
     for j = 1:cur_last_interval
@@ -238,8 +238,8 @@ for i = setdiff(1:size(stimulus_data_m,1),mouse_to_exclude)
 end
 %error("stop")
 save('/scratch/mathiass-takeokalab/01/template_np2.mat', 'template')
-save('/scratch/mathiass-takeokalab/01/template_cluster_np2.mat', 'template_cluster')
-save('/scratch/mathiass-takeokalab/01/template_smoothed_3_np2.mat', 'template_smoothed')
+save('/scratch/mathiass-takeokalab/01/template_cluster_np2.mat', 'template_cluster') % neurons that are in template
+save('/scratch/mathiass-takeokalab/01/template_smoothed_3_np2.mat', 'template_smoothed') % we use smoothed template
 
 %% check for replay in before and after data
 cur_correlation_before = zeros(size(stimulus_data_m,1),size(before_data_m,2)-1-size(cur_template,2)+1);

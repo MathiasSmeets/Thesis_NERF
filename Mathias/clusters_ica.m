@@ -68,7 +68,7 @@ for k = 1:size(stimulus_data_m,1)
                         if ~isempty(stimulus_data_m{k,ii})
                             cur_mouse = stimulus_data_m{k,ii}(cur_neurons_of_interest,11:end);
 
-                            % transform to 10ms bins
+                            % transform to 15ms bins
                             cur_mouse_fs_adjusted = zeros(size(cur_mouse,1),ceil(size(cur_mouse,2)/wanted_bin_size));
                             for j = 1:size(cur_mouse,1)
                                 cur_mouse_fs_adjusted(j,:) = accumarray(indices',cur_mouse(j,:)',[],@sum)';
@@ -91,6 +91,8 @@ for k = 1:size(stimulus_data_m,1)
                     cur_neurons_of_interest(jj) = [];
                 end
             end
+            % up until now: simply create input for ica method
+            % now we perform the ica method
             [predicted_nbr_assemblies, predicted_nbr_neurons,assemblies,activity,vector] = ica_assembly_detection(cur_total_mouse_zscore', create_plots);
             if predicted_nbr_assemblies ~= 0
                 total_neurons_of_interest{k,index_counter} = cur_neurons_of_interest;
@@ -127,83 +129,84 @@ save(fullfile(savepath, "ica_vector_horridge_m.mat"), "total_vector", "-v7.3")
 % nb_assemblies = load("X:\Mathias\cluster_output\bin_10ms_neurons_oi\nb_assemblies.mat"); nb_assemblies = nb_assemblies.total_nb_assemblies;
 
 %% create figure on how this evolves
+% ignore this part, old
 
-intervals_to_combine = 3;
-population_similarities_start = zeros(2+1,size(total_assemblies,1));
-population_similarities_end = zeros(2+1,size(total_assemblies,1));
-all_cluster_matrices = cell(1,size(stimulus_data_m,1));
-% loop over all mice
-for i = 1:3
-    % get last interval
-    j = size(total_data,2);
-    while isempty(total_data{i,j}) && j > 1
-        j = j-1;
-    end
-    last_interval_index = j;
-
-    % create clustermatrix
-    cluster_matrix = zeros(size(stimulus_data_m{i,1},1), last_interval_index);
-    for k = 1:last_interval_index
-        for l = 1:length(total_assemblies{i,k})
-            cluster_matrix(total_neurons_of_interest{i,k}(total_assemblies{i,k}{l}),k) = 1;
-        end
-    end
-    figure
-    imagesc(cluster_matrix)
-    % heatmap(cluster_matrix,'CellLabelColor','none')
-    % xlabel("Intervals (" + interval_step + " together)")
-    % ylabel("Neurons")
-    % title("Neurons in a cluster")
-    all_cluster_matrices{i} = cluster_matrix;
-    % row_indices = [3,14,19,30];
-    % for column_index = 1:size(cluster_matrix, 2)
-    %     for cur_row = 1:numel(row_indices)
-    %         if cluster_matrix(row_indices(cur_row), column_index) == 1
-    %             % If all are 1, transform those elements to 2
-    %             cluster_matrix(row_indices(cur_row), column_index) = 2;
-    %         end
-    %     end
-    % end
-    
-
-    % calculate population similarity for this matrix
-    % similarity at the start
-    % % % % % counter = 0;
-    % % % % % for k = 1:intervals_to_combine-1
-    % % % % %     for l = k+1:intervals_to_combine
-    % % % % %         if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
-    % % % % %             counter = counter + 1;
-    % % % % %             cur_x = cluster_matrix(:,k);
-    % % % % %             cur_y = cluster_matrix(:,l);
-    % % % % %             population_similarities_start(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
-    % % % % %         end
-    % % % % %     end
-    % % % % % end
-    % % % % % % similarity at the end
-    % % % % % counter = 0;
-    % % % % % last_interval = size(cluster_matrix,2);
-    % % % % % for k = last_interval:-1:last_interval-intervals_to_combine+2
-    % % % % %     for l = k-1:-1:last_interval-intervals_to_combine+1
-    % % % % %         if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
-    % % % % %             counter = counter + 1;
-    % % % % %             cur_x = cluster_matrix(:,k);
-    % % % % %             cur_y = cluster_matrix(:,l);
-    % % % % %             population_similarities_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
-    % % % % %         end
-    % % % % %     end
-    % % % % % end
-    % % % % % % similarity between start and end
-    % % % % % counter = 0;
-    % % % % % last_interval = size(cluster_matrix,2);
-    % % % % % for k = 1:intervals_to_combine
-    % % % % %     for l = last_interval:-1:last_interval-intervals_to_combine+1
-    % % % % %         if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
-    % % % % %             counter = counter + 1;
-    % % % % %             cur_x = cluster_matrix(:,k);
-    % % % % %             cur_y = cluster_matrix(:,l);
-    % % % % %             population_similarities_start_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
-    % % % % %         end
-    % % % % %     end
-    % % % % % end
-end
-save(fullfile(savepath, "cluster_matrices_between_m.mat"), "all_cluster_matrices", "-v7.3")
+% intervals_to_combine = 3;
+% population_similarities_start = zeros(2+1,size(total_assemblies,1));
+% population_similarities_end = zeros(2+1,size(total_assemblies,1));
+% all_cluster_matrices = cell(1,size(stimulus_data_m,1));
+% % loop over all mice
+% for i = 1:3
+%     % get last interval
+%     j = size(total_data,2);
+%     while isempty(total_data{i,j}) && j > 1
+%         j = j-1;
+%     end
+%     last_interval_index = j;
+% 
+%     % create clustermatrix
+%     cluster_matrix = zeros(size(stimulus_data_m{i,1},1), last_interval_index);
+%     for k = 1:last_interval_index
+%         for l = 1:length(total_assemblies{i,k})
+%             cluster_matrix(total_neurons_of_interest{i,k}(total_assemblies{i,k}{l}),k) = 1;
+%         end
+%     end
+%     figure
+%     imagesc(cluster_matrix)
+%     % heatmap(cluster_matrix,'CellLabelColor','none')
+%     % xlabel("Intervals (" + interval_step + " together)")
+%     % ylabel("Neurons")
+%     % title("Neurons in a cluster")
+%     all_cluster_matrices{i} = cluster_matrix;
+%     % row_indices = [3,14,19,30];
+%     % for column_index = 1:size(cluster_matrix, 2)
+%     %     for cur_row = 1:numel(row_indices)
+%     %         if cluster_matrix(row_indices(cur_row), column_index) == 1
+%     %             % If all are 1, transform those elements to 2
+%     %             cluster_matrix(row_indices(cur_row), column_index) = 2;
+%     %         end
+%     %     end
+%     % end
+% 
+% 
+%     % calculate population similarity for this matrix
+%     % similarity at the start
+%     % % % % % counter = 0;
+%     % % % % % for k = 1:intervals_to_combine-1
+%     % % % % %     for l = k+1:intervals_to_combine
+%     % % % % %         if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
+%     % % % % %             counter = counter + 1;
+%     % % % % %             cur_x = cluster_matrix(:,k);
+%     % % % % %             cur_y = cluster_matrix(:,l);
+%     % % % % %             population_similarities_start(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+%     % % % % %         end
+%     % % % % %     end
+%     % % % % % end
+%     % % % % % % similarity at the end
+%     % % % % % counter = 0;
+%     % % % % % last_interval = size(cluster_matrix,2);
+%     % % % % % for k = last_interval:-1:last_interval-intervals_to_combine+2
+%     % % % % %     for l = k-1:-1:last_interval-intervals_to_combine+1
+%     % % % % %         if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
+%     % % % % %             counter = counter + 1;
+%     % % % % %             cur_x = cluster_matrix(:,k);
+%     % % % % %             cur_y = cluster_matrix(:,l);
+%     % % % % %             population_similarities_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+%     % % % % %         end
+%     % % % % %     end
+%     % % % % % end
+%     % % % % % % similarity between start and end
+%     % % % % % counter = 0;
+%     % % % % % last_interval = size(cluster_matrix,2);
+%     % % % % % for k = 1:intervals_to_combine
+%     % % % % %     for l = last_interval:-1:last_interval-intervals_to_combine+1
+%     % % % % %         if ~all(cluster_matrix(:,k)==0) && ~all(cluster_matrix(:,l)==0)
+%     % % % % %             counter = counter + 1;
+%     % % % % %             cur_x = cluster_matrix(:,k);
+%     % % % % %             cur_y = cluster_matrix(:,l);
+%     % % % % %             population_similarities_start_end(counter,i) = dot(cur_x,cur_y) / sqrt(dot(cur_x, cur_x) * dot(cur_y, cur_y));
+%     % % % % %         end
+%     % % % % %     end
+%     % % % % % end
+% end
+% save(fullfile(savepath, "cluster_matrices_between_m.mat"), "all_cluster_matrices", "-v7.3")

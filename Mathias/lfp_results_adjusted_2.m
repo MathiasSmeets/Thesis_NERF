@@ -19,7 +19,7 @@ for i = setdiff(1:9,mouse_to_exclude_m)
     disp(i)
     ripple_m = load("X:/Mathias/switch_data/LF_signals/ripple2_"+i+".mat"); ripple_m = ripple_m.ripple;
     % power_m = load("X:/Mathias/switch_data/LF_signals/power_"+i+"m.mat"); power_m = power_m.power;
-    se = strel('line', 10, 90);
+    se = strel('line', 5, 90);
     ripple_m = imdilate(ripple_m, se);
     ripple_m = imerode(ripple_m, se);
 
@@ -36,7 +36,7 @@ for i = setdiff(1:9,mouse_to_exclude_m)
     counter_non_ripple = 0;
     previous_replay_index = 0;
     for j = 20:numel(ripple_m) % start a bit to the right because replay is shifted
-        replay_index = ceil(j/2.5)-7; % replay is shifted (half of template)
+        replay_index = ceil(j/2.5)-7; % replay is shifted (because of of template)
         if replay_index > numel(replay_m)
             break
         end

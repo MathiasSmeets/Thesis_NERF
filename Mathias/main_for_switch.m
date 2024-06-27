@@ -5,10 +5,10 @@ other_path = "X:\Mathias\switch_data\data_after_stimulus";
 % path_to_code = "/mnt/takeokalab/takeokalabwip2023/Mathias/10kfs/";
 % other_path = "/mnt/takeokalab/takeokalabwip2023/Mathias/data/";
 
-stimulus_data_m = load(other_path + "\after_stimulus_data_m_switch.mat");
+stimulus_data_m = load(other_path + "\after_stimulus_data_m_horridge.mat");
 stimulus_data_m = stimulus_data_m.after_stimulus_switch_m;
 stimulus_data_m = cellfun(@double, stimulus_data_m, 'UniformOutput', false);
-stimulus_data_y = load(other_path + "\after_stimulus_data_y_switch.mat");
+stimulus_data_y = load(other_path + "\after_stimulus_data_y_horridge.mat");
 stimulus_data_y = stimulus_data_y.after_stimulus_switch_y;
 stimulus_data_y = cellfun(@double, stimulus_data_y, 'UniformOutput', false);
 % stimulus_data_m = load(other_path + "\data_after_stimulus_m.mat");
@@ -428,7 +428,7 @@ output_m = table({secondary_neurons_m}, {others_std_larger}, {inhibited_m}, 'Var
 %% validation
 % latencies_29 = load("X:\Mathias\10kfs\01\latencies29");latencies_29 = latencies_29.check_parameter;
 % peak=569;figure;subplot(2,1,1); scatter(latencies_29(1,5:end)+peak-50,1:length(latencies_29(1,5:end)));xlim([0 700]);hold on;xline(peak-50);xline(peak+51)
-% subplot(2,1,2);plot(neuron_spikes_m(29,:));hold on;plot(neuron_spikes_m_hfs(29,:))
+% subplot(2,1,2);plot(neuron_spikes_m(29,:));%hold on;plot(neuron_spikes_m_hfs(29,:))
 
 
 % false positives:

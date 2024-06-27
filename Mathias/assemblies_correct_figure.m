@@ -76,3 +76,5 @@ for cur_nb_bins_together = 15
 end
 
 bar([cpd_detected/400, cpca_detected/400, cica_detected/400])
+hold on
+errorbar(1:3,[cpd_detected/400, cpca_detected/400, cica_detected/400], [std(results_table.TP_assemblies_PCA), std(results_table.TP_assemblies_CPCA), std(results_table.TP_assemblies_CICA)])
